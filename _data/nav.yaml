@@ -1,0 +1,10 @@
+- name: Home
+  path: "/"
+  section_id: home
+- name: About Me
+  path: "/me.html"
+  section_id: why
+- name: Github
+  path: "https://github.com/daviddawson"
+  section_id: contact
+  base: yes

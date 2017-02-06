@@ -1,0 +1,79 @@
+---
+layout: default
+slides:
+  - bg: /images/vis/cogs.jpg
+    title: 404 -This page doesn't exist
+    tagline: Are you sure you got the link right?
+    buttons:
+      - text: "Microservices: Adaptable Software"
+        class: medium
+        url: "/#microservices"
+      - text: "Event Architecture: Adaptable Data"
+        class: medium
+        url: "/#eventarchitecture"
+      - text: "Cloud Native Infrastructure Webinar"
+        class: medium success
+        url: "/#cloudnative"
+
+---
+<div class='mod modFullscreenSlider'>
+  <div class='fullscreen_slideshow' data-autostop='off'>
+    <a class='sequence-prev' href='javascript:void(0);'>
+      <span></span>
+    </a>
+    <a class='sequence-next' href='javascript:void(0);'>
+      <span></span>
+    </a>
+    <ul class='sequence-pagination'>
+      {% for slide in page.slides %}
+        {% if forloop.first %}
+          {% assign class = 'current' %}
+        {% else %}
+          {% assign class = '' %}
+        {% endif %}
+        <li class="{{class}}"></li>
+      {% endfor %}
+    </ul>
+    <ul class="sequence-canvas">
+      {% for slide in page.slides %}
+        {% if forloop.first %}
+          {% assign style = 'static' %}
+        {% else %}
+          {% assign style = '' %}
+        {% endif %}
+
+        <li class='frame centered-text {{style}}'>
+          <h1>{{slide.title}}</h1>
+          <p>{{slide.tagline}}</p>
+          <div class='two spacing'></div>
+            {% if slide.detailed %}
+            {{slide.detailed}}
+            {% endif %}
+          {% if slide.videos %}
+            <div class='video_image_touch' style='background-image: url({{slide.bg}});'></div>
+            <div class='video_wrap'>
+              <div class='overlay' style='background: #000000;opacity: 0.6;'></div>
+              <video autoplay=' ' class='bg_video' loop=' ' muted=' ' preload='auto'>
+                {% for video in slide.videos %}
+                  <source src='{{video.url}}' type='video/{{video.type}}'>
+                {% endfor %}
+              </video>
+            </div>
+          {% else %}
+            <div class='bg' style='background-image: url({{slide.bg}});'></div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns'>
+      <p>©2016 {{site.title}}. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>

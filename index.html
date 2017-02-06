@@ -1,0 +1,47 @@
+---
+layout: blog
+---
+
+<div class='full'>
+  <div class='row'>
+
+    {% for post in paginator.posts %}
+    <div class='images'>
+      {% if post.image %}
+      <div class='image'><img alt="" src="{{site.url}}/{{post.image}}" /></div>
+      {% endif %}
+    </div>
+    <div class='content'>
+      <p class='info'>
+        <span>{{post.date | date: "%B %d, %Y" }}</span>
+        /
+        <span>
+                by
+                <a href="">{{post.author}}</a>
+              </span>
+        /
+        <span>
+                In
+                {% for cat in post.categories %}
+                  <a href="#">{{cat}}</a>
+                  {% unless forloop.last %}
+                      ,
+                  {% endunless %}
+                {% endfor %}
+              </span>
+      </p>
+      <h3><a href="{{post.url}}">{{post.title}}</a></h3>
+      <p>{{post.excerpt}}</p>
+      <div class='spacing'></div>
+      <a class="button small" href="{{post.url}}">Read more</a>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% include pagination.html root="blog" %}
+  <div class='four spacing'></div>
+  <div class='large-3 columns' id='toc'>
+    {% include sidebar.html %}
+    <div class='four spacing'></div>
+  </div>
+</div>

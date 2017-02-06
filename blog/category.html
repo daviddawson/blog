@@ -1,0 +1,55 @@
+---
+layout: blog
+---
+<div class='full' style='background: #f5f5f5'>
+    <div class='row'>
+        <div class='large-9 columns'>
+            <div class='big mod modBlogPost catbloc' id="all">
+                <div class="content">
+                    <h2>All posts</h2>
+
+                        <ul>
+                            {% for post in site.posts %}
+                                <li>
+                                    <a href="{{ post.url }}">
+                                    <time>{{ post.date | date: "%-d %B %Y" }}</time>
+                                    {{ post.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>
+            {% for category in site.categories %}
+
+            <div class='big mod modBlogPost catbloc' id="{{ category | first | remove:' ' }}">
+                <div class="content">
+                    <h2>{{ category | first }}</h2>
+
+                    <ul>
+                        {% for posts in category %}
+                          {% for post in posts %}
+                            {% if post.url %}
+                              <li>
+                                <a href="{{ post.url }}">
+                                  <time>{{ post.date | date: "%-d %B %Y" }}</time>
+                                  {{ post.title }}
+                                </a>
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+                        {% endfor %}
+                    </ul>
+                 </div>
+            </div>
+
+
+            {% endfor %}
+            <div class='four spacing'></div>
+</div>
+        <div class='large-3 columns' id='toc'>
+            {% include sidebar.html %}
+            <div class='four spacing'></div>
+        </div>
+    </div>
+</div>

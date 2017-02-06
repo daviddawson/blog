@@ -1,0 +1,91 @@
+---
+excerpt: Introduction to the Muon project, it's goals, aspirations and getting started. Muon is a system for building distributed systems well, including Microservices. It enables the use of many design styles, such as DDD and Reactive and covers language libraries, infrastructure integration and a set of functional services for you to use in production.
+title: Introducing Muon
+layout: post
+author: David Dawson
+date: 2017-01-02 12:18
+image: images/vis/clouds1.jpg
+categories:
+ - blog
+tags:
+ - architecture
+ - continuousdelivery
+ - microservices
+---
+
+Well, you've found this site, and so found Muon!
+
+Muon is a new project for building distributed systems. It is *polyglot*, unlike many others with similar goals.
+
+It enables you to quickly build systems that are highly interoperable and have advanced communication mechanisms.
+RPC systems are inherently fragile, you deserve better than that, Muon gives that to you.
+
+## What does it let me do?
+
+Muon lets you build and then attach services together very quickly, allows them to communicate in a variety of
+ways. We have a set of support services
+that help you do things faster, and none of this cares about your infrastructure. You can choose Kubernetes, Mesos and AWS
+all at the same time and Muon services will run happily.
+
+It gives you support in all the right places, works with your infrastructure of choice, and gets out of the way
+of you writing code that *makes you money* (or whatever your motivation is!).
+
+For example, here's a simple node service
+
+[source, javascript]
+----
+
+----
+
+Here's a Java service that consumes it
+
+[source, java]
+----
+
+----
+
+Quick, right?
+
+So, although Muon lets you build Microservices, it does much more than that.
+
+## What is Muon
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+protocols
+
+software lego
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
