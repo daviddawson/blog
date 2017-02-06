@@ -1,8 +1,11 @@
-- name: Home
+- name: Blog
   path: "/"
   section_id: home
-- name: About Me
+- name: About Me | What I Do
   path: "/me.html"
+  section_id: why
+- name: Hire Me
+  path: "/hireme.html"
   section_id: why
 - name: Github
   path: "https://github.com/daviddawson"

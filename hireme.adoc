@@ -1,0 +1,60 @@
+---
+layout: documentation
+---
+:title: David Dawson
+:date: 2015-01-05 11:40
+:comments: true
+:sharing: true
+:source-highlighter: pygments
+:toc: right
+:toc-title: Services
+:toclevels: 6
+
+## I'm available for hire!
+
+I operate as a freelancer out of the UK. I do significant work in Europe and occasional work in the US, Africa
+and the Middle East.  I do approximately half of my work remotely, and look well on any engagements that offer this
+as an option.
+
+If you want to start on a Microservice journey, health check a cloud deployment, or need an experienced systems architect
+and team lead, get in touch.
+
+Here are some of the services I can provide.
+
+### Microservices and Cloud Computing
+
+#### Microservices
+
+I have worked on Microservices projects of many kinds for years, as a developer, consultant, systems architect and
+devops team lead.
+
+I have seen all aspects of the lifecycle, from bootstrap, team scaling, development process, production issues ...
+
+I founded the link:http://muoncore.io[Muon Project] to solve some of th recurring issues that I've seen around
+inter service communication, data, consistency and resilience.
+
+If you are starting on Microservices, or are well on your journey, I can help you.
+
+#### Cloud Foundry
+
+I have worked with Pivotal for many years on consultancy and training for their distribution of Cloud Foundry -
+Pivotal CF.
+
+I deliver much of the training across EMEA for Pivotal on their PCF product set.
+
+If you have a need to deploy, manage, extend or gain more knowledge about Cloud Foundry in general and PCF in particular,
+get in touch with your requirements. I can work with you on delivering training (Pivotal approved), consultancy and longer term
+projects.
+
+### IoT End to End System Design and Delivery
+
+I work with an electronics manufacturer to deliver Internet of Things solutions that I design, have manufactured  and coordinate back end development
+and delivery for.
+
+Using the Muon project that I founded, I have developed large scale analytic applications and associated hardware sensors
+for varying fields including _passive house monitoring_ and industrial monitoring_.
+
+These use a combination of LoRa wide area communications (up to 10 mile rangeon AA batteries), ZigBee for shorter range and
+a custom gateway hardware for backhaul to the Muon based back end.
+
+If you have a need for deploying sensors distributed across a large area and processing the data analytically, get in touch.
