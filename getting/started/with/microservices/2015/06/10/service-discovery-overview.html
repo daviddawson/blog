@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Service Discovery Overview</title>
+  <meta name="description" content="When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a clou...">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+                  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+      body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+      code {
+          background:none;
+          border:0;
+      }
+
+      code span { border: 0; width:100% }
+      .listingblock {
+         background: #eee;
+         border-radius:5px;
+          border:1px solid #ccc
+      }
+  }
+
+  </style>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1>
+          <a href="/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              
+                <a href="/">Home</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/me.html">About Me</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="https://github.com/daviddawson">Github</a>
+              
+
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>June 10, 2015</span>
+            /
+            <span>
+              by
+              <a href="#">Simplicity Itself Team</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">Getting</a>
+                
+                    ,
+                
+              
+                <a href="#">Started</a>
+                
+                    ,
+                
+              
+                <a href="#">With</a>
+                
+                    ,
+                
+              
+                <a href="#">Microservices</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></h3>
+          <div class="paragraph">
+<p>When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a cloud environment, and often using <em>immutable infrastructure</em>. Ironically, this means that your virtual machines or containers are created and destroyed much more often than normal, as this immutable nature means that you don&#8217;t maintain them.</p>
+</div>
+<div class="paragraph">
+<p>These properties together mean that your services need to be reconfigured with the location of the other services they need to connect to. This reconfiguration needs to be able to happen on the fly, so that when a new service instance is created, the rest of the network can automatically find it and start to communication with it.  This process is called <em>Service Discovery</em>.</p>
+</div>
+<div class="paragraph">
+<p>This concept is one of the key underpinnings of a Microservice architecture. Attempting to create Microservices without a service discovery system will lead to pain and misery as you will, in effect, be working as a manual replacement.</p>
+</div>
+<div class="paragraph">
+<p>As well as the standalone solutions presented here, most platforms, whether full PaaS or the more minimal container managers, have some form of Service Discovery.</p>
+</div>
+<div class="paragraph">
+<p>Which system to choose?</p>
+</div>
+<div class="paragraph">
+<p>There are currently several key contenders to choose from, ZooKeeper, Consul, Etcd, Eureka and RollYourOwn</p>
+</div>
+<div class="sect1">
+<h2 id="zookeeper">ZooKeeper</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em><a href="http://zookeeper.apache.org/" class="bare">http://zookeeper.apache.org/</a></em></p>
+</div>
+<div class="paragraph">
+<p>ZooKeeper is an Apache project providing a distributed, eventually consistent hierarchical configuration store.</p>
+</div>
+<div class="paragraph">
+<p>ZooKeeper originated out of the world of Hadoop, where it was built to help in the maintenance of the various components in a hadoop cluster. It is not a service discovery system per se, but is instead a distributed configuration store that provides notifications to registered clients.  With this, it is possible to build a service discovery infrastructure, however every service must explicitly register with ZooKeeper, and the clients must then check in the configuration.</p>
+</div>
+<div class="paragraph">
+<p>Netflix have invested a lot of time and resources into ZooKeeper, and so a significant amount of Netflix OSS projects have some ZooKeeper integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>I Recommend</strong></p>
+</div>
+<div class="paragraph">
+<p>ZooKeeper is a well understood clustered system. It is a consistent configuration store, and so being well designed and built, a network partition will cause the smaller side of the partition to shut down. For that reason, you must choose whether consistency or availability is more important to you.</p>
+</div>
+<div class="paragraph">
+<p>If you do choose a consistent system for service discovery, such as Zookeeper, then you need to understand the implications on your services. You have tied them to the lifecycle of the discovery system, and also exposed them to any failure conditions it may have. You should not assume that 'consistent' means free from failure. Zookeeper is among the older cluster managers, and consensus (pun intended) is that it&#8217;s implementation of master selection is robust and well behaved.</p>
+</div>
+<div class="paragraph">
+<p>If you do choose to use ZooKeeper, investigate the Netflix OSS projects, staring with &lt;a title="Curator" href="https://github.com/Netflix/curator" target="_blank"&gt;Curator&lt;/a&gt; as a first point of call, and only use bare ZooKeeper if they don&#8217;t fit your needs.</p>
+</div>
+<div class="paragraph">
+<p>Since Zookeeper is mature and established, there is a large ecosystem of good quality (mostly!) clients and libraries to enrich your projects.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="consul">Consul</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em><a href="http://www.consul.io" class="bare">http://www.consul.io</a></em></p>
+</div>
+<div class="paragraph">
+<p>Consul is a peer to peer, strongly consistent data store that uses a gossip protocol to communicate and form dynamic clusters. It is based on the Serf library.</p>
+</div>
+<div class="paragraph">
+<p>It provides a hierarchical key/value store that you can place data in and register watches against to be notified when something changes within a particular key space. In this, it is similar to ZooKeeper.</p>
+</div>
+<div class="paragraph">
+<p>As opposed to ZooKeeper and Etcd, however, Consul implements a full service discovery system in the library, and so you don&#8217;t need to implement your own use use a third party library. This includes health checks on both nodes and services.</p>
+</div>
+<div class="paragraph">
+<p>It implements a DNS server interface, allowing you to perform service lookups using the DNS protocol. It also allows 'clients' to run as independent processes and register/ monitor services on their behalf. This removes the need to add explicit Consul support into your applications.  This is similar in concept to the Netflix OSS <em>Sidecar</em> concept that allows services with no ZooKeeper support to be registered and be discoverable in ZooKeeper.</p>
+</div>
+<div class="paragraph">
+<p>Deployment wise, Consul agents are deployed onto the systems that services are running on, and not in a centralised fashion.</p>
+</div>
+<div class="paragraph">
+<p><strong>I Recommend</strong></p>
+</div>
+<div class="paragraph">
+<p>This is a newer product, and one that we like a lot. Generally recommended if you are able to adopt it.</p>
+</div>
+<div class="paragraph">
+<p>As with the other strongly consistent systems in the list, care must be taken that you understand the implications of adopting it, including understanding it&#8217;s potential failure modes.</p>
+</div>
+<div class="paragraph">
+<p>If you would like something similar that chooses availability rather than consistency, investigate the related Serf project. The Serf library serves as the basis of Consul, but has chosen different data guarantees guarantees. It is nowhere near as full featured, but can handily survive a split brain scenario and reform afterwards without any ill effects.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="etcd">Etcd</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em><a href="http://www.etcd.io" class="bare">http://www.etcd.io</a></em></p>
+</div>
+<div class="paragraph">
+<p>Etcd is an HTTP accessible key/ value store. In that, it is similar in concept to ZooKeeper and the K/V portion of Consul.  It functions as a distributed, hierarchical configuration system, and can be used to build a Service Discovery system.</p>
+</div>
+<div class="paragraph">
+<p>It originally grew out of the CoreOS project, is maintained by them and recently achieved a stable major release</p>
+</div>
+<div class="paragraph">
+<p><strong><em>Simplicity Itself Recommends:</em></strong></p>
+</div>
+<div class="paragraph">
+<p>If you are primarily using HTTP as your communication mechanism, then Etcd can&#8217;t be easily beaten. It provides a well distributed, fast HTTP based system, and has query and push notifications on change, via long polling.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="eureka">Eureka</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em><a href="https://github.com/Netflix/eureka" class="bare">https://github.com/Netflix/eureka</a></em></p>
+</div>
+<div class="paragraph">
+<p>Eureka is a 'mid tier load balancer' built by Netflix and released as open source. It is designed to allow services to be able to register with a Eureka server and then locate each other via that server.</p>
+</div>
+<div class="paragraph">
+<p>Eureka has several capabilities beyond other solutions presented here. It contains a built in load balancer which, although fairly simple, certainly does it&#8217;s job.  Netflix state that they have a secondary load balancer implementation internally that uses Eureka as a data source and is much more full featured. This hasn&#8217;t been released.</p>
+</div>
+<div class="paragraph">
+<p>If you use Spring for your projects, then &lt;a href="http://projects.spring.io/spring-cloud/"&gt;Spring Cloud&lt;/a&gt; is an interesting project to look into, in order to be able to automatically register and resolve services in Eureka.</p>
+</div>
+<div class="paragraph">
+<p>&nbsp;</p>
+</div>
+<div class="paragraph">
+<p><strong>I Recommend</strong></p>
+</div>
+<div class="paragraph">
+<p>Like all Netflix OSS projects, it was written to run on the AWS infrastructure first and foremost. While other Netflix OSS projects have been extended to run in other environments, Eureka does not appear to be moving in that direction.
+We very much like the relation between client and server in the Eureka design, as it leaves the clients with the ability to continue working if the service discovery infrastructure fails.</p>
+</div>
+<div class="paragraph">
+<p>Server wise, Eureka has also chosen availability rather than consistency. You must also be aware of the implications of this choice as it directly affects your application. Primarily, this manifests as a potentially stale or partial view of the full data set. This is discussed in the Eureka documentation.</p>
+</div>
+<div class="paragraph">
+<p>For Spring projects, Eureka is now the quickest to get started with due to the investment the Spring team has made in adopting the Netflix OSS components via the Spring Cloud sub-projects.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rollyourown">RollYourOwn</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you can&#8217;t adapt to that, then you will have to create your own discovery solution within your existing infrastructure.</p>
+</div>
+<div class="paragraph">
+<p>The basis of this will be :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Services must be able to notify each other of their availability and supply connection information&lt;/li&gt;</p>
+</li>
+<li>
+<p>Periodic updates to the records to strip out stale information&lt;/li&gt;</p>
+</li>
+<li>
+<p>Easy integration into your application infrastructure, often using a standard protocol such as HTTP or DNS&lt;/li&gt;</p>
+</li>
+<li>
+<p>Notifications on services starting and stopping.&lt;/li&gt;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&nbsp;</p>
+</div>
+<div class="paragraph">
+<p><strong>I Recommend</strong></p>
+</div>
+<div class="paragraph">
+<p>Building your own discovery service should not be taken lightly. If you do need to then we recommend building a system that values availability rather the consistency. These are significantly easier to build, and more likely that you will build something that is functional.</p>
+</div>
+<div class="paragraph">
+<p>The approach we would recommend would be to use some existing message infrastructure and broadcast notifications on service status. Each service caches the latest information from the broadcasts and uses that as a local set of service discovery data. This has the potential for being stale, but we&#8217;ve found this approach to scale reasonably well and is easy to implement.</p>
+</div>
+<div class="paragraph">
+<p>If you do require consistency, then using some consistent data store could serve as the basis for a distributed configuration system that can be used to build service discovery. You will also want to emit notifications on status changes. You should realise, though, that building a consistent, distributed system is exceptionally hard to get right, and very easy to get subtly wrong.</p>
+</div>
+<div class="paragraph">
+<p>Overall, really not recommended, but certainly possible.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A microservices developer api using .... make</a></li>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and philosophy</a></li>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The minilith - tightly coupled microservices</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining the microservice architecture</a></li>
+    
+    
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service discovery overview</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices security&#58; oauth vs session</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY: Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY: Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2016 Muon Core Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75338923-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</title>
+  <meta name="description" content="Over the past 15 years of software development, especially since the XP movement gained traction, a series of styles, techniques and processes have gained br...">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+                  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+      body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+      code {
+          background:none;
+          border:0;
+      }
+
+      code span { border: 0; width:100% }
+      .listingblock {
+         background: #eee;
+         border-radius:5px;
+          border:1px solid #ccc
+      }
+  }
+
+  </style>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1>
+          <a href="/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              
+                <a href="/">Home</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/me.html">About Me</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="https://github.com/daviddawson">Github</a>
+              
+
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/SilverBullet.png" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>March 02, 2015</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">Microservices and Reactive</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></h3>
+          <div class="paragraph">
+<p>Over the past 15 years of software development, especially since the XP movement gained traction, a series of styles, techniques and processes have gained broad industry adoption. These are, at times, called 'best practices'. At others times they are referred to as dogma or 'cargo cult'.</p>
+</div>
+<div class="paragraph">
+<p>This article describes some (!) of these techniques, presents some overarching ideas that connect them all, and finally a method through which you can objectively evaluate them, rather than relying on opinion or hyperbole.</p>
+</div>
+<div class="sect1">
+<h2 id="the-contenders">The Contenders</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="code-review">Code Review</h3>
+<div class="paragraph">
+<p>Code review describes a process of one developer reading through the code created by another and giving feedback. How deep that reading is and what happens with the feedback is variable.</p>
+</div>
+<div class="paragraph">
+<p>Some teams enforce a review being 'passed', or the code being formally approved and signed off by the reviewer, others that treat review as more of a learning tool, and so feedback is more advisory than prescriptive.</p>
+</div>
+<div class="paragraph">
+<p>This variation is something to be aware of, the term by no means has the same definition across the industry, and the intent behind applying it varies.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pair-programming">Pair Programming</h3>
+<div class="paragraph">
+<p>This describes the practice of two developers working on the same task, on the same machine. The method varies, some promote multiple input devices, others a driver/ navigator approach.</p>
+</div>
+<div class="paragraph">
+<p>The premise here on why this is useful changes depending on who you ask. It can be the source of much angst, with proponents taking quite different positions, and in certain cases teams becoming divided deeply by the practice.</p>
+</div>
+<div class="paragraph">
+<p>Some say that it helps keep code clean, others that it aids knowledge transfer,</p>
+</div>
+<div class="paragraph">
+<p>Some teams use it exclusively, going as far as to have less machines than people, others use it tactically, and some not at all.</p>
+</div>
+<div class="paragraph">
+<p>My opinion is that all of these positions hold true to a greater or lesser extent, the rub being that this completely depends on the context and participants.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tests-as-documentation">Tests as Documentation</h3>
+<div class="paragraph">
+<p>This if often expressed as a benefit of Test Driven Development. The underlying premise is that applying TDD is a good way to begin reasoning about the system you are constructing.</p>
+</div>
+<div class="paragraph">
+<p>Given that, the assertion is that your tests will form usable documentation.</p>
+</div>
+<div class="paragraph">
+<p>My experience is that this is not a given, and for this to become the case, you need to explicitly make that real during writing your tests.</p>
+</div>
+<div class="paragraph">
+<p>Slightly off topic, my personal rule of thumb is to ensure you delete at least half your tests once your primary development is complete, with that half being the 'research' style tests.</p>
+</div>
+<div class="paragraph">
+<p>The ones that are left are the ones that you have cleaned up into usable regression tests and also, documentation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="clean-code">Clean Code</h3>
+<div class="paragraph">
+<p>Clean Code is the title of a book by Robert C. Martin. In it, a conceptual framework is built up and demonstrated, with examples in Java, on the subject of 'cleanliness' in writing code.</p>
+</div>
+<div class="paragraph">
+<p>This is an excellent book, and I recommend you read it.</p>
+</div>
+<div class="paragraph">
+<p>The main expected effects of applying the styling and ideas presented are improved readability and verifiable simplicity in the code being cleaned.</p>
+</div>
+<div class="paragraph">
+<p>There is something of a bias towards object oriented (especially Java) coding styles and patterns, but many of the ideas are readily transferable to other paradigms.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="the-complex-effects-of-a-complex-subject">The Complex Effects of a Complex subject</h3>
+<div class="paragraph">
+<p>Adopting each of these creates a complex effect. By that I mean that they, in isolation or together, do not have a single (or simple) effect that can be identified.</p>
+</div>
+<div class="paragraph">
+<p>This leads to a variety of points of view on the subjects and much of the discussion around them falls into the realm of 'begging the question'. This is a rhetorical device meaning that they should be assumed to be correct, and not open to debate on their fundamental worth. This is a deeply foolish position to take, dogmatic at best and dangerously misguiding at worst.</p>
+</div>
+<div class="paragraph">
+<p>This is not to say that I believe any of these ideas are fundamentally flawed, I don&#8217;t.</p>
+</div>
+<div class="paragraph">
+<p>The point here is that we owe it to ourselves to ensure that everything is open to question, open to critique, open to analysis, or we are promoting code based religion.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-it-all-means">What it all means</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The real question is, as always, why?</p>
+</div>
+<div class="paragraph">
+<p>There are two ways of valuing something, based on it&#8217;s intrinsic or it&#8217;s extrinsic value. The value that is inherent within it, or the value that it creates in it&#8217;s environment.</p>
+</div>
+<div class="paragraph">
+<p>A technique such as this must be valued based on it&#8217;s extrinsic value, the effect that it creates in the environment.</p>
+</div>
+<div class="paragraph">
+<p>So why adopt any of the above techniques at all, what benefit are you expecting to get, what effect are you expecting to be created?</p>
+</div>
+<div class="paragraph">
+<p>The effects, complex though they are can be picked apart and analysed for their worth, but you need some way of identifying the value they bring in your environment.</p>
+</div>
+<div class="paragraph">
+<p>For me, the question often revolves around the learning process. This is a fundamental part of software development.</p>
+</div>
+<div class="paragraph">
+<p>It is even more fundamental than this. Moving between codebases, coming back after a holiday, getting up to date with a new version of a tool or technique. This is all learning.</p>
+</div>
+<div class="paragraph">
+<p>Learning takes time. <em>It cannot be rushed.</em></p>
+</div>
+<div class="paragraph">
+<p>Following an intensive learning session, you will see a drop of of around 50-80% of what you learned over the subsequent weeks., depending how often you use it. With that, you must continue the learning process over months to fully absorb a subject.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="programming-as-theory-building">Programming as Theory Building</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Peter Naur is a deep thinker, who has been active in the world of software over decades. He is the N in BNF, a language used to formally describe computer language grammars and has made many other contributions to the field that affect the way we work.</p>
+</div>
+<div class="paragraph">
+<p>In 1985, he wrote an article, "Programming as Theory Building". This uses the terminology of the time (eg, Structure Programming), but the subject it approaches is timeless.</p>
+</div>
+<div class="paragraph">
+<p>The premise is this, the code you write is not the system. The documentation is not the system, neither is the deployment environment, tests or other artifacts.</p>
+</div>
+<div class="paragraph">
+<p>All of these are the concrete outworkings of the real thing, which he refers to as 'The Theory'. This Theory is the real system, and it is the tacit knowledge, the deep understanding of all of the above, the various corner cases, the coding standards, performance issues, functional requirements, language preferences, development team interpersonal conflict. The whole gamut.</p>
+</div>
+<div class="paragraph">
+<p>Only when this coherent strand of thought, encompassing all of the above, is fully understood by a developer can they make changes fully in tune with the theory. If they don&#8217;t have a full understanding, they will unconsciously work against the grain of the system and quickly run into trouble. So the primary goal of programmers shouldn&#8217;t be to churn code, it&#8217;s building their understanding of the theories weaving their way around them.</p>
+</div>
+<div class="paragraph">
+<p>Transferring these theories is hard and deeply context specific. Since it is not only the code, self documenting code can only go so far. Pair programming can help, but it takes time and isn&#8217;t repeatable or able to be reviewed later ("what did he say about that again?"), clean code helps, but won&#8217;t necessarily tell you much about the production environment.</p>
+</div>
+<div class="paragraph">
+<p>When seen in the light of this very hard job of distributing the theory, the tacit understanding of the system all of the above can be seen as a potential solution to part of the problem, but they can never be the whole solution.</p>
+</div>
+<div class="paragraph">
+<p>Thus, I would put it to anyone holding a more dogmatic position (sometimes expressed as "X is the basis of all that we do"), unless your chosen technique solves this problem entirely, you are misguided in your belief.</p>
+</div>
+<div class="paragraph">
+<p>I recommend you fully read the article and absorb before continuing. You can do so <a href="http://alistair.cockburn.us/ASD+book+extract%3A+%22Naur,+Ehn,+Musashi%22">Programming as Theory Building</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="we-don-t-have-months">We don&#8217;t have months!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It&#8217;s often true, there simply isn&#8217;t the time to spend months bringing someone up to speed on a system. They need to get productive, now.</p>
+</div>
+<div class="paragraph">
+<p>The context, the Theory, is not something that can be ignored. Allowing a developer to operate effectively without gaining the full context in a system is a route to a productivity boost. It allows safer development to happen in organisations with higher staff turnover, or any with movement of developers across multiple systems.
+Looping back to where we started then, these 'best practices', you will notice that they all focus around a few ideas. Readability, transfer of knowledge, building understanding. The promoters of these techniques sometimes fall into trying to describe them in terms of their essential qualities, how powerful they are in and of themselves, rather than the utility that they give. That&#8217;s because, frankly, it&#8217;s often hard to succinctly describe their utility.</p>
+</div>
+<div class="paragraph">
+<p>They are all speaking to this same subject, what Peter Naur calls the Theory Building, and importantly, how to make that Theory Building as fast and accurate as possible.</p>
+</div>
+<div class="paragraph">
+<p>This is a major part of the utility of all of the techniques, aiding Theory Building, which is why I chose these in particular.</p>
+</div>
+<div class="paragraph">
+<p>So, one question you can now ask, how well do they fulfil this essential knowledge transfer function, passing along the Theory. This will vary between teams and contexts, and it&#8217;s hard. Since it&#8217;s so hard, and such a real and measurable cost, I would suggest that this becomes your primary measure of how useful these techniques and ideas are.</p>
+</div>
+<div class="paragraph">
+<p>You can measure the transfer of the Theory. It&#8217;s not always easy, but it&#8217;s much easier to test for than the subjective measures (aka flame wars!) you will end up with otherwise.</p>
+</div>
+<div class="paragraph">
+<p>My answer for this is that, there is no right answer. You must test, and measure. With those measurements in hand, you make an objective decision on the utility of the techniques.</p>
+</div>
+<div class="paragraph">
+<p>Some measurements of these can take the form of :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Knowledge retention over time, on whatever subject you want to target.&lt;/li&gt;</p>
+</li>
+<li>
+<p>Mean time to push - how long it takes a new dev to make a prod change&lt;/li&gt;</p>
+</li>
+<li>
+<p>Orientation time - how long it takes a dev to start making changes to a codebase they switch onto.&lt;/li&gt;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Techniques that improve Theory Building will affect these metrics.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="microservices-as-a-learning-tool">Microservices as a learning tool</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This concept of aiding learning by reducing the system scope is one motivation behind the burgeoning Microservices movement. A component "small enough to fit in your head" is how it expressed.</p>
+</div>
+<div class="paragraph">
+<p>Code with well enough defined contracts that you can pick it up and make many changes without reference to the full system. In terms of Theory Building, you have reduced the amount of the full Theory you have to absorb in order to be able to make changes that work within in sympathy with the overall grain of the system.</p>
+</div>
+<div class="paragraph">
+<p>There are other benefits, of course, such as enabling antifragile behaviour, creating runtime granularity, thriving on change and so on.  Being able to make changes quickly, and also enabling the behaviours described makes Microservices a very powerful tool.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-next">What next?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that you have a picture of the full context of learning, the tacit Theory of software, you are in a position to make objective decisions about the tools and techniques you use.</p>
+</div>
+<div class="paragraph">
+<p>You can select any of the above, or others, and do so objectively. This is huge.</p>
+</div>
+<div class="paragraph">
+<p>You don&#8217;t need arguments between developer opinions. Simply run a test, gather metrics, make a decision.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;d like help with this and with learning in general, get in touch.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#adaptive learning">adaptive learning</a>,
+                
+
+                <a href="/blog/tags#complexity">complexity</a>,
+                
+
+                <a href="/blog/tags#knowledge">knowledge</a>,
+                
+
+                <a href="/blog/tags#learning">learning</a>,
+                
+
+                <a href="/blog/tags#simplicity">simplicity</a>,
+                
+
+                <a href="/blog/tags#training">training</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A microservices developer api using .... make</a></li>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and philosophy</a></li>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The minilith - tightly coupled microservices</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining the microservice architecture</a></li>
+    
+    
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service discovery overview</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices security&#58; oauth vs session</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY: Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY: Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2016 Muon Core Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75338923-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

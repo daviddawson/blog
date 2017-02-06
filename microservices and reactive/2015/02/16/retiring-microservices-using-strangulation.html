@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>David Dawson</title>
-  <meta name="description" content="">
+  <title>Retiring Microservices Using Strangulation</title>
+  <meta name="description" content="No programmer likes to plan for their work to be taken offline and shutdown, but part of good antifragile thinking is allowing things that aren&#8217;t succe...">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -142,156 +142,127 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full'>
+            <div class='full documentation'>
   <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/Retirement_Hammock.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>February 16, 2015</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">Microservices and Reactive</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></h3>
+          <div class="paragraph">
+<p>No programmer likes to plan for their work to be taken offline and shutdown, but part of good antifragile thinking is allowing things that aren&#8217;t successful, to end. Applying that to Microservices, one of the natural parts of that architectural style is creating and destroying instances of a service. As part of the lifecycle of services, you sometimes have to create different versions of a service, and so manage the retiring of a previous version (although we try to avoid versioning where possible).</p>
+</div>
+<div class="paragraph">
+<p>One part that you can&#8217;t avoid is the ultimate killing of an entire service. Eventually, your model of the world will not match the reality, and so you <em>must</em> then kill that service or you will find that changes become progressively harder as it drifts away from reality.</p>
+</div>
+<div class="paragraph">
+<p>There lies legacy, a system that is hard and expensive to change and is becoming progressively out of touch with it&#8217;s current environment.</p>
+</div>
+<div class="paragraph">
+<p>Nobody wants that, so how should you go about killing a service?
+<mark>#</mark> Motivation Matters
+Why you want to kill the service matters.</p>
+</div>
+<div class="paragraph">
+<p>I see two broad motivations for removing a service that influence the approach you need to take during the retirement process, which I classify as <em>Demand Driven and Supply Driven.</em>
+&lt;h4&gt;_Demand Driven_&lt;/h4&gt;
+In the Demand Driven case, the service in question is becoming less and less used. The demand for it is becoming progressively lower over time, and you are looking at it&#8217;s removal as a recognition this. This may be because you have a newer version you are running in parallel, or just that the service isn&#8217;t that useful anymore. This tends to be a very passive approach, you let it whither and die and your interaction is mainly to mainly to monitor it to understand when it can be deemed as dead and switched off.
+&lt;h4&gt;_Supply Driven_&lt;/h4&gt;
+Supply Driven removal is where you have some external motivation for removing service beyond lack of use. Your ability to continue supplying the service to the rest of the system is going to be removed, and so you must kill the service even though it&#8217;s still in use. This is an active approach, and involves identifying the impact of the removal, understanding the valuable functionality of the service and where that should reside post removal.
+<mark>#</mark> Strangulation
+The process of microservice retirement feels very similar to decommissioning of a 'legacy' system, for those readers that have performed that feat of extraction. We have found that the process to be applied can be the same in both cases.</p>
+</div>
+<div class="paragraph">
+<p>Following that instinct, what lessons could we learn from the past decommissioning processes and techniques?</p>
+</div>
+<div class="paragraph">
+<p>One of the better known and more powerful approaches for decommissioning systems is known as the <em>Strangler Application</em>. This was identified by Martin Fowler &lt;a href="http://www.martinfowler.com/bliki/StranglerApplication.html" target="_blank"&gt;back in 2004&lt;/a&gt; as a way to safely remove or replace a legacy application while still delivering business value.  This is now &lt;a href="http://paulhammant.com/2013/07/14/legacy-application-strangulation-case-studies/" target="_blank"&gt;fairly&lt;/a&gt; &lt;a href="http://agilefromthegroundup.blogspot.co.uk/2011/03/strangulation-pattern-of-choice-for.html" target="_blank"&gt;well&lt;/a&gt; &lt;a href="http://cdn.pols.co.uk/papers/agile-approach-to-legacy-systems.pdf" target="_blank"&gt;documented&lt;/a&gt; and understood and is the approach that we use to decommission systems, identifying value and extract it. Should the retiring of Microservices be any different?</p>
+</div>
+<div class="paragraph">
+<p>No, and yes.  They are a system the same as any other and the techniques that have been described in the past _are applicable. _Their highly network distributed nature means that the approach needs to be slightly more nuanced.  That nuance is what I would like to discuss here.</p>
+</div>
+<div class="paragraph">
+<p>The high level approach of the Strangler is to understand the data/ event flows in and out of a component and incrementally redirect them to a new location that you build alongside or around it.  Once all of the event flows are intercepted, the component is no longer being used and can be switched off.
+<mark>#</mark> Data
+Event interception then is key. You have to understand the application or service in terms of its data flows, not it&#8217;s functionality per se.  Identifying the data flows that remain in use and remain valuable is an integral step towards being able to remove the services that for part of that data flow.</p>
+</div>
+<div class="paragraph">
+<p>One of the benefits of a Microservices approach is that your systems are (&lt;a title="Approaching the Design of a Microservices Based Architecture" href="/learning/the-life-preserver/approaching-the-design-of-a-microservices-based-architecture/" target="_blank"&gt;or should be&lt;/a&gt;) well split apart into separately evolving pieces. This is different to a 'classic' legacy decommissioning, as you are cutting a single service, not the system as a whole.</p>
+</div>
+<div class="paragraph">
+<p>This means that you need to be able to intercept events between services, rather than just those coming from outside. Having some rich system of monitoring intra-service communications and using that as the basis of reasoning about the system.</p>
+</div>
+<div class="paragraph">
+<p>In a future article, I will discuss how this can actually enable the component health checks so beloved of microservices frameworks and tutorials to be slimmed down, and even removed in many cases.
+<mark>#</mark> Measure the Impact
+Once you understand the data flowing through your services, you are in a position to begin to reason about altering how those event streams are processed.</p>
+</div>
+<div class="paragraph">
+<p>This reasoning process is influenced by your motivations above. If it&#8217;s demand side, you just wait. You now have the information you need to be able to declare a service to be dead</p>
+</div>
+<div class="paragraph">
+<p>If you are actively removing a service, though, you need to be start judging the impact of reworking these event flows and how far that impact might spread through your system.</p>
+</div>
+<div class="paragraph">
+<p>Tools for this vary, depending on how permeable your service contracts are. You may be in a position to only traverse as far as the direct service dependencies in order to understand the impact. This will be the case if your service boundaries are very strong. One of the aspect of microservice design helped by &lt;a title="Development by Slogan:Part 1, Really DRY" href="/our-team/development-by-slogan-dry-part1/"&gt;reducing your reliance on DRY&lt;/a&gt;</p>
+</div>
+<div class="paragraph">
+<p>Otherwise, you may need to apply graph theory and tooling to understand the impact of the service being removed.
+<mark>#</mark> Summary
+Retiring a service isn&#8217;t something that you should put on your todo list, it&#8217;s an integral part of your microservice setup and you need the capability from day 1 or you will have begun to develop a legacy problem under the guise of Microservice development.</p>
+</div>
+<div class="paragraph">
+<p>Baking in the ability to remove a service requires understanding and monitoring of the event flows. In turn, this requires the large scale monitoring of inter-service communication and the ability to comprehend what that is telling you. The data collection capability is fairly straightforward to add in up front, but requires more effort to retrofit, so we recommend that you do it up front as part of your initial rollout if you are adopting Microservices for the first time.   Comprehension of the event flows is a subject in itself, which we will be discussing in a future article.</p>
+</div>
+            <p id="post-meta">
 
-    
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>November 03, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></h3>
-      <p><div class="paragraph">
-<p>Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &#8230;&#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/11/03/make-developer-api.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>July 20, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-      <p><div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices/2016/07/20/microservices-philosophy.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/megalith.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>March 11, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></h3>
-      <p><div class="paragraph">
-<p>Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>June 17, 2015</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices and Reactive</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></h3>
-      <p><div class="paragraph">
-<p>Recently (June 2015), I gave a &lt;a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank"&gt;talk&lt;/a&gt; at the DDD Exchange at Skills Matter in London.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Read more</a>
-    </div>
-  </div>
-  
 
-  
-  <div class="pager">
-    
-      
-        <a href="/blog/page2" class="older">
-          <i class='fa fa-angle-double-left'></i>
-          Older Entries
-        </a>
-      
-    
-    
-      <span class="newer">
-        Newer Entries
-        <i class='fa fa-angle-double-right'></i>
-      </span>
-    
-  </div>
+                <i class="fa fa-tag"></i>
+                
 
-  <div class='four spacing'></div>
-  <div class='large-3 columns' id='toc'>
-    <div class='links'>
+                <a href="/blog/tags#decommission">decommission</a>,
+                
+
+                <a href="/blog/tags#dry">DRY</a>,
+                
+
+                <a href="/blog/tags#lifecycle">lifecycle</a>,
+                
+
+                <a href="/blog/tags#microservice">microservice</a>,
+                
+
+                <a href="/blog/tags#retire">retire</a>,
+                
+
+                <a href="/blog/tags#strangler">strangler</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -459,7 +430,7 @@
 
 </div>
 
-    <div class='four spacing'></div>
+    </div>
   </div>
 </div>
 

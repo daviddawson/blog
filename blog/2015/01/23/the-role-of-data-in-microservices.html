@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>David Dawson</title>
+  <title>The Role of Data in Microservices</title>
   <meta name="description" content="">
 
     <link rel="stylesheet" href="/css/foundation.css">
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/blog/2015/01/23/the-role-of-data-in-microservices.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -142,156 +142,137 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full'>
+            <div class='full documentation'>
   <div class='row'>
+        <div class='images'>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>January 23, 2015</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">blog</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></h3>
+          <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>When approaching development of Microservices, it&#8217;s often easy to think of the services themselves as the valuable pieces of your system. each service you add gives you more functionality, and so more value.   For the majority of systems we have built and reviewed during our consultancy, we have found that the system itself is of fairly marginal value. Instead, the data that it contains and the intelligence it can provide based upon that data is what is actually valuable.  This seems a subtle, even academic distinction, but it is important and putting it at the forefront of your mind during design has significant repercussions on the way you build your services and the way that they interact with each other.</p>
+</div>
+<div class="paragraph">
+<p>Once you do this, the 'discussions' over what should be a service and what shouldn&#8217;t be becomes far less abstract. Everything is being built to efficiently process, store and present your data. Nothing else really matters when you think about it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="design-your-data">Design your Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With this in mind, your data, and the flows of data through your system become far more important.
+The components that do the processing have to be there, but you actually want your data there. If you
+could get rid of your system components while still having your data processed, you would in a heartbeat. Keep that in mind.</p>
+</div>
+<div class="paragraph">
+<p>In a Microservice architecture, these flows of data will always exist. Generally, they are implicit, only existinging in the ephemeral nature of the communication between services. They can, however be explicitly built in, with services that actually implement particular data flows. We call this explicitly implemented data flow a <em>pipeline.</em></p>
+</div>
+<div class="paragraph">
+<p>This is not a new concept, And many of you will have built just such a thing. Often you will have felt the need to grab a technology such as Storm or Spark in order to handle a flow of data. When you are doing that, you are building what we refer to as a pipeline.  If you have ever built such a thing, take a step back and think about the flow of data in the abstract sense. Try to unpick other flows of data in your application.  When building a set of Microservices, it&#8217;s fairly common to have a call stack of a half dozen or so services with data from the back making it all the way to the front with transformer services in between. This is, in effect a set of transformers on top of a stateful resource. It&#8217;s an implicit pipeline, and can be thought of as a system data flow.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pipelines-of-data-flows">Pipelines of Data Flows</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have seen this, you can begin to extract this as a concept, and make it concrete. This gives you some significant benefits!  Error tracking in a Microservice system can sometimes be fraught with difficulty. Tracking a request from one end of a call chain to the other can be difficult and tracking through logs and correlating identifiers can be a serious chore.  These kind of errors and issues are speaking to you about misaligned abstractions, errors in thought and design, not errors in your implementation.</p>
+</div>
+<div class="paragraph">
+<p>Here, we advocate re-aligning your thought and design to be in tune with reality instead of working in opposition to it. If you have a system that is based around data flows, you need to align your code abstractions with that. The concept of the <em>Entity</em> as we often construct it is of little value and will only serve to get in the way.</p>
+</div>
+<div class="paragraph">
+<p>Taken to a conclusion, this process of building abstractions around data flow will lead you to a system that is a set of parallel pipelines, explicit services implementing each of your data flows. These pipelines call out to stateful services to obtain data and stateless services to transform it.</p>
+</div>
+<div class="paragraph">
+<p>Tracking errors in a system designed like this is simple, as all the high level processing for a data flow will be located in a single location, not smeared over the web of Microservices.</p>
+</div>
+<div class="paragraph">
+<p>This doesn&#8217;t prevent you from gaining all the benefits of Microservices, quite the opposite in fact. You still have all the options you did before, plus by localising a particular data flow into a single service, you gain the option of regaining some of the transactional behaviour you may have sacrificed along the way.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-state-problem">The 'State Problem'</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You will have noticed that I referred to some services as <em>stateful</em> and others as _stateless. _These are fairly overloaded terms that often confuse. What I mean in this case is that some services give access to data at rest, and others don&#8217;t. Stateful services often don&#8217;t contain any data in their memory, instead fronting a data store. Similarly, stateless services may in fact be chock full of data in the form of cache, but don&#8217;t give access to data at rest in any meaningful sense.</p>
+</div>
+<div class="paragraph">
+<p>Even with the slight clumsiness of overloaded terminology by making this distinction you can tie data flows together quite easily. A Pipeline is fully stateless, even though it will have data pouring through it constantly. It may transform data, but it should do that immutably. Immutability means that during transformation, you are generating a new <em>value</em> from the original <em>value</em> obtained from a stateful service. No change has occurred in the original data, no <em>state</em> has been altered. The only way that state can alter is by referring back to the stateful service. This also, handily, eases the conceptual problem some developers have with loss of consistency. By viewing the only place where state lives as in some stateful service, and seeing data moving immutably through the system, the concept of an 'entity' being read from a data store, change and written back is removed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="immutable-data-flows">Immutable Data Flows</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With that, we have the final way of looking at data in a microservice architecture. Immutable data flows implemented as pipelines.</p>
+</div>
+<div class="paragraph">
+<p>By applying this, you gain the benefits of a single place to look for everything related to a flow of data, within the pipeline, and you gain the benefits of being able to take data and radically alter, mutate, transform and derive new data without becoming concerned with mutation of state.</p>
+</div>
+<div class="paragraph">
+<p>This leads very nicely into CQRS and then into Event Sourcing very nicely.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
 
-    
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>November 03, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></h3>
-      <p><div class="paragraph">
-<p>Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &#8230;&#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/11/03/make-developer-api.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>July 20, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-      <p><div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices/2016/07/20/microservices-philosophy.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/megalith.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>March 11, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></h3>
-      <p><div class="paragraph">
-<p>Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>June 17, 2015</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices and Reactive</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></h3>
-      <p><div class="paragraph">
-<p>Recently (June 2015), I gave a &lt;a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank"&gt;talk&lt;/a&gt; at the DDD Exchange at Skills Matter in London.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Read more</a>
-    </div>
-  </div>
-  
 
-  
-  <div class="pager">
-    
-      
-        <a href="/blog/page2" class="older">
-          <i class='fa fa-angle-double-left'></i>
-          Older Entries
-        </a>
-      
-    
-    
-      <span class="newer">
-        Newer Entries
-        <i class='fa fa-angle-double-right'></i>
-      </span>
-    
-  </div>
+                <i class="fa fa-tag"></i>
+                
 
-  <div class='four spacing'></div>
-  <div class='large-3 columns' id='toc'>
-    <div class='links'>
+                <a href="/blog/tags#archi">archi</a>,
+                
+
+                <a href="/blog/tags#architecture">architecture</a>,
+                
+
+                <a href="/blog/tags#data flow">data flow</a>,
+                
+
+                <a href="/blog/tags#data schema">data schema</a>,
+                
+
+                <a href="/blog/tags#design">design</a>,
+                
+
+                <a href="/blog/tags#mi">mi</a>,
+                
+
+                <a href="/blog/tags#microservice">microservice</a>,
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -459,7 +440,7 @@
 
 </div>
 
-    <div class='four spacing'></div>
+    </div>
   </div>
 </div>
 

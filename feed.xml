@@ -1,30 +1,1454 @@
----
-layout: null
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.title | xml_escape }}</title>
-    <description>{{ site.description | xml_escape }}</description>
-    <link>{{ site.url }}{{ site.baseurl }}/</link>
-    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
-    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
-    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
-    <generator>Jekyll v{{ jekyll.version }}</generator>
-    {% for post in site.posts limit:10 %}
+    <title>David Dawson</title>
+    <description></description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 06 Feb 2017 21:02:43 +0000</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 21:02:43 +0000</lastBuildDate>
+    <generator>Jekyll v3.3.1</generator>
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
-        {% for tag in post.tags %}
-        <category>{{ tag | xml_escape }}</category>
-        {% endfor %}
-        {% for cat in post.categories %}
-        <category>{{ cat | xml_escape }}</category>
-        {% endfor %}
+        <title>A Microservices Developer API using .... Make</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &amp;#8230;&amp;#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Microservices projects put &lt;strong&gt;particular pressures on development teams&lt;/strong&gt;, even without polyglot, you end up adding in a fair amount of automation
+tooling (Docker anyone?) that is patchily integrated into the core developer tooling. Every time you add in docker support to gradle or grunt, the more locked you are to that language, making moving away that much harder.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you do go polyglot (and I recommend that you do), then your problems are multiplied, as your &lt;strong&gt;common developer interface&lt;/strong&gt; is just gone.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We recently reviewed the various tooling we were using on a Microservices project, and came up with a long, long list. All of which a developer needs to be able to develop effectively across the entire system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Any new joiner would start to write a cheat sheet out. Just like the one in the wiki, of course. The one that no one maintains properly and is actually wrong is various subtle and totally misleading ways.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So when you come to a part of the project you&amp;#8217;ve not worked with on a while, you want to get that initial hook, the starting place to construct the 'Theory', the mental model of the system that you use to understand what you see in the repo.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Where do you start?  First you have to figure out what the entry point is, for tests, runtime. Is there one?  What&amp;#8217;s the build tool?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;&lt;strong&gt;What if there&amp;#8217;s more than one?&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sound familiar?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;enter-make-the-once-and-future-dev-tool&quot;&gt;Enter Make, the Once and Future Dev Tool&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For all of our projects, we now use make as the top level developer tooling. Every project is driven from a Makefile.
+Internally, this delegates to the tooling we know and love. So, for a java project, Gradle, for Clojure, Leiningen and so on.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This allows us to encode the coarse things a developer needs to do in a file that is checked in with the project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ever had to go digging into a CI server for how it actually does a release using Gradle?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For our projects that&amp;#8217;s as simple as looking in the Makefile for what the &lt;code&gt;release&lt;/code&gt; target is.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This helps from a vocabulary point of view, you decide your top level tasks, likely &lt;code&gt;test&lt;/code&gt;, &lt;code&gt;build&lt;/code&gt;, &lt;code&gt;release&lt;/code&gt;, &lt;code&gt;clean&lt;/code&gt; and put those in every Makefile.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Looking like so&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code&gt;build:
+	./gradlew assemble
+
+test: build
+	./gradlew test
+
+release:
+	./gradlew publishSnapshot
+
+clean:
+	./gradlew clean
+	rm -rf outputs&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This same api could wrap node projects, docker-compose projects, some combination of the all of them, with the exact same developer api.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Then, any developer can go to any project, do quick verifications and use the other make targets to start understanding more of the details.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Adding a new language into the system becomes feasible again, CI can build it with no modifications, it just calls &lt;code&gt;make test&lt;/code&gt; in every instance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can see an example of this in [This Project](&lt;a href=&quot;https://github.com/muoncore/muon-intro-talk&quot; class=&quot;bare&quot;&gt;https://github.com/muoncore/muon-intro-talk&lt;/a&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, I&amp;#8217;m not proposing to replace your developer tooling. I&amp;#8217;m saying your toolbox is incomplete. You need to use Make around them all,
+give them consistency and an ease of use.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;it-tab-completes&quot;&gt;It Tab Completes&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Did I mention make ships with bash tab autocomplete on most platforms. &lt;strong&gt;&lt;strong&gt;Can your dev tool do that?&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Thu, 03 Nov 2016 11:00:00 +0000</pubDate>
+        <link>/blog/2016/11/03/make-developer-api.html</link>
+        <guid isPermaLink="true">/blog/2016/11/03/make-developer-api.html</guid>
+        
+        <category>cloudnative</category>
+        
+        <category>continuousdelivery</category>
+        
+        <category>microservices</category>
+        
+        <category>make</category>
+        
+        
+        <category>blog</category>
+        
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>Microservices and Philosophy</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, &quot;what is a Microservice?&quot;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In many respects, it&amp;#8217;s a question that defies a single answer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since we&amp;#8217;re a consultancy specialising in Microservices, we did a review a while ago with our clients and partners (some of you may remember), asking
+this very question!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The answers we got back were informative and ranged from the specific and technical, to the vague and emotional.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some examples :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Small web services&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bounded Contexts&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Low LOC (yep!)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Small REST services&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Pipes and filters&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Not SOA&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fine grained SOA!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;OO in the large&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Functional in the large&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;and many, many others.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The problem we ended up with was that, when we layed them out to sort the common definition, we found that there wasn&amp;#8217;t one.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As in, there wasn&amp;#8217;t a point of agreement. Instead we had broadly disjoint sets. This kind of accounts for the lack of a
+clear definition!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Digging a little deeper, we found two things that did find general agreement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The first, is &lt;strong&gt;isolation&lt;/strong&gt;. The property of pulling a system apart, generally using a network boundary, although not always (eg OSGI and NetKernel).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The second point of agreement was a deep &lt;strong&gt;aspiration&lt;/strong&gt;. The quality that the world would be better, if we deploy microservices.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Obviously, with my background as a hard technologist, this was fairly appalling. (although as a consultant, my proposal press fluttered!)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-microservice-architecture&quot;&gt;The Microservice Architecture&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An interesting thing came up though, which was the terminology that people use when talking microservices. For much of the conversations, the phrase
+used is actually &quot;a microservice architecture&quot;, rather than just &quot;microservices&quot;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This intrigued me, as it leads directly to the question, if I can&amp;#8217;t define Microservices, can I define &lt;strong&gt;architecture&lt;/strong&gt;?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Well, to me, software architecture is something of a debased term, being stolen from construction. Is it the same as
+ design?  Many would say, yes it is.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;d take the opposite and say that, no, it can&amp;#8217;t be, and this is simply proven through cardinality.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Looking over a system, you see myriad design decisions, each line has some aspect of design associated with it.
+There appears to be an unlimited number of design decisions available to the software developer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Architecture?  There&amp;#8217;s recognisably fairly few software architectures. Certainly a number with a limit, maybe a few dozen that
+are in active use. Consider things such as &lt;strong&gt;n-tier&lt;/strong&gt;, &lt;strong&gt;SEDA&lt;/strong&gt;, &lt;strong&gt;event based&lt;/strong&gt; etc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, just with counting, they aren&amp;#8217;t the same thing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When I think of architecture, certain ideas and phrases go through my mind :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A set of constraints put on the system&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A set of mental tools used to understand problems and create solutions&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The route to the design, rather than the design itself&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A framework for arranging your skills, knowledge and aims within.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Sound fair?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I know all these ideas from another field, well outside of software. &lt;strong&gt;Philosophy&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;From this point of view, software architecture is a form of philosophy, and that leads us to an
+interesting place as far as &lt;strong&gt;The Microservice Architecture&lt;/strong&gt; goes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We can reframe this as the &lt;strong&gt;Microservices Philosophy&lt;/strong&gt; and have it mean fundamentally the same thing. This is something I&amp;#8217;m far more comfortable with,
+ it&amp;#8217;s actually much more concrete!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We&amp;#8217;ve been understanding and grappling with philosophy for thousands of years, and we&amp;#8217;ve got a lot of wisdom to draw upon.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-microservice-philosophy&quot;&gt;The Microservice Philosophy&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;From this point of view then, we can begin to frame Microservices very differently. Instead of reaching for a highly prescriptive
+view on the particular methods, technologies or techniques, we can start to frame our microservices journey in more philosophical terms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What is your end goal? What properties of the resulting system do you actually want to achieve?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This turns the discussion of 'what makes a microservices' from the prescriptive, to the descriptive. It allows us to evaluate
+the resulting systems not in terms of how they were constructed, or what they used, but what they actually &lt;strong&gt;do&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For us, the essential properties of a successful Microservice system are all about responding positively to change pressure.
+A system that not only accepts and adapts to change, but learns and improves itself in response to that change happening.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Luckily, a term was invented for this property &lt;strong&gt;antifragile&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This was coined by Nicolas Taleb, originally referring to economic and financial systems that benefit from stresses, rather than collapsing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;From a pure tech point of view, this seems of limited use, is it really broadly applicable to have a system that responds to stresses?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When you are considering Microservices as a purely technical endeavour, then frankly no, its not really a properyy we can easily generate.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When looking at Microservices as a distributed system philosophy, and tech as a means to an end, then we have the opportunity to broaden our horizons
+somewhat in pursuit of Antifragility.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As soon as we bring people into the definition of 'the system', the development team in particular, then generating antifragile behaviour becomes easy and desirable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The famous &lt;strong&gt;Chaos Monkey&lt;/strong&gt; from Netflix is an excellent example of architecture given form. It isn&amp;#8217;t merely a failure testing tool, it&amp;#8217;s the architecture of the system
+ enforced by a tool.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The antifragile feedback cycle in this case runs like this :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The dev team is made responsible for production outages.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Chaos Monkey generates production outages, on the weekend.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The dev team comes in on Monday, and changes the system so that it can tolerate partial failure and still run.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The system then has been stressed, and then visibly improved itself in response to that stress. It can now tolerate failure in VM resources.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The system has become Antifragile.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is done by creating the appropriate feedback loops, and then generating appropriate stress to push signals down those feedback loops.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;of-devops-and-continuous-delivery&quot;&gt;Of DevOps and Continuous Delivery&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is where Microservices overlaps heavily with the DevOps movement and Continuous Delivery.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Both place value on feedback cycles and improvement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;DevOps comes from a cultural and operational viewpoint, Continuous Delivery approaches from the process space, Microservices from the runtime technical viewpoint.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All are speaking similar language, and I don&amp;#8217;t really care which you subscribe to in order to back up your philosophy of benefiting from change.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;where-does-this-lead&quot;&gt;Where does this lead?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Of course, this leads to building highly distributed systems. All the issues that are discussed, from log management,
+platform comparison, containerisation, data handling and the like are all valid.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Your system will almost certain look like a set of processes coordinating over requests. What I&amp;#8217;d like you to take away is
+that there is an objective measure you can use to evaluate your success, or otherwise, when deploying a Microservice system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;That measure is how well your system expresses the essential properties defined by your architecture. These essential
+ properties don&amp;#8217;t tend to change, so they can be used to measure against over the lifetime of a system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For us, the ability to change and benefit from that change is paramout. You may be looking more at team scaling, or simple runtime scaling.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you aren&amp;#8217;t achieving these properties, and yet paying the Microservices tax (which can be &lt;strong&gt;expensive!&lt;/strong&gt;) then Microservices may well not be for you.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Wed, 20 Jul 2016 12:18:00 +0100</pubDate>
+        <link>/microservices/2016/07/20/microservices-philosophy.html</link>
+        <guid isPermaLink="true">/microservices/2016/07/20/microservices-philosophy.html</guid>
+        
+        <category>architecture</category>
+        
+        <category>continuousdelivery</category>
+        
+        <category>microservices</category>
+        
+        <category>devops</category>
+        
+        <category>antifragile</category>
+        
+        
+        <category>Microservices</category>
+        
+      </item>
+    
+      <item>
+        <title>The Minilith - Tightly Coupled Microservices</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We&amp;#8217;ve found that, contrary to what many will tell you, it defies [tight definition](&lt;a href=&quot;http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html&lt;/a&gt;). Specifying how microservices should interact with each other, how they should store and master data, and how they should be deployed is great for a conference talk, but the style has been adopted too broadly now to be prescriptively tied down by anyone. Opinions abound, and yet you will find &lt;strong&gt;no&lt;/strong&gt; consensus in what microservices actually are beyond the use of some form of effective isolation, usually network based.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This lack of definition is in many ways good. In fact what it allows is the creation of many definitions, all of them good for different purposes and different reasons.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Agile wars seem to be coming to an end, I truly hope we won&amp;#8217;t now have the Microservices wars, another strain of dogma would frankly be upsetting.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;WIth that in mind, I sat down to read about and then watch a recent [talk by Ben Christensen](&lt;a href=&quot;http://www.infoq.com/news/2016/02/services-distributed-monolith&quot; class=&quot;bare&quot;&gt;http://www.infoq.com/news/2016/02/services-distributed-monolith&lt;/a&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I recommend you watch, it&amp;#8217;s an interesting take, and one worth analysing for yourself.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve written on the perils of DRY [a](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html&lt;/a&gt;) [fair](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html&lt;/a&gt;) [amount](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html&lt;/a&gt;), and so to a large extent I totally agree. Where I diverge from much of the discussion is on the principle of autonomy and runtime coupling. Here, I am certainly a huge proponent of generating autonomy between services. The more a service can orient itself and figure out what to do, the better.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This though, is an arbitrary statement, and digging deeper, is fairly biased towards a certain definition of 'a good microservice'.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This definition hinges purely on being able to change this service with scant regard for others in the system, the principle of &lt;strong&gt;autonomy&lt;/strong&gt;. When analysing the benefits of this though, you have to step back to the original business benefits that you are implementing. &lt;strong&gt;Autonomy&lt;/strong&gt; gives powerful benefits, but could it be overriden by other business needs in some circumstances?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The simple answer is yes, sometimes full autonomy for an individual service isn&amp;#8217;t worth the investment to create. To create a fully autonomous service, you need to go through a set of steps, deliver a set of capabilities.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Briefly :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Handle versioning/ upgrade&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Be able to run multiple versions of the service at once&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Have a lot of tolerance in your data source schema (eg, a relational DB schema) for upgrade.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Have effective Continuous Delivery process.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Disciplined and mature team.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you can do all these things well, you can generate fully autonous services. If you can&amp;#8217;t, what then?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;regulated-environments&quot;&gt;Regulated Environments&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We recently came across this on a client project. This project is undergoing a major decomposition effort, building of a new team and biggest impact of all, becoming adopted into a regulated environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All together, this leads to some interesting requirements and dare I say it, compromises.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One thing that has been picked up early is &lt;strong&gt;how do we deploy&lt;/strong&gt;. The continuous delivery question, how can we deliver features effectively, and as we need to. The issue here is one of dependencies between services, and how to handle them.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We considered full vertical slicing of services a la Amazon to gain full autonomy, but that ran into the issue of our application of CQRS, we are splitting the read and write paths across different services during the decomposition. The original monolith is keeping the majority of the write paths for the initial phase.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We thought about a 'classic' microservices approach, individual service deploys, full autonomy. This fell foul of a few things. The team is new, and so doesn&amp;#8217;t have the cultural knowledge on how to handle versioning well built up yet for this application.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;More importantly, how to do CD in a regulated environment. The biggest impact is that tests on the deployment stored for approval tend to be systemic, rather than service based. Evidence needs to be stored for years. Lots of fun impacts.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We also had to plan to fail. When slicing services, it&amp;#8217;s certain that you will get the initial cut points wrong, even if only by a little. This means that feature development &lt;strong&gt;will&lt;/strong&gt; span services, the only question is how much?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Given that, you have to be able to handle dependencies between services during deployment somehow to fully stand up a new feature. You&amp;#8217;ll need to upgrade databases in stages, update service APIs while serving traffic etc. Without a strong understanding upgrade and versioning, this is hard.  The regulatory impact leaves us required to have a deterministic runtime architecture, with evidence to show how it performs stored, version controlled and retrievable at will.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-minilith&quot;&gt;The Minilith&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The end result is that we compromise autonomy in favour of determinism. We compromise the ability to change arbitrarily inn favour of knowing what was
+deployed at some point.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We accept that deployment is broader than a single service, and that there are dependencies when deploying certain services, there is an order.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The concept of closely related services is not new. We use the term &lt;strong&gt;&lt;strong&gt;minilith&lt;/strong&gt;&lt;/strong&gt;, invoking megalith, but smaller :-)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I pinched this term from [Gawain Hammond](&lt;a href=&quot;https://skillsmatter.com/legacy_profile/gawain-hammond&quot; class=&quot;bare&quot;&gt;https://skillsmatter.com/legacy_profile/gawain-hammond&lt;/a&gt;), currently of the Sky Tech Futures team.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A megalith is a collection of standing stones, most often interlocked in some way. Stone Henge is probably the most famous, and works for the analogy. The stones were all arranged in concentric circles, with top stones linking them all together.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A Minilith is similar, in that there are strong connections between services. Without the surrounding services these would simply fail.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The point is that some services naturally deploy as logical unit. They are separate at runtime, but they can&amp;#8217;t exist without each other, and are effectively version locked.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can see this in use in other areas. Take the Kubernetes &lt;strong&gt;Pod&lt;/strong&gt;, for example. Essentially the same idea, but most often described as bundling helper processes, databases, logging and the like.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We propose that you consider taking this further. By extending the logical boundary you are wrapping around your service, you can gain many of the benefits of a multi process runtime (scaling, polyglot etc) without the full overhead of creating runtime autonomy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In my next article, I&amp;#8217;ll take advantage of the minilith to enable continuous delivery in a regulated environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Then, we&amp;#8217;ll take a view through the data and deployment aspects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Fri, 11 Mar 2016 12:18:00 +0000</pubDate>
+        <link>/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</link>
+        <guid isPermaLink="true">/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</guid>
+        
+        <category>architecture</category>
+        
+        <category>microservices</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Defining The Microservice Architecture</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Recently (June 2015), I gave a &amp;lt;a title=&quot;MIcroservices Done RIght&quot; href=&quot;https://skillsmatter.com/skillscasts/6274-david-dawson&quot; target=&quot;_blank&quot;&amp;gt;talk&amp;lt;/a&amp;gt; at the DDD Exchange at Skills Matter in London.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This was a little last minute! Our CTO, Russ Miles, was originally scheduled to deliver at the conference, but he had to be out of the country visiting one of our partners and so I was drafted in to deliver.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a talk I&amp;#8217;ve wanted to give for a long time, so while it was a little rough around the edges, the message is something we&amp;#8217;ve been working with for a while.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It cuts to the heart of what we&amp;#8217;re doing, and why we&amp;#8217;re doing it.  It asks the question, &quot;What is Microservice Architecture?&quot;, leading to &quot;What is a Microservice?&quot;. Is this becoming debased, or can we pick out something useful?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For the last few years, Simplicity Itself has been on something of a mission to change the way that we approach building software. We have positioned ourselves very much in the space of 'architecture'. By that I certainly do &lt;em&gt;*not*&lt;/em&gt; mean software design.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The difference is obvious when you think about it, there are as many designs are there are designers, infinite in potential. Architectures however &amp;#8230;&amp;#8203; that simply &lt;em&gt;feels&lt;/em&gt; different, and putting your finger on the reason why is informative. We know that there are actually fairly few distinct architectures. Event architecture, 3 tier and so on. You can look at a piece of software and derive the architecture that it is implementing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This simple cardinality check means that design cannot be, and is not, the same as architecture.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We approach architecture as the set of principles that guide you, the mental model that you apply, the process that you go through to analyse and engage with the world. It&amp;#8217;s not the solution, that is your design, it&amp;#8217;s what you use to guide you towards that solution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Everything I&amp;#8217;ve described there as architecture, I know well by another name.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Software Architecture is &lt;strong&gt;&lt;em&gt;philosophy&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This re-frames the entire debate around Microservices Architecture. Technology details slip away, specific techniques become implementation only. Instead we attempt to derive the guiding principles, the philosophy that is drawing the industry along with it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Instead, we can ask the question, what are the defining characteristics of a Microservices approach. This is a good question, one that we&amp;#8217;ve spent the past year researching with our clients, asking at the &amp;lt;a href=&quot;http://www.meetup.com/London-Microservices-User-Group/&quot; target=&quot;_blank&quot;&amp;gt;Microservices user group&amp;lt;/a&amp;gt; we run and analysing the systems we come in contact with.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s not HTTP, JSON does not feature. Docker is not the answer, and neither is devops.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The only commonality is* &lt;em&gt;Isolation&lt;/em&gt;*&lt;em&gt;* between components*,&lt;/em&gt; enforced using a network boundary.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nothing else is agreed upon.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Upon this one element, all of the &lt;em&gt;*benefits*&lt;/em&gt; of a Microservices approach can be ultimately derived.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Upon this one element, all of the &lt;em&gt;*costs*&lt;/em&gt; of a Microservices approach can be ultimately derived too.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is the root.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Apart from this though, something else showed up in our research. A deep seated &lt;em&gt;*aspirational*&lt;/em&gt; quality. The belief that a better way of software could be created, built upon this principle of isolation. This aspiration was most commonly expressed as '&lt;em&gt;*keeping up with change*&lt;/em&gt;' or some derivative thereof.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Those two items, &lt;em&gt;isolation _and _aspiration&lt;/em&gt;. Those are the defining qualities of Microservices today.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For us, this is hugely useful, as it very directly converts into a philosophical approach to building software, it forms the guiding principles that lead you towards many (although not all) of the techniques, technologies and processes that are currently being deployed in Microservices projects across the globe.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This does though leave Microservices as an architecture, not a method of adequate design. This is where we see projects going very wrong and not gaining the benefits that they expected to.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We have seen this often enough that we&amp;#8217;ve come to term this the '&amp;lt;a href=&quot;/premium/Microservices-Adoption-Hump&quot; target=&quot;&lt;em&gt;blank&quot;&amp;gt;*_Microservices Adoption Hump&lt;/em&gt;*&amp;lt;/a&amp;gt;' (article by Russ Miles), getting all the pain of Microservices, without gaining the benefits.
+## Enter &lt;em&gt;Design&lt;/em&gt;
+Fundamentally, Microservices is not a design, it cannot be, since it&amp;#8217;s an architecture. This has led to many teams applying their existing design skills to the new architecture and deployment style and wondering why things get hard.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, we see many HTTP/ JSON based systems. Numerous attempts at large scale REST based systems.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is because the team will have built HTTP based systems before, they are well understood, HTTP is widely implemented, and it seems the way to go.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The issue though is that HTTP/ JSON/ REST is &lt;strong&gt;&lt;em&gt;not a design methodology&lt;/em&gt;&lt;/strong&gt; either_. _It is an integration style. In the same category as messaging or RPC.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You still need to understand how to model a system, how to pull it apart into decently understood components, map out your flows of data, tie them back to business needs. The whole thing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is design.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Instead, what we see now are debates occurring in the Microservices space on what integration style is best. This is misguided, it&amp;#8217;s the wrong way round. You choose your integration style as an implementation, not as a guiding principle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Discussion on how to effectively how to model an application when it is split out as Microservices are only just beginning to become public, and many of the arguments we see both publicly and privately are mimicking the object design wars of 10 years ago.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This makes me sad, as it&amp;#8217;s a blinkered, wasteful thing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Domain Driven Design&lt;/em&gt;&lt;/strong&gt; is, as the name implies, a design discipline. Proponents and researchers in the subject have spent the last 10+ years understanding how to model problems and build solutions using well known, well understood techniques.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It is as good a place as any, and better than most, in order to learn how to effectively model an application, whether you take advantage of the deep isolation that a Microservices architecture avails you of or not.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Watch the talk above for some specific examples of how this plays out. Buy Eric&amp;#8217;s book for some more information (read the second half first is my advice), find your local meetup and other web resources and connect into learning how to &lt;em&gt;design&lt;/em&gt; software. We run a 3 day course on &amp;lt;a title=&quot;Antifragile Software: Building Adaptable Software with Microservices&quot; href=&quot;/learning/building-microservices-course/&quot; target=&quot;&lt;em&gt;blank&quot;&amp;gt;Building Microservices&amp;lt;/a&amp;gt;. This is effectively a course on how to design software using events that cross network boundaries all the time, which describes a microservices system handily.
+## The Microservices Community
+Dan North tells a good story around the concepts of a &lt;strong&gt;_bounded&lt;/em&gt;&lt;/strong&gt; and a &lt;strong&gt;&lt;em&gt;centred&lt;/em&gt;&lt;/strong&gt; community. A bounded community enforces membership via a set of constraints, rules of membership. Scrum is a good example of this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Whatever the original intentions of the founders of scrum, what we see now is many forms of scrum, with a distinct feeling of &lt;em&gt;other&lt;/em&gt; when you stray outside the prescribed practices. These act as a constraint on what is accepted as Scrum, and what it not.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A &lt;em&gt;centred community&lt;/em&gt;, on the other hand, has no real constraints on behaviour, no real prescriptions on what it means to be part of it. Instead, there are some &lt;em&gt;*guiding principles*&lt;/em&gt; that form the centre of the community ethos. Members will self identify to a large extent, and be accepted for the reason that they share the core principles. Behaviour Driven Design is held up as a good example of this style, as it has no real definition of itself, yet it certainly exists.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Today, based on our definition of the Microservices Architecture as fundamentally aspirational and the community that has formed around it, &lt;strong&gt;Microservices is a &amp;lt;i&amp;gt;centred&amp;lt;/i&amp;gt; community&lt;/strong&gt;. There is no strong definition of what it is, and yet it evidently exists and is having a tremendous impact.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This has many advantages! The technology stacks we can investigate are rich and varied. The processes are open to question and change. The integrations, models and designs are able to be researched and improved as needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My fear is that, due to the desire of many to try to pin down exactly what a &lt;em&gt;Microservice Design&lt;/em&gt; is, they will, without understanding what they are doing, &lt;em&gt;turn it into a bounded community&lt;/em&gt;, fixated on rules and stiffled with specifications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Ultimately, this is what I see happened with SOA, WS-* was added in ever greater detail, and is a large reason why standards based SOA failed to gain wider adoption than it ultimately did.
+## Welcome to the new world, looks like the old world&amp;#8230;&amp;#8203;
+Microservices is undergoing a hype cycle, this is certainly true, yet that does not mean that it describes something that has no value. When coupled with the tremendous innovation happening in the infrastructure space, we are entering a special time.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The key is to realise that we need to take what we have already learned, the battle tested software design wisdom from the past decades and apply it once again in the context of a new philosophy based on ever stronger isolation mechanisms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Only then will we be able to reap the benefits and live up to the aspirations we are harbouring that site at the core of the Microservices architecture.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;lt;hr /&amp;gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself are researching better ways of building Microservices. By applying DDD, Event Sourcing and other techniques, we are building platforms that are naturally multi cloud and infrastructure agnostic and give a great User eXperience for Microservices, whether you are a developer, manager or operations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We will be releasing this technology platform as open source within the next few months. If you would like more information or to be part of the beta programme &amp;lt;a href=&quot;/contact&quot; target=&quot;_blank&quot;&amp;gt;contact us&amp;lt;/a&amp;gt;&lt;/p&gt;
+&lt;/div&gt;</description>
+        <pubDate>Wed, 17 Jun 2015 00:55:00 +0100</pubDate>
+        <link>/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</link>
+        <guid isPermaLink="true">/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</guid>
+        
+        
+        <category>Microservices and Reactive</category>
+        
+      </item>
+    
+      <item>
+        <title>Service Discovery Overview</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a cloud environment, and often using &lt;em&gt;immutable infrastructure&lt;/em&gt;. Ironically, this means that your virtual machines or containers are created and destroyed much more often than normal, as this immutable nature means that you don&amp;#8217;t maintain them.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;These properties together mean that your services need to be reconfigured with the location of the other services they need to connect to. This reconfiguration needs to be able to happen on the fly, so that when a new service instance is created, the rest of the network can automatically find it and start to communication with it.  This process is called &lt;em&gt;Service Discovery&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This concept is one of the key underpinnings of a Microservice architecture. Attempting to create Microservices without a service discovery system will lead to pain and misery as you will, in effect, be working as a manual replacement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As well as the standalone solutions presented here, most platforms, whether full PaaS or the more minimal container managers, have some form of Service Discovery.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Which system to choose?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are currently several key contenders to choose from, ZooKeeper, Consul, Etcd, Eureka and RollYourOwn&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;zookeeper&quot;&gt;ZooKeeper&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://zookeeper.apache.org/&quot; class=&quot;bare&quot;&gt;http://zookeeper.apache.org/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;ZooKeeper is an Apache project providing a distributed, eventually consistent hierarchical configuration store.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;ZooKeeper originated out of the world of Hadoop, where it was built to help in the maintenance of the various components in a hadoop cluster. It is not a service discovery system per se, but is instead a distributed configuration store that provides notifications to registered clients.  With this, it is possible to build a service discovery infrastructure, however every service must explicitly register with ZooKeeper, and the clients must then check in the configuration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Netflix have invested a lot of time and resources into ZooKeeper, and so a significant amount of Netflix OSS projects have some ZooKeeper integration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I Recommend&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;ZooKeeper is a well understood clustered system. It is a consistent configuration store, and so being well designed and built, a network partition will cause the smaller side of the partition to shut down. For that reason, you must choose whether consistency or availability is more important to you.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you do choose a consistent system for service discovery, such as Zookeeper, then you need to understand the implications on your services. You have tied them to the lifecycle of the discovery system, and also exposed them to any failure conditions it may have. You should not assume that 'consistent' means free from failure. Zookeeper is among the older cluster managers, and consensus (pun intended) is that it&amp;#8217;s implementation of master selection is robust and well behaved.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you do choose to use ZooKeeper, investigate the Netflix OSS projects, staring with &amp;lt;a title=&quot;Curator&quot; href=&quot;https://github.com/Netflix/curator&quot; target=&quot;_blank&quot;&amp;gt;Curator&amp;lt;/a&amp;gt; as a first point of call, and only use bare ZooKeeper if they don&amp;#8217;t fit your needs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since Zookeeper is mature and established, there is a large ecosystem of good quality (mostly!) clients and libraries to enrich your projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;consul&quot;&gt;Consul&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.consul.io&quot; class=&quot;bare&quot;&gt;http://www.consul.io&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Consul is a peer to peer, strongly consistent data store that uses a gossip protocol to communicate and form dynamic clusters. It is based on the Serf library.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It provides a hierarchical key/value store that you can place data in and register watches against to be notified when something changes within a particular key space. In this, it is similar to ZooKeeper.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As opposed to ZooKeeper and Etcd, however, Consul implements a full service discovery system in the library, and so you don&amp;#8217;t need to implement your own use use a third party library. This includes health checks on both nodes and services.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It implements a DNS server interface, allowing you to perform service lookups using the DNS protocol. It also allows 'clients' to run as independent processes and register/ monitor services on their behalf. This removes the need to add explicit Consul support into your applications.  This is similar in concept to the Netflix OSS &lt;em&gt;Sidecar&lt;/em&gt; concept that allows services with no ZooKeeper support to be registered and be discoverable in ZooKeeper.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Deployment wise, Consul agents are deployed onto the systems that services are running on, and not in a centralised fashion.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I Recommend&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a newer product, and one that we like a lot. Generally recommended if you are able to adopt it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As with the other strongly consistent systems in the list, care must be taken that you understand the implications of adopting it, including understanding it&amp;#8217;s potential failure modes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like something similar that chooses availability rather than consistency, investigate the related Serf project. The Serf library serves as the basis of Consul, but has chosen different data guarantees guarantees. It is nowhere near as full featured, but can handily survive a split brain scenario and reform afterwards without any ill effects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;etcd&quot;&gt;Etcd&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;http://www.etcd.io&quot; class=&quot;bare&quot;&gt;http://www.etcd.io&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Etcd is an HTTP accessible key/ value store. In that, it is similar in concept to ZooKeeper and the K/V portion of Consul.  It functions as a distributed, hierarchical configuration system, and can be used to build a Service Discovery system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It originally grew out of the CoreOS project, is maintained by them and recently achieved a stable major release&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Simplicity Itself Recommends:&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you are primarily using HTTP as your communication mechanism, then Etcd can&amp;#8217;t be easily beaten. It provides a well distributed, fast HTTP based system, and has query and push notifications on change, via long polling.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;eureka&quot;&gt;Eureka&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://github.com/Netflix/eureka&quot; class=&quot;bare&quot;&gt;https://github.com/Netflix/eureka&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Eureka is a 'mid tier load balancer' built by Netflix and released as open source. It is designed to allow services to be able to register with a Eureka server and then locate each other via that server.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Eureka has several capabilities beyond other solutions presented here. It contains a built in load balancer which, although fairly simple, certainly does it&amp;#8217;s job.  Netflix state that they have a secondary load balancer implementation internally that uses Eureka as a data source and is much more full featured. This hasn&amp;#8217;t been released.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you use Spring for your projects, then &amp;lt;a href=&quot;http://projects.spring.io/spring-cloud/&quot;&amp;gt;Spring Cloud&amp;lt;/a&amp;gt; is an interesting project to look into, in order to be able to automatically register and resolve services in Eureka.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I Recommend&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Like all Netflix OSS projects, it was written to run on the AWS infrastructure first and foremost. While other Netflix OSS projects have been extended to run in other environments, Eureka does not appear to be moving in that direction.
+We very much like the relation between client and server in the Eureka design, as it leaves the clients with the ability to continue working if the service discovery infrastructure fails.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Server wise, Eureka has also chosen availability rather than consistency. You must also be aware of the implications of this choice as it directly affects your application. Primarily, this manifests as a potentially stale or partial view of the full data set. This is discussed in the Eureka documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For Spring projects, Eureka is now the quickest to get started with due to the investment the Spring team has made in adopting the Netflix OSS components via the Spring Cloud sub-projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;rollyourown&quot;&gt;RollYourOwn&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you can&amp;#8217;t adapt to that, then you will have to create your own discovery solution within your existing infrastructure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The basis of this will be :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Services must be able to notify each other of their availability and supply connection information&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Periodic updates to the records to strip out stale information&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Easy integration into your application infrastructure, often using a standard protocol such as HTTP or DNS&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Notifications on services starting and stopping.&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I Recommend&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Building your own discovery service should not be taken lightly. If you do need to then we recommend building a system that values availability rather the consistency. These are significantly easier to build, and more likely that you will build something that is functional.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The approach we would recommend would be to use some existing message infrastructure and broadcast notifications on service status. Each service caches the latest information from the broadcasts and uses that as a local set of service discovery data. This has the potential for being stale, but we&amp;#8217;ve found this approach to scale reasonably well and is easy to implement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you do require consistency, then using some consistent data store could serve as the basis for a distributed configuration system that can be used to build service discovery. You will also want to emit notifications on status changes. You should realise, though, that building a consistent, distributed system is exceptionally hard to get right, and very easy to get subtly wrong.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Overall, really not recommended, but certainly possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Wed, 10 Jun 2015 00:00:00 +0100</pubDate>
+        <link>/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</link>
+        <guid isPermaLink="true">/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</guid>
+        
+        
+        <category>Getting</category>
+        
+        <category>Started</category>
+        
+        <category>With</category>
+        
+        <category>Microservices</category>
+        
+      </item>
+    
+      <item>
+        <title>Microservices Security&amp;#58; OAuth vs Session</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A question often posed to us during our research and project work is &quot;&lt;em&gt;how should I secure a Microservice?&lt;/em&gt;&quot;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a far more complex question than it first appears, covering infrastructure, network security, transport level security, inter-service authentication and authorisation, data locality and access control and finally the authentication and authorisation of individual user requests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Putting these points aside for the time being, what is often meant is how to externally secure an API that is backed by a Microservice. Or, as I was recently asked, why is everyone talking about OAuth, isn&amp;#8217;t session based security simpler?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Session security is what everyone already knows, a client sends authentication information to a service, which then generates a server side session that contains that identity for later use.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When put against an OAuth authentication flow, the quick answer is yes, it certainly is simpler to use sessions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;They are, however, solving different sets of issues. There is some overlap, but the two types are by no means equivalent, and I think that this difference in scope is what brings the question up.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can use sessions, absolutely, to solve endpoint security, but they are actually solving the problem of maintaining a long running stateful conversation between client and server. That long running conversation can be used for authentication by storing the auth token server side. This gives you greater flexibility, but the drawback is that you can&amp;#8217;t subsequently recreate the authenticated state just from what the client has, the API owns the relationship. You can see this through the need to replicate sessions on the server side, essentially sharing that ownership to grant higher availability.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;OAuth/ token based security solves the problem differently, by dealing with a strictly limited subset of 'long running conversation'. They permit a system to say &quot;this client is who it claims to be&quot; by creating a trust relationship via the token provider. So in this case, the token provider (eg OAuth) owns the relationship. The upshot of this approach is that you can recreate the authenticated state from just what the client possesses, the token. That ability to recreate the relationship means you can distribute that authenticated state recreation arbitrarily.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This isn&amp;#8217;t possible with a session based approach, and is the primary difference, to my mind between the two approaches. If you don&amp;#8217;t need to distribute authentication (and I don&amp;#8217;t mean a session store, I mean pass it through different contexts in your back end services), then session based is superior due to it&amp;#8217;s simpler construction. If you do need to distribute authentication, then token based is better as it permits this to happen as a natural consequence of the design.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In future blogs we will investigate concretely how this can be used to create deeper, multi level security in a Microservices system, and what it looks like in code.&lt;/p&gt;
+&lt;/div&gt;</description>
+        <pubDate>Thu, 04 Jun 2015 17:30:00 +0100</pubDate>
+        <link>/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html</link>
+        <guid isPermaLink="true">/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html</guid>
+        
+        <category>microservice</category>
+        
+        <category>oauth</category>
+        
+        <category>security</category>
+        
+        
+        <category>Microservices and Reactive</category>
+        
+      </item>
+    
+      <item>
+        <title>Best Practice Developer techniques&amp;#58; The Hunt for The Silver Bullet</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over the past 15 years of software development, especially since the XP movement gained traction, a series of styles, techniques and processes have gained broad industry adoption. These are, at times, called 'best practices'. At others times they are referred to as dogma or 'cargo cult'.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article describes some (!) of these techniques, presents some overarching ideas that connect them all, and finally a method through which you can objectively evaluate them, rather than relying on opinion or hyperbole.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-contenders&quot;&gt;The Contenders&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;code-review&quot;&gt;Code Review&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Code review describes a process of one developer reading through the code created by another and giving feedback. How deep that reading is and what happens with the feedback is variable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some teams enforce a review being 'passed', or the code being formally approved and signed off by the reviewer, others that treat review as more of a learning tool, and so feedback is more advisory than prescriptive.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This variation is something to be aware of, the term by no means has the same definition across the industry, and the intent behind applying it varies.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;pair-programming&quot;&gt;Pair Programming&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This describes the practice of two developers working on the same task, on the same machine. The method varies, some promote multiple input devices, others a driver/ navigator approach.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The premise here on why this is useful changes depending on who you ask. It can be the source of much angst, with proponents taking quite different positions, and in certain cases teams becoming divided deeply by the practice.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some say that it helps keep code clean, others that it aids knowledge transfer,&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some teams use it exclusively, going as far as to have less machines than people, others use it tactically, and some not at all.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My opinion is that all of these positions hold true to a greater or lesser extent, the rub being that this completely depends on the context and participants.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;tests-as-documentation&quot;&gt;Tests as Documentation&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This if often expressed as a benefit of Test Driven Development. The underlying premise is that applying TDD is a good way to begin reasoning about the system you are constructing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Given that, the assertion is that your tests will form usable documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My experience is that this is not a given, and for this to become the case, you need to explicitly make that real during writing your tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Slightly off topic, my personal rule of thumb is to ensure you delete at least half your tests once your primary development is complete, with that half being the 'research' style tests.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The ones that are left are the ones that you have cleaned up into usable regression tests and also, documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;clean-code&quot;&gt;Clean Code&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Clean Code is the title of a book by Robert C. Martin. In it, a conceptual framework is built up and demonstrated, with examples in Java, on the subject of 'cleanliness' in writing code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is an excellent book, and I recommend you read it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The main expected effects of applying the styling and ideas presented are improved readability and verifiable simplicity in the code being cleaned.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There is something of a bias towards object oriented (especially Java) coding styles and patterns, but many of the ideas are readily transferable to other paradigms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;the-complex-effects-of-a-complex-subject&quot;&gt;The Complex Effects of a Complex subject&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Adopting each of these creates a complex effect. By that I mean that they, in isolation or together, do not have a single (or simple) effect that can be identified.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This leads to a variety of points of view on the subjects and much of the discussion around them falls into the realm of 'begging the question'. This is a rhetorical device meaning that they should be assumed to be correct, and not open to debate on their fundamental worth. This is a deeply foolish position to take, dogmatic at best and dangerously misguiding at worst.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is not to say that I believe any of these ideas are fundamentally flawed, I don&amp;#8217;t.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The point here is that we owe it to ourselves to ensure that everything is open to question, open to critique, open to analysis, or we are promoting code based religion.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;what-it-all-means&quot;&gt;What it all means&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The real question is, as always, why?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are two ways of valuing something, based on it&amp;#8217;s intrinsic or it&amp;#8217;s extrinsic value. The value that is inherent within it, or the value that it creates in it&amp;#8217;s environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A technique such as this must be valued based on it&amp;#8217;s extrinsic value, the effect that it creates in the environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So why adopt any of the above techniques at all, what benefit are you expecting to get, what effect are you expecting to be created?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The effects, complex though they are can be picked apart and analysed for their worth, but you need some way of identifying the value they bring in your environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For me, the question often revolves around the learning process. This is a fundamental part of software development.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It is even more fundamental than this. Moving between codebases, coming back after a holiday, getting up to date with a new version of a tool or technique. This is all learning.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Learning takes time. &lt;em&gt;It cannot be rushed.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Following an intensive learning session, you will see a drop of of around 50-80% of what you learned over the subsequent weeks., depending how often you use it. With that, you must continue the learning process over months to fully absorb a subject.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;programming-as-theory-building&quot;&gt;Programming as Theory Building&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Peter Naur is a deep thinker, who has been active in the world of software over decades. He is the N in BNF, a language used to formally describe computer language grammars and has made many other contributions to the field that affect the way we work.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In 1985, he wrote an article, &quot;Programming as Theory Building&quot;. This uses the terminology of the time (eg, Structure Programming), but the subject it approaches is timeless.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The premise is this, the code you write is not the system. The documentation is not the system, neither is the deployment environment, tests or other artifacts.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All of these are the concrete outworkings of the real thing, which he refers to as 'The Theory'. This Theory is the real system, and it is the tacit knowledge, the deep understanding of all of the above, the various corner cases, the coding standards, performance issues, functional requirements, language preferences, development team interpersonal conflict. The whole gamut.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Only when this coherent strand of thought, encompassing all of the above, is fully understood by a developer can they make changes fully in tune with the theory. If they don&amp;#8217;t have a full understanding, they will unconsciously work against the grain of the system and quickly run into trouble. So the primary goal of programmers shouldn&amp;#8217;t be to churn code, it&amp;#8217;s building their understanding of the theories weaving their way around them.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Transferring these theories is hard and deeply context specific. Since it is not only the code, self documenting code can only go so far. Pair programming can help, but it takes time and isn&amp;#8217;t repeatable or able to be reviewed later (&quot;what did he say about that again?&quot;), clean code helps, but won&amp;#8217;t necessarily tell you much about the production environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When seen in the light of this very hard job of distributing the theory, the tacit understanding of the system all of the above can be seen as a potential solution to part of the problem, but they can never be the whole solution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Thus, I would put it to anyone holding a more dogmatic position (sometimes expressed as &quot;X is the basis of all that we do&quot;), unless your chosen technique solves this problem entirely, you are misguided in your belief.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I recommend you fully read the article and absorb before continuing. You can do so &lt;a href=&quot;http://alistair.cockburn.us/ASD+book+extract%3A+%22Naur,+Ehn,+Musashi%22&quot;&gt;Programming as Theory Building&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;we-don-t-have-months&quot;&gt;We don&amp;#8217;t have months!&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s often true, there simply isn&amp;#8217;t the time to spend months bringing someone up to speed on a system. They need to get productive, now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The context, the Theory, is not something that can be ignored. Allowing a developer to operate effectively without gaining the full context in a system is a route to a productivity boost. It allows safer development to happen in organisations with higher staff turnover, or any with movement of developers across multiple systems.
+Looping back to where we started then, these 'best practices', you will notice that they all focus around a few ideas. Readability, transfer of knowledge, building understanding. The promoters of these techniques sometimes fall into trying to describe them in terms of their essential qualities, how powerful they are in and of themselves, rather than the utility that they give. That&amp;#8217;s because, frankly, it&amp;#8217;s often hard to succinctly describe their utility.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;They are all speaking to this same subject, what Peter Naur calls the Theory Building, and importantly, how to make that Theory Building as fast and accurate as possible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a major part of the utility of all of the techniques, aiding Theory Building, which is why I chose these in particular.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, one question you can now ask, how well do they fulfil this essential knowledge transfer function, passing along the Theory. This will vary between teams and contexts, and it&amp;#8217;s hard. Since it&amp;#8217;s so hard, and such a real and measurable cost, I would suggest that this becomes your primary measure of how useful these techniques and ideas are.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can measure the transfer of the Theory. It&amp;#8217;s not always easy, but it&amp;#8217;s much easier to test for than the subjective measures (aka flame wars!) you will end up with otherwise.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My answer for this is that, there is no right answer. You must test, and measure. With those measurements in hand, you make an objective decision on the utility of the techniques.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some measurements of these can take the form of :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Knowledge retention over time, on whatever subject you want to target.&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mean time to push - how long it takes a new dev to make a prod change&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Orientation time - how long it takes a dev to start making changes to a codebase they switch onto.&amp;lt;/li&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Techniques that improve Theory Building will affect these metrics.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;microservices-as-a-learning-tool&quot;&gt;Microservices as a learning tool&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This concept of aiding learning by reducing the system scope is one motivation behind the burgeoning Microservices movement. A component &quot;small enough to fit in your head&quot; is how it expressed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Code with well enough defined contracts that you can pick it up and make many changes without reference to the full system. In terms of Theory Building, you have reduced the amount of the full Theory you have to absorb in order to be able to make changes that work within in sympathy with the overall grain of the system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are other benefits, of course, such as enabling antifragile behaviour, creating runtime granularity, thriving on change and so on.  Being able to make changes quickly, and also enabling the behaviours described makes Microservices a very powerful tool.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;what-next&quot;&gt;What next?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now that you have a picture of the full context of learning, the tacit Theory of software, you are in a position to make objective decisions about the tools and techniques you use.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can select any of the above, or others, and do so objectively. This is huge.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You don&amp;#8217;t need arguments between developer opinions. Simply run a test, gather metrics, make a decision.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you&amp;#8217;d like help with this and with learning in general, get in touch.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Mon, 02 Mar 2015 21:19:00 +0000</pubDate>
+        <link>/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html</link>
+        <guid isPermaLink="true">/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html</guid>
+        
+        <category>adaptive learning</category>
+        
+        <category>complexity</category>
+        
+        <category>knowledge</category>
+        
+        <category>learning</category>
+        
+        <category>simplicity</category>
+        
+        <category>training</category>
+        
+        
+        <category>Microservices and Reactive</category>
+        
+      </item>
+    
+      <item>
+        <title>Retiring Microservices Using Strangulation</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;No programmer likes to plan for their work to be taken offline and shutdown, but part of good antifragile thinking is allowing things that aren&amp;#8217;t successful, to end. Applying that to Microservices, one of the natural parts of that architectural style is creating and destroying instances of a service. As part of the lifecycle of services, you sometimes have to create different versions of a service, and so manage the retiring of a previous version (although we try to avoid versioning where possible).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One part that you can&amp;#8217;t avoid is the ultimate killing of an entire service. Eventually, your model of the world will not match the reality, and so you &lt;em&gt;must&lt;/em&gt; then kill that service or you will find that changes become progressively harder as it drifts away from reality.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There lies legacy, a system that is hard and expensive to change and is becoming progressively out of touch with it&amp;#8217;s current environment.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Nobody wants that, so how should you go about killing a service?
+&lt;mark&gt;#&lt;/mark&gt; Motivation Matters
+Why you want to kill the service matters.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I see two broad motivations for removing a service that influence the approach you need to take during the retirement process, which I classify as &lt;em&gt;Demand Driven and Supply Driven.&lt;/em&gt;
+&amp;lt;h4&amp;gt;_Demand Driven_&amp;lt;/h4&amp;gt;
+In the Demand Driven case, the service in question is becoming less and less used. The demand for it is becoming progressively lower over time, and you are looking at it&amp;#8217;s removal as a recognition this. This may be because you have a newer version you are running in parallel, or just that the service isn&amp;#8217;t that useful anymore. This tends to be a very passive approach, you let it whither and die and your interaction is mainly to mainly to monitor it to understand when it can be deemed as dead and switched off.
+&amp;lt;h4&amp;gt;_Supply Driven_&amp;lt;/h4&amp;gt;
+Supply Driven removal is where you have some external motivation for removing service beyond lack of use. Your ability to continue supplying the service to the rest of the system is going to be removed, and so you must kill the service even though it&amp;#8217;s still in use. This is an active approach, and involves identifying the impact of the removal, understanding the valuable functionality of the service and where that should reside post removal.
+&lt;mark&gt;#&lt;/mark&gt; Strangulation
+The process of microservice retirement feels very similar to decommissioning of a 'legacy' system, for those readers that have performed that feat of extraction. We have found that the process to be applied can be the same in both cases.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Following that instinct, what lessons could we learn from the past decommissioning processes and techniques?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One of the better known and more powerful approaches for decommissioning systems is known as the &lt;em&gt;Strangler Application&lt;/em&gt;. This was identified by Martin Fowler &amp;lt;a href=&quot;http://www.martinfowler.com/bliki/StranglerApplication.html&quot; target=&quot;_blank&quot;&amp;gt;back in 2004&amp;lt;/a&amp;gt; as a way to safely remove or replace a legacy application while still delivering business value.  This is now &amp;lt;a href=&quot;http://paulhammant.com/2013/07/14/legacy-application-strangulation-case-studies/&quot; target=&quot;_blank&quot;&amp;gt;fairly&amp;lt;/a&amp;gt; &amp;lt;a href=&quot;http://agilefromthegroundup.blogspot.co.uk/2011/03/strangulation-pattern-of-choice-for.html&quot; target=&quot;_blank&quot;&amp;gt;well&amp;lt;/a&amp;gt; &amp;lt;a href=&quot;http://cdn.pols.co.uk/papers/agile-approach-to-legacy-systems.pdf&quot; target=&quot;_blank&quot;&amp;gt;documented&amp;lt;/a&amp;gt; and understood and is the approach that we use to decommission systems, identifying value and extract it. Should the retiring of Microservices be any different?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;No, and yes.  They are a system the same as any other and the techniques that have been described in the past _are applicable. _Their highly network distributed nature means that the approach needs to be slightly more nuanced.  That nuance is what I would like to discuss here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The high level approach of the Strangler is to understand the data/ event flows in and out of a component and incrementally redirect them to a new location that you build alongside or around it.  Once all of the event flows are intercepted, the component is no longer being used and can be switched off.
+&lt;mark&gt;#&lt;/mark&gt; Data
+Event interception then is key. You have to understand the application or service in terms of its data flows, not it&amp;#8217;s functionality per se.  Identifying the data flows that remain in use and remain valuable is an integral step towards being able to remove the services that for part of that data flow.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One of the benefits of a Microservices approach is that your systems are (&amp;lt;a title=&quot;Approaching the Design of a Microservices Based Architecture&quot; href=&quot;/learning/the-life-preserver/approaching-the-design-of-a-microservices-based-architecture/&quot; target=&quot;_blank&quot;&amp;gt;or should be&amp;lt;/a&amp;gt;) well split apart into separately evolving pieces. This is different to a 'classic' legacy decommissioning, as you are cutting a single service, not the system as a whole.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This means that you need to be able to intercept events between services, rather than just those coming from outside. Having some rich system of monitoring intra-service communications and using that as the basis of reasoning about the system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In a future article, I will discuss how this can actually enable the component health checks so beloved of microservices frameworks and tutorials to be slimmed down, and even removed in many cases.
+&lt;mark&gt;#&lt;/mark&gt; Measure the Impact
+Once you understand the data flowing through your services, you are in a position to begin to reason about altering how those event streams are processed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This reasoning process is influenced by your motivations above. If it&amp;#8217;s demand side, you just wait. You now have the information you need to be able to declare a service to be dead&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you are actively removing a service, though, you need to be start judging the impact of reworking these event flows and how far that impact might spread through your system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tools for this vary, depending on how permeable your service contracts are. You may be in a position to only traverse as far as the direct service dependencies in order to understand the impact. This will be the case if your service boundaries are very strong. One of the aspect of microservice design helped by &amp;lt;a title=&quot;Development by Slogan:Part 1, Really DRY&quot; href=&quot;/our-team/development-by-slogan-dry-part1/&quot;&amp;gt;reducing your reliance on DRY&amp;lt;/a&amp;gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Otherwise, you may need to apply graph theory and tooling to understand the impact of the service being removed.
+&lt;mark&gt;#&lt;/mark&gt; Summary
+Retiring a service isn&amp;#8217;t something that you should put on your todo list, it&amp;#8217;s an integral part of your microservice setup and you need the capability from day 1 or you will have begun to develop a legacy problem under the guise of Microservice development.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Baking in the ability to remove a service requires understanding and monitoring of the event flows. In turn, this requires the large scale monitoring of inter-service communication and the ability to comprehend what that is telling you. The data collection capability is fairly straightforward to add in up front, but requires more effort to retrofit, so we recommend that you do it up front as part of your initial rollout if you are adopting Microservices for the first time.   Comprehension of the event flows is a subject in itself, which we will be discussing in a future article.&lt;/p&gt;
+&lt;/div&gt;</description>
+        <pubDate>Mon, 16 Feb 2015 20:04:00 +0000</pubDate>
+        <link>/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html</link>
+        <guid isPermaLink="true">/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html</guid>
+        
+        <category>decommission</category>
+        
+        <category>DRY</category>
+        
+        <category>lifecycle</category>
+        
+        <category>microservice</category>
+        
+        <category>retire</category>
+        
+        <category>strangler</category>
+        
+        
+        <category>Microservices and Reactive</category>
+        
+      </item>
+    
+      <item>
+        <title>Avoid Microservice Platform Lock In using Service Discovery</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The promises of adopting the cloud for your software are enticing. Effectively limitless scalability, large reductions in capital expenditure, efficiency savings in staffing through automation. An exciting prospective, and one that has being brought into even greater focus by the rise and rise of Microservices.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Not all is sweetness and light, however. There is significant investment required in ensuring your organisation and software can make best use of the new environment of the cloud. That investment in technology, training, development approaches and aligning the business with the new adaptable technology world can be significant, and the potential for a misstep to cost and lead your organisation into a dead end is present and you are right to be wary.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One question that we are asked during our consultancy and project oversight engagements is &lt;em&gt;*&quot;which deployment platform should we use?&quot;*&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&amp;lt;a title=&quot;Microservice Deployment Overview&quot; href=&quot;/learning/getting-started-microservices/microservice-deployment-overview/&quot;&amp;gt;This is far more complex than initially appears&amp;lt;/a&amp;gt;. You could use IaaS style bare virtual machines, and build your own management infrastructure. Or, you could use one of the PaaS products and accept the restrictions they impose. New on the block are the the container management solutions, taking Docker and friends and bonding them into a more cohesive, manageable solution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I could give examples of all of these different types of system that are good products and good solutions. They are very different from each other in the way they work and in the way they require your organisation to work with them. This speaks to one of the issues of the cloud, it is far from a single technology set or even a cohesive set of ideas.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Which then, do you choose? How can you begin to evaluate which is going to be the best fit for your needs?  This is not easy as you have to balance the differing capabilities of the platform against your applications, decide which applications are going to have to run sub-optimally, which need to be rewritten, which need to be abandoned.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This difficulty of this choice is telling you something.  It is telling that you are attempting to pick a single solution, a single platform to rule them all. It will take your applications, manage them, secure them, keep the cosseted and safe. In return, you will embed that platform into the heart of your organisation and it will become virtually impossible to remove it.
+&lt;mark&gt;#&lt;/mark&gt; The New Mainframe
+This cloud platform lock-in is unexpected. No vendor will tell you that this is the direction you are heading, and yet by attempting to evaluate and choose a single platform, you are heading for lock in and limitation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now, that lock in may be a good solution for your business, and it may not be. Take Netflix, they currently run exclusively on Amazon Web Services. They have built all of their internal tooling and processes around this platform and are effectively attached to it. The reason they did this is because it was worth trading the ability to move for the ability to focus more deeply on a single target. This works because the IaaS market is in a period of intense price and feature competition between large organisations with deep pockets (ie, Google, Microsoft). We can expect this to be the case for some time.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Thus, there is little risk to Netflix that they will be trapped by a future AWS that has an abusive monopoly position.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The same decision presents when evaluating the new Platforms, whether that is Cloud Foundry, Kubernetes, Openshift, CoreOS, Mesosphere or others. They are constructed to provide ease of use and a layer of control and management. You must cede that control to them so that they in turn provide their promised utility.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Are you willing to make that trade?
+&lt;mark&gt;#&lt;/mark&gt; Build in Antifragility, Retain the Ability to Act
+An interesting observation on the Netflix technology stack. The engineers and architects at Netflix are obviously very intelligent, and from what we see of their publicly released software they have not fully wedded themselves to AWS in the way that it first appears and that I alluded to above.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;They have retained their ability to act, their ability to move by choosing to ignore certain AWS technologies. They may, or may not, have consciously done this, but by applying the architectural principles they call &lt;em&gt;Cloud Native&lt;/em&gt; they force their systems in a certain shape that values change and movement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The ones I&amp;#8217;m looking at in particular at are &amp;lt;a title=&quot;Service Discovery Overview&quot; href=&quot;/learning/getting-started-microservices/service-discovery-overview/#eureka&quot; target=&quot;_blank&quot;&amp;gt;Eureka&amp;lt;/a&amp;gt; and &amp;lt;a href=&quot;/learning/getting-started-microservices/service-discovery-overview/#zookeeper&quot; target=&quot;_blank&quot;&amp;gt;Curator&amp;lt;/a&amp;gt;.  These implement a system known as _&amp;lt;a title=&quot;Service Discovery Overview&quot; href=&quot;/learning/getting-started-microservices/service-discovery-overview/&quot; target=&quot;_blank&quot;&amp;gt;Service Discovery&amp;lt;/a&amp;gt;. _These enable the various pieces of the Netflix infrastructure to find each other at runtime, so allowing those pieces to move around as needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By retaining full control of this aspect of their architecture, Netflix have given themselves the option of moving sections of their infrastructure off of the AWS stack.  Realising this option will take some effort, of course, but it has been retained.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A key tenet of Antifragility is the creation of multiple options for the future. This &lt;em&gt;optionality&lt;/em&gt; allows you to take positive actions in response to change.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Maintaining control of your overall Service Discovery function delivers options for you and sets you up to be able to improve in response to change. Ceding this function to any platform in it&amp;#8217;s entirety will destroy those options and you will have just bought yourself a new Mainframe, a new system at the heart of your organisation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With retained control, you do not have to choose between platforms in a strategic sense. You can implement several, including custom ones and use your overall service discovery system to permit services to locate each other between the platforms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This does come with the cost of building and maintaining that aspect of your infrastructure, which the various platforms also provide a greater or lesser capability in. This then is the trade you must make and the cost of making it. In order to retain your ability to act in the future, you pay now by keeping control of your service discovery infrastructure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Each has been chosen for the particular technical benefits that it gives, without the need for any strategic commitment to any of the platforms, as we have retained the ability to de-prioritise and remove it as we deem it necessary. The services hosted with them are able to locate each other (with some extra setup in the kubernetes infrastructure) via our service discovery setup.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this way, your platform evaluation and final decision is reduced to a tactical and technical one, based on on what you need _right now. _There is no need to try to predict what your needs will be going forward.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The future can be left safely in the hands of the options you have just generated, and you can rest in the knowledge that &lt;em&gt;when you need to act, you can&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;</description>
+        <pubDate>Tue, 10 Feb 2015 22:52:00 +0000</pubDate>
+        <link>/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html</link>
+        <guid isPermaLink="true">/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html</guid>
+        
+        <category>antifragile</category>
+        
+        <category>microservice</category>
+        
+        <category>service discovery</category>
+        
+        
+        <category>Microservices and Reactive</category>
+        
+      </item>
+    
+      <item>
+        <title>The Role of Data in Microservices</title>
+        <description>&lt;div id=&quot;preamble&quot;&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When approaching development of Microservices, it&amp;#8217;s often easy to think of the services themselves as the valuable pieces of your system. each service you add gives you more functionality, and so more value.   For the majority of systems we have built and reviewed during our consultancy, we have found that the system itself is of fairly marginal value. Instead, the data that it contains and the intelligence it can provide based upon that data is what is actually valuable.  This seems a subtle, even academic distinction, but it is important and putting it at the forefront of your mind during design has significant repercussions on the way you build your services and the way that they interact with each other.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once you do this, the 'discussions' over what should be a service and what shouldn&amp;#8217;t be becomes far less abstract. Everything is being built to efficiently process, store and present your data. Nothing else really matters when you think about it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;design-your-data&quot;&gt;Design your Data&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With this in mind, your data, and the flows of data through your system become far more important.
+The components that do the processing have to be there, but you actually want your data there. If you
+could get rid of your system components while still having your data processed, you would in a heartbeat. Keep that in mind.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In a Microservice architecture, these flows of data will always exist. Generally, they are implicit, only existinging in the ephemeral nature of the communication between services. They can, however be explicitly built in, with services that actually implement particular data flows. We call this explicitly implemented data flow a &lt;em&gt;pipeline.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is not a new concept, And many of you will have built just such a thing. Often you will have felt the need to grab a technology such as Storm or Spark in order to handle a flow of data. When you are doing that, you are building what we refer to as a pipeline.  If you have ever built such a thing, take a step back and think about the flow of data in the abstract sense. Try to unpick other flows of data in your application.  When building a set of Microservices, it&amp;#8217;s fairly common to have a call stack of a half dozen or so services with data from the back making it all the way to the front with transformer services in between. This is, in effect a set of transformers on top of a stateful resource. It&amp;#8217;s an implicit pipeline, and can be thought of as a system data flow.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;pipelines-of-data-flows&quot;&gt;Pipelines of Data Flows&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once you have seen this, you can begin to extract this as a concept, and make it concrete. This gives you some significant benefits!  Error tracking in a Microservice system can sometimes be fraught with difficulty. Tracking a request from one end of a call chain to the other can be difficult and tracking through logs and correlating identifiers can be a serious chore.  These kind of errors and issues are speaking to you about misaligned abstractions, errors in thought and design, not errors in your implementation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here, we advocate re-aligning your thought and design to be in tune with reality instead of working in opposition to it. If you have a system that is based around data flows, you need to align your code abstractions with that. The concept of the &lt;em&gt;Entity&lt;/em&gt; as we often construct it is of little value and will only serve to get in the way.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Taken to a conclusion, this process of building abstractions around data flow will lead you to a system that is a set of parallel pipelines, explicit services implementing each of your data flows. These pipelines call out to stateful services to obtain data and stateless services to transform it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Tracking errors in a system designed like this is simple, as all the high level processing for a data flow will be located in a single location, not smeared over the web of Microservices.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This doesn&amp;#8217;t prevent you from gaining all the benefits of Microservices, quite the opposite in fact. You still have all the options you did before, plus by localising a particular data flow into a single service, you gain the option of regaining some of the transactional behaviour you may have sacrificed along the way.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-state-problem&quot;&gt;The 'State Problem'&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You will have noticed that I referred to some services as &lt;em&gt;stateful&lt;/em&gt; and others as _stateless. _These are fairly overloaded terms that often confuse. What I mean in this case is that some services give access to data at rest, and others don&amp;#8217;t. Stateful services often don&amp;#8217;t contain any data in their memory, instead fronting a data store. Similarly, stateless services may in fact be chock full of data in the form of cache, but don&amp;#8217;t give access to data at rest in any meaningful sense.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Even with the slight clumsiness of overloaded terminology by making this distinction you can tie data flows together quite easily. A Pipeline is fully stateless, even though it will have data pouring through it constantly. It may transform data, but it should do that immutably. Immutability means that during transformation, you are generating a new &lt;em&gt;value&lt;/em&gt; from the original &lt;em&gt;value&lt;/em&gt; obtained from a stateful service. No change has occurred in the original data, no &lt;em&gt;state&lt;/em&gt; has been altered. The only way that state can alter is by referring back to the stateful service. This also, handily, eases the conceptual problem some developers have with loss of consistency. By viewing the only place where state lives as in some stateful service, and seeing data moving immutably through the system, the concept of an 'entity' being read from a data store, change and written back is removed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;immutable-data-flows&quot;&gt;Immutable Data Flows&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With that, we have the final way of looking at data in a microservice architecture. Immutable data flows implemented as pipelines.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By applying this, you gain the benefits of a single place to look for everything related to a flow of data, within the pipeline, and you gain the benefits of being able to take data and radically alter, mutate, transform and derive new data without becoming concerned with mutation of state.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This leads very nicely into CQRS and then into Event Sourcing very nicely.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Fri, 23 Jan 2015 00:00:00 +0000</pubDate>
+        <link>/blog/2015/01/23/the-role-of-data-in-microservices.html</link>
+        <guid isPermaLink="true">/blog/2015/01/23/the-role-of-data-in-microservices.html</guid>
+        
+        <category>archi</category>
+        
+        <category>architecture</category>
+        
+        <category>data flow</category>
+        
+        <category>data schema</category>
+        
+        <category>design</category>
+        
+        <category>mi</category>
+        
+        <category>microservice</category>
+        
+        <category>microservices</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
   </channel>
 </rss>

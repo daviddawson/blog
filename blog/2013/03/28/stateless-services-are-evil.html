@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>David Dawson</title>
+  <title>Simplicity in Web Architecture - Beware the Stateless Service</title>
   <meta name="description" content="">
 
     <link rel="stylesheet" href="/css/foundation.css">
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/blog/2013/03/28/stateless-services-are-evil.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -142,156 +142,197 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full'>
+            <div class='full documentation'>
   <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>March 28, 2013</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">blog</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></h3>
+          <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This article is related to my recent talk at the London Groovy/ Grails User Group which you can see at <a href="http://skillsmatter.com/podcast/groovy-grails/all-hail-the-command-object-are-stateless-services-the-only-way">SkillsMatter</a></p>
+</div>
+<div class="paragraph">
+<p>In that talk I presented a way to get back to an Object Oriented way of thinking within Grails, using the existing infrastructure to help us get away from the Stateless Service paradigm that we have so deeply embedded in our psyche.</p>
+</div>
+<div class="paragraph">
+<p>This is not only found in Grails, it is common in web frameworks of many kinds, especially those based on Spring or a similar IoC container.</p>
+</div>
+<div class="paragraph">
+<p>This is because they all rely heavily on the singleton scoped Service as the primary architectural component in the system.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-s-wrong-with-stateless-services">What&#8217;s wrong with Stateless Services?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In many respects, nothing at all; they are a valid construct in many circumstances. For anyone reading this that isn&#8217;t aware of what I&#8217;m talking about as 'Stateless Services', its the Grails artefact called the 'Service' in its singleton form, which is the default.</p>
+</div>
+<div class="listingblock">
+<div class="title">/grails-app/services/ReportingService.groovy</div>
+<div class="content">
+<pre>class ReportingService {
 
-    
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>November 03, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></h3>
-      <p><div class="paragraph">
-<p>Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &#8230;&#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/11/03/make-developer-api.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>July 20, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-      <p><div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices/2016/07/20/microservices-philosophy.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/megalith.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>March 11, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></h3>
-      <p><div class="paragraph">
-<p>Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>June 17, 2015</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices and Reactive</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></h3>
-      <p><div class="paragraph">
-<p>Recently (June 2015), I gave a &lt;a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank"&gt;talk&lt;/a&gt; at the DDD Exchange at Skills Matter in London.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Read more</a>
-    </div>
-  </div>
-  
+    def generateReport(String name) {
+      ...
+    }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The typical rule is that you <em>must not store data</em> in the Service instance as you then open yourself up to some pretty awesome (and not in a good way) threading problems. For this reason, I try to refer to them as Stateless Services, to make that explicit.
+Read more on these, and the other service scopes, at the excellent <a href="http://grails.org/doc/latest/guide/services.html">Grails Documentation</a></p>
+</div>
+<div class="paragraph">
+<p>The problem as I see it is that it has no clearly defined responsibilities, or boundaries within which it is designed to operate. The Grails documentation says that they are "the place to put the majority of the logic in your application".</p>
+</div>
+<div class="paragraph">
+<p>That&#8217;s an accurate description of how they are used, however I prefer to look at things in a highly conceptual way before delving into implementation.</p>
+</div>
+<div class="paragraph">
+<p>So moving in that direction, when a request comes into the system, what artefact, conceptually, has the <strong>responsibility</strong> for that request?</p>
+</div>
+<div class="paragraph">
+<p>The answer, in many cases, is nothing. Or rather, that responsibility is smeared around the application. Some of it is handled by the controller (error handling is a common case where the responsibility is assumed in controllers), most of it is split across various service class methods.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="so-is-this-wrong">So? Is this wrong?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong><em>Yes</em></strong></p>
+</div>
+<div class="paragraph">
+<p>This can have some significant effects on the system that sometimes, but not always immediately apparent. Those gotchas include:</p>
+</div>
+<div class="paragraph">
+<p><strong>HTTP Controllers do too much</strong></p>
+</div>
+<div class="paragraph">
+<p>They should only handle HTTP in and out and then delegate everything else to something else. If you code a controller to both handle HTTP and then do 'something else' then it becomes far harder to test and the internal structure will become confused. It also begins to break the <a href="http://codebetter.com/karlseguin/2008/12/05/get-solid-single-responsibility-principle/">Single Responsibility Principle</a></p>
+</div>
+<div class="paragraph">
+<p><strong>Related state is not well encapsulated</strong></p>
+</div>
+<div class="paragraph">
+<p>Often a request comes into the system that contains multiple pieces of state that are intended to be processed together. These will then be passed on to a service for processing. Whether they are passed individually, or within some holding object, the effect is the same. If the behaviour in the service interacts directly with the data items, then the data is not encapsulated. It may as well be passed in separated.</p>
+</div>
+<div class="paragraph">
+<p>The result of this breaking of encapsulation is that an implicit coupling is introduced between your integration layer (HTTP/ persistence) and the core domain logic in unusual and unexpected ways, such as&#8230;&#8203;.</p>
+</div>
+<div class="paragraph">
+<p><strong>Persistence, messaging, HTTP and other integration concerns are blended within the applications core domain logic</strong></p>
+</div>
+<div class="paragraph">
+<p>This is an extremely common source of complexity in a system. Your domain logic should do nothing apart from model your business problem. Everything else is integration.</p>
+</div>
+<div class="paragraph">
+<p><strong>State and the behaviour that operates on it are split</strong></p>
+</div>
+<div class="paragraph">
+<p>This breaks encapsulation and spreads the behaviour across the system.
+It is not possible to look at any one piece of the system and understand the processes that will work upon it.</p>
+</div>
+<div class="paragraph">
+<p><strong>Services are created along technical, rather than business, lines</strong></p>
+</div>
+<div class="paragraph">
+<p>This seems a weird one so let me explain a little first. If the Service is the primary way to separate business logic up, then the way that the services are modelling the system <em>should</em> map directly on to the business problem that it is implementing.</p>
+</div>
+<div class="paragraph">
+<p>Instead you often find services like EmailService, QueueService, RabbitService etc. These examples are not part of the business domain (I use domain in the 'model your business sense', not the 'persistence class' sense). They are purely technical items and as such are not part of your core domain logic.</p>
+</div>
+<div class="paragraph">
+<p>The fact that they exist at the same level as any business services results in confusion as it serves to blur the divide between the core domain and the surrounding integration; and so the seed is sewn for developers to think that integration code is somehow as important as the system domain.</p>
+</div>
+<div class="paragraph">
+<p><strong>It is not</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ok-so-what-can-i-do-about-this">Ok, so what can I do about this?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Coming from a strong Object Oriented background, We&#8217;re not content with the responsibility of the system domain being invaded by integration concerns, or with the responsibility for a request being smeared around the system.</p>
+</div>
+<div class="paragraph">
+<p>I recommend some general rules :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Break your application&#8217;s core logic up into domains and use the Life Preserver tool to decide where your classes go.</p>
+</li>
+<li>
+<p>Label up the classes that are part of the core logic of your application; that&#8217;s unique to your application&#8217;s concern and that you want to evolve at the rate of the your application, not at the rate of anyone else&#8217;s. This is the collection of domains that are at your application&#8217;s core.</p>
+</li>
+<li>
+<p>Every other domain likely exists in the 'outer ring' of the Life Preserver, and as such it exists to manage an integration with the world outside your application. Be it integration with messaging, persistence or even a front-end concern such as the web; it&#8217;s all an integration and so the code there should be as limited to that integration concern as possible. This is firmly not the "code that makes you money", so aim for as little in these domains as possible.</p>
+</li>
+<li>
+<p>Unit test your application&#8217;s domain&#8217;s core classes to distraction. They&#8217;re your crown jewels, make sure they&#8217;re diamonds.</p>
+</li>
+<li>
+<p>Use the Life Preserver tool to decide what logic is inside your core domains and what is in the integration layers going forward.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The talk above presents one method for doing this, which a subsequent article will elaborate on.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
 
-  
-  <div class="pager">
-    
-      
-        <a href="/blog/page2" class="older">
-          <i class='fa fa-angle-double-left'></i>
-          Older Entries
-        </a>
-      
-    
-    
-      <span class="newer">
-        Newer Entries
-        <i class='fa fa-angle-double-right'></i>
-      </span>
-    
-  </div>
 
-  <div class='four spacing'></div>
-  <div class='large-3 columns' id='toc'>
-    <div class='links'>
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#architecture">architecture</a>,
+                
+
+                <a href="/blog/tags#grails">grails</a>,
+                
+
+                <a href="/blog/tags#groovy">groovy</a>,
+                
+
+                <a href="/blog/tags#spring">spring</a>,
+                
+
+                <a href="/blog/tags#web">web</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -459,7 +500,7 @@
 
 </div>
 
-    <div class='four spacing'></div>
+    </div>
   </div>
 </div>
 

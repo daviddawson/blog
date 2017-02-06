@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>David Dawson</title>
-  <meta name="description" content="">
+  <title>The Future of Grails</title>
+  <meta name="description" content="This is a response to a blog post by Peter Ledbrook on his blog">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/blog/2013/04/18/future-of-grails.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -142,156 +142,145 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full'>
+            <div class='full documentation'>
   <div class='row'>
+        <div class='images'>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>April 18, 2013</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">blog</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></h3>
+          <div class="paragraph">
+<p>This is a response to a blog post by Peter Ledbrook on <a href="http://www.cacoethes.co.uk/blog/groovyandgrails/where-next-for-grails">his blog</a></p>
+</div>
+<div class="paragraph">
+<p>In it he asks about the future of Grails (and links to a recent talk of mine, thanks Peter!). I&#8217;ve briefly had this discussion with him before and I&#8217;m very glad that he&#8217;s banging the drum on the subject and driving deep thoughts required around the future of Grails as a platform.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve been pondering this for some time.</p>
+</div>
+<div class="paragraph">
+<p>As a background; I am a long term Grails user, with a particular interest in programming in the large. I&#8217;ve been playing in several fields over the past couple of years, functional languages and frameworks (mainly clojure/ ring), architecture with DDD and CQRS, high volume HTTP back ends, rich clients and virtualisation to name the big ones on my plate.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve especially watched the gathering functional hype with interest, less out of wanting to adopt it (although Clojure is really quite lovely), more out of seeing alternate development philosophies in action and understanding the value that they bring.</p>
+</div>
+<div class="sect1">
+<h2 id="a-broken-consensus">A Broken Consensus</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We have reached an inflection point in Java web development. The last one we met on this scale was the rise of Spring, as it aggressively displaced most of J2EE.</p>
+</div>
+<div class="paragraph">
+<p>A consensus formed soon after Spring was paired with Struts, that this, finally, was the way to do Java web development. Take some MVC implementation, attach to a Spring IoC container, or Guice if you want to be radical, add other elements (mail, view, REST, messaging, DB), bake for a week and you have a best practice web stack.</p>
+</div>
+<div class="paragraph">
+<p>Grails is born out of this consensus, and was built (to my mind) to be Java/ Spring web development done right. It is, in almost every way, a better Spring MVC paired with a better Java. This has been an enormous boon to the industry and to companies that have adopted it for this purpose.</p>
+</div>
+<div class="paragraph">
+<p>The industry has changed, and the consensus upon which Grails rests, is now broken.</p>
+</div>
+<div class="paragraph">
+<p>The rebirth of functional programming and languages and the web frameworks built upon them, do not, as a general rule, use Spring. They do not use an IoC container that is analogous to Spring, they have taken a different path, and our consensus is being erroded with every project that opts to use one of them.</p>
+</div>
+<div class="paragraph">
+<p>Is this a problem? Of course not! We must decide what Grails should be in this new world. What form it should take, what parts are the core value and what is less so.</p>
+</div>
+<div class="paragraph">
+<p>The spring consensus has been undermined, so the core beliefs and philosophy that Grails is based on are also no longer firm. We need some other philosophy to base Grails on. One that Peter has alluded to in his articles.</p>
+</div>
+<div class="paragraph">
+<p>The rise of the plethora web frameworks (Play, Lift, Ring, Node, Vert.x, Sinatra &#8230;&#8203; ) is evidence that there is a dissatisfaction with the current state of affairs. Developers are wanting to address different problems in new and innovative ways. Node.js, Vert.x and Play all apply some derivative of the Reactor threading pattern to web development, Sinatra, Ratpack and Ring have a lightweight philosophy. Each is approaching a reasonably specific question or issue and applying techniques to that problem.</p>
+</div>
+<div class="paragraph">
+<p>Grails' philosophy is not so clear. It has absorbed many technologies, techniques and philosophies and attempted (with a lot of success, it must be said) to create a cohesive development environment out of them. This process of absorbtion has caused a lot of growing pains, which are well documented (code reloading, json/ xml mapping are two that jump to mind).</p>
+</div>
+<div class="paragraph">
+<p>What has fallen out of the end is a large core, and lots, and lots, and lots of plugins, of variable quality. Some plugins are truly excellent, others less so. The sheer breadth of adoption in plugins is astonishing.</p>
+</div>
+<div class="paragraph">
+<p>Many of the issues in Grails, as I see it, are based on the core being too large. The core team has done excellent work breaking things out, however it is a large job. Many of these issues could be alleviated if, for example, the hot reloading was replacable and the community decided to implement another way. The community has taken plugins to their heart in a big way, but not core development.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="where-should-we-go-then">Where should we go then?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I have always characterised Groovy as pragmatists language. It has almost the same level of functionality as Scala, but this is seldom discussed. Instead I observe the language slowly fading into the background as the developer becoming proficient, still giving impressive power whenever requried, but otherwise getting out of the way. This is a good thing.</p>
+</div>
+<div class="paragraph">
+<p>Grails has some of these same characteristics, but has become somewhat unwieldy, and so pops up into the developers consciousness more often that Groovy does. One of the best pieces of Grails is the conventions it gives you. Putting something visually in a bucket and so knowing what it is is a very powerful tool. These conventions are implemented by plugins, for the most part now.</p>
+</div>
+<div class="paragraph">
+<p>So, plugins are good, giving us lots of conventions.</p>
+</div>
+<div class="paragraph">
+<p>Thats actually it for me. What I want out of Grails core is a rich and expansive plugin ecosystem, delivering decent conventions for me to use. A plugin that does not contribute some convention is not useful to me. I&#8217;ll import the jar, js or script in some other way.</p>
+</div>
+<div class="paragraph">
+<p>I now believe that grails core should be stripped down to the essentials of marshalling, loading and giving hooks for plugins to create conventions. This would be a much easier thing to port onto Gradle. Grails would effectively become the runtime twin, central to the application runtime.</p>
+</div>
+<div class="paragraph">
+<p>Plugins should then be given a richer set of hooks to play with, but more structure to play within too. So, for example, currently plugins can say they rely on particular plugins for their features. This could be changed to have them rely on some functionality instead, rather than an implementation.</p>
+</div>
+<div class="paragraph">
+<p>I am asserting that we should de-couple plugins further from the core, and from each other. If they can instead declare their requirements in terms of functionality, we open the doors to competing implementations of conventions, while still having the benefits of the standardised conventions themselves.</p>
+</div>
+<div class="paragraph">
+<p>We might even replace spring dependency injection with something else, given enough decoupling (although too much flexibility would run counter to the conventional nature)</p>
+</div>
+<div class="paragraph">
+<p>This would also allow plugins to form the replacement for 'archetypes' or standardised project structures. The 'classic web development' plugin could declare that it requires an http controller plugin, a view plugin and a gorm implementation. With the defaults being the plugins as shipped today. This would allow us to maintain consistency with Grails as it is now. This is important too!</p>
+</div>
+<div class="paragraph">
+<p>Gradle is an excellent build tool, we should embrace it soon, as the core team have said they want to. Grails is not a build tool. Grails is a runtime architecture that, today, has a built tool attached.</p>
+</div>
+<div class="paragraph">
+<p>That runtime architecture is based on plugins, and could, with some slimming down and extra work, be a truly fantastic structure for making conventionally powered, plugin based applications. They wouldn&#8217;t even need to be web applications. Being able to use a Grails powered conventional architecture in places outside of web development is a tremendously exciting possibility (although highly speculative!)</p>
+</div>
+<div class="paragraph">
+<p>So, I want the Grails of the future to be a coherent, stable, conventional, runtime architecture with plugins communicating based on their provided features.</p>
+</div>
+<div class="paragraph">
+<p>Could we make the Grails of the future something akin to OSGI, but finally done conventionally, and so done right?</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
 
-    
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>November 03, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></h3>
-      <p><div class="paragraph">
-<p>Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &#8230;&#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/11/03/make-developer-api.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>July 20, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-      <p><div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices/2016/07/20/microservices-philosophy.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/megalith.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>March 11, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></h3>
-      <p><div class="paragraph">
-<p>Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>June 17, 2015</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices and Reactive</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></h3>
-      <p><div class="paragraph">
-<p>Recently (June 2015), I gave a &lt;a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank"&gt;talk&lt;/a&gt; at the DDD Exchange at Skills Matter in London.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Read more</a>
-    </div>
-  </div>
-  
 
-  
-  <div class="pager">
-    
-      
-        <a href="/blog/page2" class="older">
-          <i class='fa fa-angle-double-left'></i>
-          Older Entries
-        </a>
-      
-    
-    
-      <span class="newer">
-        Newer Entries
-        <i class='fa fa-angle-double-right'></i>
-      </span>
-    
-  </div>
+                <i class="fa fa-tag"></i>
+                
 
-  <div class='four spacing'></div>
-  <div class='large-3 columns' id='toc'>
-    <div class='links'>
+                <a href="/blog/tags#grails">grails</a>,
+                
+
+                <a href="/blog/tags#groovy">groovy</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -459,7 +448,7 @@
 
 </div>
 
-    <div class='four spacing'></div>
+    </div>
   </div>
 </div>
 

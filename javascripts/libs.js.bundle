@@ -1,7 +1,3 @@
----
-# The front matter is required, even it's empty
----
-
 @import "modernizr.foundation.js"
 @import 'jquery-2.1.0.js'
 @import 'terrific-1.1.1.js'

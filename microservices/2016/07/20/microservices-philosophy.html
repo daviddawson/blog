@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Microservices and Philosophy</title>
+  <meta name="description" content="When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="/microservices/2016/07/20/microservices-philosophy.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+                  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+      body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+      code {
+          background:none;
+          border:0;
+      }
+
+      code span { border: 0; width:100% }
+      .listingblock {
+         background: #eee;
+         border-radius:5px;
+          border:1px solid #ccc
+      }
+  }
+
+  </style>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1>
+          <a href="/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              
+                <a href="/">Home</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/me.html">About Me</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="https://github.com/daviddawson">Github</a>
+              
+
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>July 20, 2016</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">Microservices</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
+          <div class="paragraph">
+<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
+</div>
+<div class="paragraph">
+<p>In many respects, it&#8217;s a question that defies a single answer.</p>
+</div>
+<div class="paragraph">
+<p>Since we&#8217;re a consultancy specialising in Microservices, we did a review a while ago with our clients and partners (some of you may remember), asking
+this very question!</p>
+</div>
+<div class="paragraph">
+<p>The answers we got back were informative and ranged from the specific and technical, to the vague and emotional.</p>
+</div>
+<div class="paragraph">
+<p>Some examples :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Small web services</p>
+</li>
+<li>
+<p>Bounded Contexts</p>
+</li>
+<li>
+<p>Low LOC (yep!)</p>
+</li>
+<li>
+<p>Small REST services</p>
+</li>
+<li>
+<p>Pipes and filters</p>
+</li>
+<li>
+<p>Not SOA</p>
+</li>
+<li>
+<p>Fine grained SOA!</p>
+</li>
+<li>
+<p>OO in the large</p>
+</li>
+<li>
+<p>Functional in the large</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>and many, many others.</p>
+</div>
+<div class="paragraph">
+<p>The problem we ended up with was that, when we layed them out to sort the common definition, we found that there wasn&#8217;t one.</p>
+</div>
+<div class="paragraph">
+<p>As in, there wasn&#8217;t a point of agreement. Instead we had broadly disjoint sets. This kind of accounts for the lack of a
+clear definition!</p>
+</div>
+<div class="paragraph">
+<p>Digging a little deeper, we found two things that did find general agreement.</p>
+</div>
+<div class="paragraph">
+<p>The first, is <strong>isolation</strong>. The property of pulling a system apart, generally using a network boundary, although not always (eg OSGI and NetKernel).</p>
+</div>
+<div class="paragraph">
+<p>The second point of agreement was a deep <strong>aspiration</strong>. The quality that the world would be better, if we deploy microservices.</p>
+</div>
+<div class="paragraph">
+<p>Obviously, with my background as a hard technologist, this was fairly appalling. (although as a consultant, my proposal press fluttered!)</p>
+</div>
+<div class="sect1">
+<h2 id="the-microservice-architecture">The Microservice Architecture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An interesting thing came up though, which was the terminology that people use when talking microservices. For much of the conversations, the phrase
+used is actually "a microservice architecture", rather than just "microservices".</p>
+</div>
+<div class="paragraph">
+<p>This intrigued me, as it leads directly to the question, if I can&#8217;t define Microservices, can I define <strong>architecture</strong>?</p>
+</div>
+<div class="paragraph">
+<p>Well, to me, software architecture is something of a debased term, being stolen from construction. Is it the same as
+ design?  Many would say, yes it is.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;d take the opposite and say that, no, it can&#8217;t be, and this is simply proven through cardinality.</p>
+</div>
+<div class="paragraph">
+<p>Looking over a system, you see myriad design decisions, each line has some aspect of design associated with it.
+There appears to be an unlimited number of design decisions available to the software developer.</p>
+</div>
+<div class="paragraph">
+<p>Architecture?  There&#8217;s recognisably fairly few software architectures. Certainly a number with a limit, maybe a few dozen that
+are in active use. Consider things such as <strong>n-tier</strong>, <strong>SEDA</strong>, <strong>event based</strong> etc.</p>
+</div>
+<div class="paragraph">
+<p>So, just with counting, they aren&#8217;t the same thing.</p>
+</div>
+<div class="paragraph">
+<p>When I think of architecture, certain ideas and phrases go through my mind :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A set of constraints put on the system</p>
+</li>
+<li>
+<p>A set of mental tools used to understand problems and create solutions</p>
+</li>
+<li>
+<p>The route to the design, rather than the design itself</p>
+</li>
+<li>
+<p>A framework for arranging your skills, knowledge and aims within.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Sound fair?</p>
+</div>
+<div class="paragraph">
+<p>I know all these ideas from another field, well outside of software. <strong>Philosophy</strong></p>
+</div>
+<div class="paragraph">
+<p>From this point of view, software architecture is a form of philosophy, and that leads us to an
+interesting place as far as <strong>The Microservice Architecture</strong> goes.</p>
+</div>
+<div class="paragraph">
+<p>We can reframe this as the <strong>Microservices Philosophy</strong> and have it mean fundamentally the same thing. This is something I&#8217;m far more comfortable with,
+ it&#8217;s actually much more concrete!</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve been understanding and grappling with philosophy for thousands of years, and we&#8217;ve got a lot of wisdom to draw upon.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-microservice-philosophy">The Microservice Philosophy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>From this point of view then, we can begin to frame Microservices very differently. Instead of reaching for a highly prescriptive
+view on the particular methods, technologies or techniques, we can start to frame our microservices journey in more philosophical terms.</p>
+</div>
+<div class="paragraph">
+<p>What is your end goal? What properties of the resulting system do you actually want to achieve?</p>
+</div>
+<div class="paragraph">
+<p>This turns the discussion of 'what makes a microservices' from the prescriptive, to the descriptive. It allows us to evaluate
+the resulting systems not in terms of how they were constructed, or what they used, but what they actually <strong>do</strong>.</p>
+</div>
+<div class="paragraph">
+<p>For us, the essential properties of a successful Microservice system are all about responding positively to change pressure.
+A system that not only accepts and adapts to change, but learns and improves itself in response to that change happening.</p>
+</div>
+<div class="paragraph">
+<p>Luckily, a term was invented for this property <strong>antifragile</strong>.</p>
+</div>
+<div class="paragraph">
+<p>This was coined by Nicolas Taleb, originally referring to economic and financial systems that benefit from stresses, rather than collapsing.</p>
+</div>
+<div class="paragraph">
+<p>From a pure tech point of view, this seems of limited use, is it really broadly applicable to have a system that responds to stresses?</p>
+</div>
+<div class="paragraph">
+<p>When you are considering Microservices as a purely technical endeavour, then frankly no, its not really a properyy we can easily generate.</p>
+</div>
+<div class="paragraph">
+<p>When looking at Microservices as a distributed system philosophy, and tech as a means to an end, then we have the opportunity to broaden our horizons
+somewhat in pursuit of Antifragility.</p>
+</div>
+<div class="paragraph">
+<p>As soon as we bring people into the definition of 'the system', the development team in particular, then generating antifragile behaviour becomes easy and desirable.</p>
+</div>
+<div class="paragraph">
+<p>The famous <strong>Chaos Monkey</strong> from Netflix is an excellent example of architecture given form. It isn&#8217;t merely a failure testing tool, it&#8217;s the architecture of the system
+ enforced by a tool.</p>
+</div>
+<div class="paragraph">
+<p>The antifragile feedback cycle in this case runs like this :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The dev team is made responsible for production outages.</p>
+</li>
+<li>
+<p>Chaos Monkey generates production outages, on the weekend.</p>
+</li>
+<li>
+<p>The dev team comes in on Monday, and changes the system so that it can tolerate partial failure and still run.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The system then has been stressed, and then visibly improved itself in response to that stress. It can now tolerate failure in VM resources.</p>
+</div>
+<div class="paragraph">
+<p>The system has become Antifragile.</p>
+</div>
+<div class="paragraph">
+<p>This is done by creating the appropriate feedback loops, and then generating appropriate stress to push signals down those feedback loops.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="of-devops-and-continuous-delivery">Of DevOps and Continuous Delivery</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is where Microservices overlaps heavily with the DevOps movement and Continuous Delivery.</p>
+</div>
+<div class="paragraph">
+<p>Both place value on feedback cycles and improvement.</p>
+</div>
+<div class="paragraph">
+<p>DevOps comes from a cultural and operational viewpoint, Continuous Delivery approaches from the process space, Microservices from the runtime technical viewpoint.</p>
+</div>
+<div class="paragraph">
+<p>All are speaking similar language, and I don&#8217;t really care which you subscribe to in order to back up your philosophy of benefiting from change.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="where-does-this-lead">Where does this lead?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Of course, this leads to building highly distributed systems. All the issues that are discussed, from log management,
+platform comparison, containerisation, data handling and the like are all valid.</p>
+</div>
+<div class="paragraph">
+<p>Your system will almost certain look like a set of processes coordinating over requests. What I&#8217;d like you to take away is
+that there is an objective measure you can use to evaluate your success, or otherwise, when deploying a Microservice system.</p>
+</div>
+<div class="paragraph">
+<p>That measure is how well your system expresses the essential properties defined by your architecture. These essential
+ properties don&#8217;t tend to change, so they can be used to measure against over the lifetime of a system.</p>
+</div>
+<div class="paragraph">
+<p>For us, the ability to change and benefit from that change is paramout. You may be looking more at team scaling, or simple runtime scaling.</p>
+</div>
+<div class="paragraph">
+<p>If you aren&#8217;t achieving these properties, and yet paying the Microservices tax (which can be <strong>expensive!</strong>) then Microservices may well not be for you.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#architecture">architecture</a>,
+                
+
+                <a href="/blog/tags#continuousdelivery">continuousdelivery</a>,
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+
+                <a href="/blog/tags#devops">devops</a>,
+                
+
+                <a href="/blog/tags#antifragile">antifragile</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A microservices developer api using .... make</a></li>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and philosophy</a></li>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The minilith - tightly coupled microservices</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining the microservice architecture</a></li>
+    
+    
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service discovery overview</a></li>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices security&#58; oauth vs session</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY: Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY: Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2016 Muon Core Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75338923-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

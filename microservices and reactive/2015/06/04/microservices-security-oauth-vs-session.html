@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>David Dawson</title>
-  <meta name="description" content="">
+  <title>Microservices Security&#58; OAuth vs Session</title>
+  <meta name="description" content="A question often posed to us during our research and project work is "how should I secure a Microservice?"">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -142,156 +142,83 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full'>
+            <div class='full documentation'>
   <div class='row'>
+        <div class='images'>
+          
+            <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+            <span>June 04, 2015</span>
+            /
+            <span>
+              by
+              <a href="#">David Dawson</a>
+            </span>
+            /
+            <span>
+              In
+              
+                <a href="#">Microservices and Reactive</a>
+                
+              
+            </span>
+          </p>
+          <h3><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></h3>
+          <div class="paragraph">
+<p>A question often posed to us during our research and project work is "<em>how should I secure a Microservice?</em>"</p>
+</div>
+<div class="paragraph">
+<p>This is a far more complex question than it first appears, covering infrastructure, network security, transport level security, inter-service authentication and authorisation, data locality and access control and finally the authentication and authorisation of individual user requests.</p>
+</div>
+<div class="paragraph">
+<p>Putting these points aside for the time being, what is often meant is how to externally secure an API that is backed by a Microservice. Or, as I was recently asked, why is everyone talking about OAuth, isn&#8217;t session based security simpler?</p>
+</div>
+<div class="paragraph">
+<p>Session security is what everyone already knows, a client sends authentication information to a service, which then generates a server side session that contains that identity for later use.</p>
+</div>
+<div class="paragraph">
+<p>When put against an OAuth authentication flow, the quick answer is yes, it certainly is simpler to use sessions.</p>
+</div>
+<div class="paragraph">
+<p>They are, however, solving different sets of issues. There is some overlap, but the two types are by no means equivalent, and I think that this difference in scope is what brings the question up.</p>
+</div>
+<div class="paragraph">
+<p>You can use sessions, absolutely, to solve endpoint security, but they are actually solving the problem of maintaining a long running stateful conversation between client and server. That long running conversation can be used for authentication by storing the auth token server side. This gives you greater flexibility, but the drawback is that you can&#8217;t subsequently recreate the authenticated state just from what the client has, the API owns the relationship. You can see this through the need to replicate sessions on the server side, essentially sharing that ownership to grant higher availability.</p>
+</div>
+<div class="paragraph">
+<p>OAuth/ token based security solves the problem differently, by dealing with a strictly limited subset of 'long running conversation'. They permit a system to say "this client is who it claims to be" by creating a trust relationship via the token provider. So in this case, the token provider (eg OAuth) owns the relationship. The upshot of this approach is that you can recreate the authenticated state from just what the client possesses, the token. That ability to recreate the relationship means you can distribute that authenticated state recreation arbitrarily.</p>
+</div>
+<div class="paragraph">
+<p>This isn&#8217;t possible with a session based approach, and is the primary difference, to my mind between the two approaches. If you don&#8217;t need to distribute authentication (and I don&#8217;t mean a session store, I mean pass it through different contexts in your back end services), then session based is superior due to it&#8217;s simpler construction. If you do need to distribute authentication, then token based is better as it permits this to happen as a natural consequence of the design.</p>
+</div>
+<div class="paragraph">
+<p>In future blogs we will investigate concretely how this can be used to create deeper, multi level security in a Microservices system, and what it looks like in code.</p>
+</div>
+            <p id="post-meta">
 
-    
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/clouds1.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>November 03, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></h3>
-      <p><div class="paragraph">
-<p>Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &#8230;&#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/11/03/make-developer-api.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/thinking.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>July 20, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-      <p><div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices/2016/07/20/microservices-philosophy.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/megalith.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>March 11, 2016</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">blog</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></h3>
-      <p><div class="paragraph">
-<p>Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">Read more</a>
-    </div>
-  </div>
-  
-    <div class='images'>
-      
-      <div class='image'><img alt="" src="/images/vis/cogs.jpg" /></div>
-      
-    </div>
-    <div class='content'>
-      <p class='info'>
-        <span>June 17, 2015</span>
-        /
-        <span>
-                by
-                <a href="">David Dawson</a>
-              </span>
-        /
-        <span>
-                In
-                
-                  <a href="#">Microservices and Reactive</a>
-                  
-                
-              </span>
-      </p>
-      <h3><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></h3>
-      <p><div class="paragraph">
-<p>Recently (June 2015), I gave a &lt;a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank"&gt;talk&lt;/a&gt; at the DDD Exchange at Skills Matter in London.</p>
-</div></p>
-      <div class='spacing'></div>
-      <a class="button small" href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Read more</a>
-    </div>
-  </div>
-  
 
-  
-  <div class="pager">
-    
-      
-        <a href="/blog/page2" class="older">
-          <i class='fa fa-angle-double-left'></i>
-          Older Entries
-        </a>
-      
-    
-    
-      <span class="newer">
-        Newer Entries
-        <i class='fa fa-angle-double-right'></i>
-      </span>
-    
-  </div>
+                <i class="fa fa-tag"></i>
+                
 
-  <div class='four spacing'></div>
-  <div class='large-3 columns' id='toc'>
-    <div class='links'>
+                <a href="/blog/tags#microservice">microservice</a>,
+                
+
+                <a href="/blog/tags#oauth">oauth</a>,
+                
+
+                <a href="/blog/tags#security">security</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -459,7 +386,7 @@
 
 </div>
 
-    <div class='four spacing'></div>
+    </div>
   </div>
 </div>
 
