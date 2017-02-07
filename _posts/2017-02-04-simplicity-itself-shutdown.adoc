@@ -8,8 +8,8 @@ image: images/vis/clouds1.jpg
 categories:
  - blog
 tags:
- - architecture
- - continuousdelivery
+ - business
+ - lmug
  - microservices
 ---
 
@@ -23,7 +23,7 @@ We have done many things over the years, and the company has gone up and down as
 
 For those who've never been in this situation, software consulting is both easy and hard.  It's easy, you need no
 real investment to get going, just a confident sales pitch and the ability to pull off what you just sold. It's hard
-in that cloning yourself is currently impossible.
+in that cloning yourself is currently impossible, so how do you scale?
 
 The past 5 years have been an incredible learning experience, but I have to accept that, like the allegory of the Curates Egg,
 the parts that I love have inevitably been overwhelmed by the parts that I simply don't. An egg cannot be partially good, and

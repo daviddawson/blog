@@ -12,14 +12,38 @@ layout: documentation
 
 ## About Me
 
-I am a
+I am a freelance software engineer and systems architect.
 
-### What I do
+I work extensively in Microservices projects, data architecture (especially event oriented), cloud and IoT.
+
+### Contact
+
+//Email: me@daviddawson.me
+
+LinkedIn: https://www.linkedin.com/in/davidantonydawson/
+
+Twitter: link:http://twitter.com/davidthecoder[@davidthecoder]
+
+Skype: davidadawson
 
 ### Open Source Work
 
+I spend most of my time on Open Source on the link:http://muoncore.io[Muon project]
+
+This is an advanced microservices/ distributed computing platform covering :-
+
+* Data, as events using an streaming event store - link:http://muoncore.io/submodules/photon/docs/index.html[Photon]
+* Very Polyglot. We have Java, Node and in browser production ready. Other languages in development on top of libMuon - written in portable C++11
+* An extensible CLI that allows you to introspect your system (and tab complete services and endpoints!)
+* Advanced reactive protocols. Handle communication concerns without being constrained by RPC like connections. Seriously, http isn't actually very good.
+
+It is *platform agnostic*, I deploy it to CLoud Foundry, Docker Swarm and Kubernetes in projects.
+
 ### Books
+
+I am currently working on "Reactive Microservices in Action", due to be published by Manning later this year.
 
 ### CV | Resume
 
-Simples is as sinple does
+Published soon. Contact me if you'd like more info.
+
