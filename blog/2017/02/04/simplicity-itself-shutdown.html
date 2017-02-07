@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Sharing Code Between Microservices?</title>
-  <meta name="description" content="">
+  <title>Shutting down Simplicity Itself</title>
+  <meta name="description" content="I have run a consultancy, Simplicity Itself, for the past 5 years. It's now time to end that and start in a new direction. Read for why I did this and some o...">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/blog/2015/01/12/sharing-code-between-microservices.html">
+  <link rel="canonical" href="/blog/2017/02/04/simplicity-itself-shutdown.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -124,162 +124,218 @@
   <div class='row'>
         <div class='images'>
           
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="/images/vis/clouds1.jpg" /></div>
+          
         </div>
         <div class='content'>
           <p class='info'>
 
 
-            <span>January 12, 2015</span>
+            <span>February 04, 2017</span>
           </p>
-          <h3><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></h3>
-          <div id="preamble">
+          <h3><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></h3>
+          <div class="paragraph">
+<p>Almost 5 years ago, Russ Miles and I embarked on a wild journey with a bright new company, Simplicity Itself.</p>
+</div>
+<div class="paragraph">
+<p>We started it with the goal of applying <strong>Simplicity</strong> in software development. This was Russ' inspiration from Rich Hickey,
+creator of the Clojure language.  We had an idea, but no products, so we did what many do in that situation and
+started to run a software consultancy.</p>
+</div>
+<div class="paragraph">
+<p>We have done many things over the years, and the company has gone up and down as our interests moved around.</p>
+</div>
+<div class="paragraph">
+<p>For those who&#8217;ve never been in this situation, software consulting is both easy and hard.  It&#8217;s easy, you need no
+real investment to get going, just a confident sales pitch and the ability to pull off what you just sold. It&#8217;s hard
+in that cloning yourself is currently impossible.</p>
+</div>
+<div class="paragraph">
+<p>The past 5 years have been an incredible learning experience, but I have to accept that, like the allegory of the Curates Egg,
+the parts that I love have inevitably been overwhelmed by the parts that I simply don&#8217;t. An egg cannot be partially good, and
+so it has come to the  point where I&#8217;m calling time on the company, putting it to sleep and starting my next journey.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve already talked to our active client base about this, so I want this article to answer a few questions for
+ clients who I&#8217;ve not talked to for a while, people i know generally, fans, competitors, consultancy brethren etc.</p>
+</div>
+<div class="sect1">
+<h2 id="why-are-you-shutting-down">Why are you shutting down?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>My good friend Peter Ledbrook has been pondering the question <a href="http://blog.cacoethes.co.uk/software/code-reuse-in-micro-services">how can we share code between microservices</a></p>
+<p>Russ left SI in early 2016 to go to Atomist, a product startup.   I didn&#8217;t know in advance, but it&#8217;s a good move for him, as he&#8217;d been having
+a tough time maintaining the travel required in a consulting role.</p>
 </div>
 <div class="paragraph">
-<p>This is something we&#8217;ve had the opportunity to experiment with, on new projects and also longer running systems. This has given us some insight, which I&#8217;m happy to share here.</p>
+<p>That left me as the sole active owner of SI.  There was much rebalancing required, and we had several long term contracts in place to fulfill.</p>
 </div>
 <div class="paragraph">
-<p>The process for building a new microservice is pretty well established by now.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Define the service contract</p>
-</li>
-<li>
-<p>Expose on a network (somehow, http, messaging, or maybe https://muoncore.io[Muon])</p>
-</li>
-<li>
-<p>Profit?</p>
-</li>
-</ul>
+<p>I decided to take a year, run out the contracts and see what the world would give me.</p>
 </div>
 <div class="paragraph">
-<p>&#8230;&#8203;</p>
+<p>I will remember 2016 as a bit of a blur. The SI team as was worked hard, but we didn&#8217;t get much improved from where
+ we started. Gaining clients as a pure architecture consultancy has always been hard, but as Microservices advanced in implementation, it
+ became harder. Everything needed to be tied to implementing technologies, and we had found ourselves competitively boxed in, as the pure play
+  tech consultancies won deals where we would have done previously.</p>
 </div>
 <div class="paragraph">
-<p>Sorry, that was mean of me!</p>
+<p>All the issues I describe below came in. Ordinarily, this would have been found, but I found my interest in pure play consultancy decreasing
+through the year. I got into software for the love of creating it, and it got to the point where I was presented a choice, either give up
+ on development (even in free time!), or not do a good enough job in biz dev for a consultancy.</p>
 </div>
 <div class="paragraph">
-<p>More seriously then. In many of our conference talks we drop down to first principles and philosophy and I want to do that here too, as the answer to the question above can only be found when the real, underlying question is asked.  So, what is your motivation for building a microservice?</p>
+<p>To remake SI, we would have had to begin showing technical strength across the board. This was possible with the team we had, but would have
+ meant publishing things that are essentially click bait, not research papers, deep thinking or articles moving the industry forward. Just another
+ blog post on "how to do X with Y" (insert tech as appropriate).</p>
 </div>
 <div class="paragraph">
-<p>That will frame your answer, and we&#8217;ve found that the motivations for using microservices are actually fairly varied depending on the environment.</p>
+<p>I came to a moment of clarity late in 2016, I wanted the world to stop and get off. Running a software consultancy shop was no longer for me.</p>
 </div>
 <div class="paragraph">
-<p>So, why make a microservice?  Some of the typical answers we get when we ask are  :-</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Independently scale</p>
-</li>
-<li>
-<p>'Ability to innovate'</p>
-</li>
-<li>
-<p>Service isolation</p>
-</li>
-<li>
-<p>Separate service life-cycles (deployment, build etc)</p>
-</li>
-<li>
-<p>Monitor usage via gateways</p>
-</li>
-</ul>
+<p>Over winter we closed down, everyone has now left SI and we&#8217;re officially closing shop today with a ritual burning of the business cards.</p>
 </div>
 <div class="paragraph">
-<p>Our take is that these are all attempting to handle some form of <em>change</em>. This is what we always look for , change in the environment, change in the codebase. Differing rates of change between two areas
- are almost the sole guide that we use for splitting services apart.</p>
-</div>
-<div class="paragraph">
-<p>These all sit on the concept of _isolation _of one form or another. This underpins almost all of the benefits, and almost all of the costs of microservices. Creating and maintaining that isolation barrier we know as the service contract. Microservices go one layer above something like OSGI, as they enforce a network hop in the service barrier, creating an extra air gap, so they are highly decoupled from a code execution point of view.</p>
-</div>
-<div class="paragraph">
-<p>All of this setup is to create isolation_.<em> That isolation</em> _enables the other benefits of microservices.  This is the key point.</p>
+<p>It&#8217;s been a fun ride, but it&#8217;s done now.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="code-sharing">Code Sharing</h2>
+<h2 id="what-will-happen-to-the-london-microservices-user-group">What will happen to the London Microservices User Group?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>So, sharing code. Why would we do this?</p>
-</div>
-<div class="paragraph">
-<p>Primarily, I&#8217;ve found that developers and organisations want to share code across microservices for only a few reasons, although they may couch them in different terminology. This list is not complete, but takes in the majority.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Leverage existing technical functionality, eg, the impressive array of Netflix OSS libs, Guava, other utils.</p>
-</li>
-<li>
-<p>Sharing data schemas, using a class, for example, as an enforcement of a shared schema.</p>
-</li>
-<li>
-<p>Sharing data sources, use of the same database by multiple services.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>It is of utmost importance to pin down your motivation for wanting to share code, as unfortunately there is no right answer to this question. Like everything else, it&#8217;s contextual.</p>
-</div>
-<div class="paragraph">
-<p>The order of the list above is important, I arranged them in how much coupling they will create across services, from least to most, with the most coupling created by sharing control of runtime data, through sharing a data schema, sharing technical/ infra libraries, to finally sharing nothing.</p>
-</div>
-<div class="paragraph">
-<p>Code sharing, as when sharing anything, will always act to attach your services together via the shared code. This is unavoidable. The question you need to ask, is it worth it to do so?</p>
-</div>
-<div class="paragraph">
-<p>You are crossing the isolation barrier, and so you <em>are</em> reducing the effectiveness of it. By sharing nothing, you are giving it the maximum possible effectiveness. That, though, also comes at a cost.</p>
-</div>
-<div class="paragraph">
-<p>When you build a new service and share nothing, you feel like you have 'lost' the functionality that is available in the other services. In fact, you&#8217;ve traded it away to give yourself more isolation, by sharing more, you lose more isolation.  You gain the convenience of using existing code, at the cost of coupling more tightly to the other services in the system.</p>
-</div>
-<div class="paragraph">
-<p>This demonstrably does occur even when you are sharing only technical libraries.  I&#8217;m sure that any Netflix guys (or other larger microservices implementations) reading can attest to "build the world" CI storms if one of the base libraries are changed. This is witnessing the infamous <em>ripple effect</em> in full force. Those seemingly innocuous, merely technical libraries will start to gain a whiff of 'scary'.  This is because altering them will cause a large scale redeploy of services unrelated the one being developed. Developers will start to avoid them if possible, for fear of the unknown effect that you may create.  There lies legacy &#8230;&#8203;</p>
-</div>
-<div class="paragraph">
-<p>This, then, is just at the lowest level of sharing. If you attach at a higher level, sharing schemas, or even control of the data (via the sources), then you will suffer the ripple effect more often and it will hurt more when you hit it.  You will be carrying the cost of maintaining a microservices based architecture, without gaining the benefits of isolation, because you&#8217;ve shortcircuited it.</p>
+<p><strong>I will continue to organise and run LMUG</strong>. If anyone is interested in helping out, please get in touch, but I&#8217;m going to
+continue to be involved for the long term.  We (LMUG) just launched our new schedule for this year, if you have a talk, send it through!</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="micro-vs-mono">Micro vs Mono</h2>
+<h2 id="who-will-help-me-with-microservices-now">Who will help me with Microservices now?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is a fairly stark message, but one that I can&#8217;t avoid.   If you want convenience, build a monolith. They are significantly quicker to start a new project with, quicker to be able to alter the service boundaries as desired. To be able to get that initial jolt of primary development, they are the <em>right answer.</em></p>
+<p><strong>I&#8217;m now available as a freelancer</strong>. So, <a href="/hireme.html">get in contact</a> and I&#8217;ll be happy to help you</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-are-you-going-to-do-next">What are you going to do next?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I love building software. I&#8217;m going to do that.</p>
 </div>
 <div class="paragraph">
-<p>There is a continuum then, a constant tension between isolation and re-use. To lean to one is to lean away from the other. The discussion on <em>what</em> is shared has some value, but sharing anything has the same effect, just a greater or lesser severity.</p>
+<p>That will mean that I still teach, which I also love.</p>
 </div>
 <div class="paragraph">
-<p>The choice on which way you lean is of course, up to you.</p>
+<p>I&#8217;ve been working on IoT hardware and software solutions for the past 6 months. Covering ultra low power wide area (10 mile) sensors
+and back end systems (based on Muon and its event store, Photon). I&#8217;ll be talking about this publicly now.</p>
 </div>
 <div class="paragraph">
-<p>The natural progression that we now expect in new Microservices implementations is :-</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Prepare the ground (the ability to break services off)</p>
-</li>
-<li>
-<p>Build a Monolith in the primary development phase</p>
-</li>
-<li>
-<p>As areas of the system stop changing, break them off as new services behind their stable barrier.</p>
-</li>
-</ul>
+<p>My background before SI was as a freelancer, I&#8217;ve been permanently employed for 18 months in my life and have no desire to
+go back to that.</p>
 </div>
 <div class="paragraph">
-<p>At this point, they should share almost nothing with the monolith it has been pulled out from</p>
+<p>So, I&#8217;m back to freelancing. I&#8217;ll be investing my time heavily into Muon and building products with it with some interesting clients.</p>
 </div>
 <div class="paragraph">
-<p>During ongoing/ secondary development, new areas start life as new services.</p>
+<p>If you need Microservices, Cloud, dev process or IoT help <a href="/hireme.html">give me a call</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="should-i-start-a-consultancy">Should I start a consultancy?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the bit where I unveil some of the issues I&#8217;ve seen with building a consultancy. I was warned before going in that
+it would be hard, and to everyone that did so at the time, you were totally right.</p>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t regret much of what we did, but I would not do it again now.</p>
+</div>
+<div class="paragraph">
+<p>So, what were the problems?</p>
+</div>
+<div class="sect2">
+<h3 id="people">People</h3>
+<div class="paragraph">
+<p>Consulting is a people business. You are selling people to other people. The only way to scale is to add more people,
+which eventually becomes impossible to sustain.  If you go into consulting, know that <strong>you are not going to get rich</strong> doing it.</p>
+</div>
+<div class="paragraph">
+<p>You can be comfortable, but accept that you are buying into a lifestyle, one with variety, choice, frustration, travel and
+the constant need to be "the smartest man in the room", or you are out of a job.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="headline-rates">Headline rates</h3>
+<div class="paragraph">
+<p>Since consulting is such a people intensive business, you have a very high cost base and you&#8217;re looking for fairly low margins
+as compared to a product business.</p>
+</div>
+<div class="paragraph">
+<p>For an architectural consultancy as SI has mostly been, our engagements are more likely to been in the days to weeks range than
+longer. There have been a couple of 9 month gigs, but they are the exception.</p>
+</div>
+<div class="paragraph">
+<p>This means that a lot of time is spent chasing business, writing proposals, researching,</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deal-lead-times">Deal Lead Times</h3>
+<div class="paragraph">
+<p>As a contractor, you will generally expect to spend a few weeks on the market, interview and start the following Monday.</p>
+</div>
+<div class="paragraph">
+<p>As a freelancer, you have a longer lead time on work, but normally measured in small weeks, allowing you to blend work
+together, move thigs around and ensure you are kept well occupied when you want to be.</p>
+</div>
+<div class="paragraph">
+<p>As a consultancy, suddenly the lead times jump to months. Constant back and forth justifying rates, estimates, multi page
+ proposal documents.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s soul destroying to have to spend so much time in pre sales, often delivering a significant portion of the value of an engagement
+before it&#8217;s even started. I never found peace with this.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="free-consulting">Free Consulting</h3>
+<div class="paragraph">
+<p>For those companies that recognise this, you&#8217;re burning your suppliers, stop it. If you want proof that something works,
+arrange a 2 week engagement and <strong>pay for that proof yourself</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Otherwise you are asking for free consultancy. When you are in the consulting business, you are trading in ideas and skills.
+If you have to give these away for free simply to get your foot in the door, then run from that engagement, you&#8217;ll never profit there.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="constrained-by-the-company-mission">Constrained by the Company Mission</h3>
+<div class="paragraph">
+<p>Something I didn&#8217;t expect was how constraining creating a group/ company identity is. You create a company, run a marketing process and
+come up with some sort of idea on what it should be perceived as. SI was perceived as an enterprise architecture consultancy specialising
+in Microservices.  Which is correct.</p>
+</div>
+<div class="paragraph">
+<p>For me, and others in the company, this was not everything we wanted to do. We discussed AI, data tech, I loved electronics hardware.</p>
+</div>
+<div class="paragraph">
+<p>Lots of areas, but how can you talk about these things without diluting the company marketing push?  It&#8217;s hard to, esepcially when
+you&#8217;re running on fairly low marketing budgets.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="summary">Summary</h3>
+<div class="paragraph">
+<p>Overall, I don&#8217;t recommend that you try to start your own consultancy business, or if you do, keep it to just you and
+bring in other freelancers as you need to.</p>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll find it hard, you&#8217;ll find you end up chasing things you may not love. You may even be pushed into giving up what you do love, in the service
+of the greater good.</p>
+</div>
+<div class="paragraph">
+<p>For me, I&#8217;m going to freelance my way for the next year or so, work on Muon, write my book and continue to learn new things.</p>
+</div>
 </div>
 </div>
 </div>
@@ -292,28 +348,10 @@
                 <a href="/blog/tags#architecture">architecture</a>,
                 
 
-                <a href="/blog/tags#data schema">data schema</a>,
-                
-
-                <a href="/blog/tags#dry">DRY</a>,
-                
-
-                <a href="/blog/tags#life preserver">life preserver</a>,
+                <a href="/blog/tags#continuousdelivery">continuousdelivery</a>,
                 
 
                 <a href="/blog/tags#microservices">microservices</a>,
-                
-
-                <a href="/blog/tags#muon">muon</a>,
-                
-
-                <a href="/blog/tags#netflix">netflix</a>,
-                
-
-                <a href="/blog/tags#netflix oss">netflix oss</a>,
-                
-
-                <a href="/blog/tags#sharing">sharing</a>,
                 
                 <a href="/blog/tags"><em>Browse all tags</em></a>
             </p>

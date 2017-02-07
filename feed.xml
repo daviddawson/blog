@@ -5,9 +5,231 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 22:12:19 +0000</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 22:12:19 +0000</lastBuildDate>
+    <pubDate>Tue, 07 Feb 2017 11:40:00 +0000</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 11:40:00 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Shutting down Simplicity Itself</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Almost 5 years ago, Russ Miles and I embarked on a wild journey with a bright new company, Simplicity Itself.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We started it with the goal of applying &lt;strong&gt;Simplicity&lt;/strong&gt; in software development. This was Russ' inspiration from Rich Hickey,
+creator of the Clojure language.  We had an idea, but no products, so we did what many do in that situation and
+started to run a software consultancy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We have done many things over the years, and the company has gone up and down as our interests moved around.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For those who&amp;#8217;ve never been in this situation, software consulting is both easy and hard.  It&amp;#8217;s easy, you need no
+real investment to get going, just a confident sales pitch and the ability to pull off what you just sold. It&amp;#8217;s hard
+in that cloning yourself is currently impossible.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The past 5 years have been an incredible learning experience, but I have to accept that, like the allegory of the Curates Egg,
+the parts that I love have inevitably been overwhelmed by the parts that I simply don&amp;#8217;t. An egg cannot be partially good, and
+so it has come to the  point where I&amp;#8217;m calling time on the company, putting it to sleep and starting my next journey.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve already talked to our active client base about this, so I want this article to answer a few questions for
+ clients who I&amp;#8217;ve not talked to for a while, people i know generally, fans, competitors, consultancy brethren etc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;why-are-you-shutting-down&quot;&gt;Why are you shutting down?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Russ left SI in early 2016 to go to Atomist, a product startup.   I didn&amp;#8217;t know in advance, but it&amp;#8217;s a good move for him, as he&amp;#8217;d been having
+a tough time maintaining the travel required in a consulting role.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;That left me as the sole active owner of SI.  There was much rebalancing required, and we had several long term contracts in place to fulfill.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I decided to take a year, run out the contracts and see what the world would give me.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I will remember 2016 as a bit of a blur. The SI team as was worked hard, but we didn&amp;#8217;t get much improved from where
+ we started. Gaining clients as a pure architecture consultancy has always been hard, but as Microservices advanced in implementation, it
+ became harder. Everything needed to be tied to implementing technologies, and we had found ourselves competitively boxed in, as the pure play
+  tech consultancies won deals where we would have done previously.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All the issues I describe below came in. Ordinarily, this would have been found, but I found my interest in pure play consultancy decreasing
+through the year. I got into software for the love of creating it, and it got to the point where I was presented a choice, either give up
+ on development (even in free time!), or not do a good enough job in biz dev for a consultancy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To remake SI, we would have had to begin showing technical strength across the board. This was possible with the team we had, but would have
+ meant publishing things that are essentially click bait, not research papers, deep thinking or articles moving the industry forward. Just another
+ blog post on &quot;how to do X with Y&quot; (insert tech as appropriate).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I came to a moment of clarity late in 2016, I wanted the world to stop and get off. Running a software consultancy shop was no longer for me.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over winter we closed down, everyone has now left SI and we&amp;#8217;re officially closing shop today with a ritual burning of the business cards.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s been a fun ride, but it&amp;#8217;s done now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;what-will-happen-to-the-london-microservices-user-group&quot;&gt;What will happen to the London Microservices User Group?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I will continue to organise and run LMUG&lt;/strong&gt;. If anyone is interested in helping out, please get in touch, but I&amp;#8217;m going to
+continue to be involved for the long term.  We (LMUG) just launched our new schedule for this year, if you have a talk, send it through!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;who-will-help-me-with-microservices-now&quot;&gt;Who will help me with Microservices now?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;I&amp;#8217;m now available as a freelancer&lt;/strong&gt;. So, &lt;a href=&quot;/hireme.html&quot;&gt;get in contact&lt;/a&gt; and I&amp;#8217;ll be happy to help you&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;what-are-you-going-to-do-next&quot;&gt;What are you going to do next?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I love building software. I&amp;#8217;m going to do that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;That will mean that I still teach, which I also love.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve been working on IoT hardware and software solutions for the past 6 months. Covering ultra low power wide area (10 mile) sensors
+and back end systems (based on Muon and its event store, Photon). I&amp;#8217;ll be talking about this publicly now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My background before SI was as a freelancer, I&amp;#8217;ve been permanently employed for 18 months in my life and have no desire to
+go back to that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, I&amp;#8217;m back to freelancing. I&amp;#8217;ll be investing my time heavily into Muon and building products with it with some interesting clients.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you need Microservices, Cloud, dev process or IoT help &lt;a href=&quot;/hireme.html&quot;&gt;give me a call&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;should-i-start-a-consultancy&quot;&gt;Should I start a consultancy?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is the bit where I unveil some of the issues I&amp;#8217;ve seen with building a consultancy. I was warned before going in that
+it would be hard, and to everyone that did so at the time, you were totally right.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I don&amp;#8217;t regret much of what we did, but I would not do it again now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, what were the problems?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;people&quot;&gt;People&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Consulting is a people business. You are selling people to other people. The only way to scale is to add more people,
+which eventually becomes impossible to sustain.  If you go into consulting, know that &lt;strong&gt;you are not going to get rich&lt;/strong&gt; doing it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can be comfortable, but accept that you are buying into a lifestyle, one with variety, choice, frustration, travel and
+the constant need to be &quot;the smartest man in the room&quot;, or you are out of a job.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;headline-rates&quot;&gt;Headline rates&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since consulting is such a people intensive business, you have a very high cost base and you&amp;#8217;re looking for fairly low margins
+as compared to a product business.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For an architectural consultancy as SI has mostly been, our engagements are more likely to been in the days to weeks range than
+longer. There have been a couple of 9 month gigs, but they are the exception.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This means that a lot of time is spent chasing business, writing proposals, researching,&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;deal-lead-times&quot;&gt;Deal Lead Times&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As a contractor, you will generally expect to spend a few weeks on the market, interview and start the following Monday.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As a freelancer, you have a longer lead time on work, but normally measured in small weeks, allowing you to blend work
+together, move thigs around and ensure you are kept well occupied when you want to be.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As a consultancy, suddenly the lead times jump to months. Constant back and forth justifying rates, estimates, multi page
+ proposal documents.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s soul destroying to have to spend so much time in pre sales, often delivering a significant portion of the value of an engagement
+before it&amp;#8217;s even started. I never found peace with this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;free-consulting&quot;&gt;Free Consulting&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For those companies that recognise this, you&amp;#8217;re burning your suppliers, stop it. If you want proof that something works,
+arrange a 2 week engagement and &lt;strong&gt;pay for that proof yourself&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Otherwise you are asking for free consultancy. When you are in the consulting business, you are trading in ideas and skills.
+If you have to give these away for free simply to get your foot in the door, then run from that engagement, you&amp;#8217;ll never profit there.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;constrained-by-the-company-mission&quot;&gt;Constrained by the Company Mission&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Something I didn&amp;#8217;t expect was how constraining creating a group/ company identity is. You create a company, run a marketing process and
+come up with some sort of idea on what it should be perceived as. SI was perceived as an enterprise architecture consultancy specialising
+in Microservices.  Which is correct.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For me, and others in the company, this was not everything we wanted to do. We discussed AI, data tech, I loved electronics hardware.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lots of areas, but how can you talk about these things without diluting the company marketing push?  It&amp;#8217;s hard to, esepcially when
+you&amp;#8217;re running on fairly low marketing budgets.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Overall, I don&amp;#8217;t recommend that you try to start your own consultancy business, or if you do, keep it to just you and
+bring in other freelancers as you need to.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You&amp;#8217;ll find it hard, you&amp;#8217;ll find you end up chasing things you may not love. You may even be pushed into giving up what you do love, in the service
+of the greater good.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For me, I&amp;#8217;m going to freelance my way for the next year or so, work on Muon, write my book and continue to learn new things.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Sat, 04 Feb 2017 12:18:00 +0000</pubDate>
+        <link>/blog/2017/02/04/simplicity-itself-shutdown.html</link>
+        <guid isPermaLink="true">/blog/2017/02/04/simplicity-itself-shutdown.html</guid>
+        
+        <category>architecture</category>
+        
+        <category>continuousdelivery</category>
+        
+        <category>microservices</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>A Microservices Developer API using .... Make</title>
@@ -1349,104 +1571,6 @@ An interesting observation on the Netflix technology stack. The engineers and ar
         
         
         <category>Microservices and Reactive</category>
-        
-      </item>
-    
-      <item>
-        <title>The Role of Data in Microservices</title>
-        <description>&lt;div id=&quot;preamble&quot;&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When approaching development of Microservices, it&amp;#8217;s often easy to think of the services themselves as the valuable pieces of your system. each service you add gives you more functionality, and so more value.   For the majority of systems we have built and reviewed during our consultancy, we have found that the system itself is of fairly marginal value. Instead, the data that it contains and the intelligence it can provide based upon that data is what is actually valuable.  This seems a subtle, even academic distinction, but it is important and putting it at the forefront of your mind during design has significant repercussions on the way you build your services and the way that they interact with each other.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Once you do this, the 'discussions' over what should be a service and what shouldn&amp;#8217;t be becomes far less abstract. Everything is being built to efficiently process, store and present your data. Nothing else really matters when you think about it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;design-your-data&quot;&gt;Design your Data&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With this in mind, your data, and the flows of data through your system become far more important.
-The components that do the processing have to be there, but you actually want your data there. If you
-could get rid of your system components while still having your data processed, you would in a heartbeat. Keep that in mind.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In a Microservice architecture, these flows of data will always exist. Generally, they are implicit, only existinging in the ephemeral nature of the communication between services. They can, however be explicitly built in, with services that actually implement particular data flows. We call this explicitly implemented data flow a &lt;em&gt;pipeline.&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is not a new concept, And many of you will have built just such a thing. Often you will have felt the need to grab a technology such as Storm or Spark in order to handle a flow of data. When you are doing that, you are building what we refer to as a pipeline.  If you have ever built such a thing, take a step back and think about the flow of data in the abstract sense. Try to unpick other flows of data in your application.  When building a set of Microservices, it&amp;#8217;s fairly common to have a call stack of a half dozen or so services with data from the back making it all the way to the front with transformer services in between. This is, in effect a set of transformers on top of a stateful resource. It&amp;#8217;s an implicit pipeline, and can be thought of as a system data flow.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;pipelines-of-data-flows&quot;&gt;Pipelines of Data Flows&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Once you have seen this, you can begin to extract this as a concept, and make it concrete. This gives you some significant benefits!  Error tracking in a Microservice system can sometimes be fraught with difficulty. Tracking a request from one end of a call chain to the other can be difficult and tracking through logs and correlating identifiers can be a serious chore.  These kind of errors and issues are speaking to you about misaligned abstractions, errors in thought and design, not errors in your implementation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Here, we advocate re-aligning your thought and design to be in tune with reality instead of working in opposition to it. If you have a system that is based around data flows, you need to align your code abstractions with that. The concept of the &lt;em&gt;Entity&lt;/em&gt; as we often construct it is of little value and will only serve to get in the way.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Taken to a conclusion, this process of building abstractions around data flow will lead you to a system that is a set of parallel pipelines, explicit services implementing each of your data flows. These pipelines call out to stateful services to obtain data and stateless services to transform it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Tracking errors in a system designed like this is simple, as all the high level processing for a data flow will be located in a single location, not smeared over the web of Microservices.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This doesn&amp;#8217;t prevent you from gaining all the benefits of Microservices, quite the opposite in fact. You still have all the options you did before, plus by localising a particular data flow into a single service, you gain the option of regaining some of the transactional behaviour you may have sacrificed along the way.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;the-state-problem&quot;&gt;The 'State Problem'&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You will have noticed that I referred to some services as &lt;em&gt;stateful&lt;/em&gt; and others as _stateless. _These are fairly overloaded terms that often confuse. What I mean in this case is that some services give access to data at rest, and others don&amp;#8217;t. Stateful services often don&amp;#8217;t contain any data in their memory, instead fronting a data store. Similarly, stateless services may in fact be chock full of data in the form of cache, but don&amp;#8217;t give access to data at rest in any meaningful sense.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Even with the slight clumsiness of overloaded terminology by making this distinction you can tie data flows together quite easily. A Pipeline is fully stateless, even though it will have data pouring through it constantly. It may transform data, but it should do that immutably. Immutability means that during transformation, you are generating a new &lt;em&gt;value&lt;/em&gt; from the original &lt;em&gt;value&lt;/em&gt; obtained from a stateful service. No change has occurred in the original data, no &lt;em&gt;state&lt;/em&gt; has been altered. The only way that state can alter is by referring back to the stateful service. This also, handily, eases the conceptual problem some developers have with loss of consistency. By viewing the only place where state lives as in some stateful service, and seeing data moving immutably through the system, the concept of an 'entity' being read from a data store, change and written back is removed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;immutable-data-flows&quot;&gt;Immutable Data Flows&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With that, we have the final way of looking at data in a microservice architecture. Immutable data flows implemented as pipelines.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;By applying this, you gain the benefits of a single place to look for everything related to a flow of data, within the pipeline, and you gain the benefits of being able to take data and radically alter, mutate, transform and derive new data without becoming concerned with mutation of state.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This leads very nicely into CQRS and then into Event Sourcing very nicely.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-        <pubDate>Fri, 23 Jan 2015 00:00:00 +0000</pubDate>
-        <link>/blog/2015/01/23/the-role-of-data-in-microservices.html</link>
-        <guid isPermaLink="true">/blog/2015/01/23/the-role-of-data-in-microservices.html</guid>
-        
-        <category>archi</category>
-        
-        <category>architecture</category>
-        
-        <category>data flow</category>
-        
-        <category>data schema</category>
-        
-        <category>design</category>
-        
-        <category>mi</category>
-        
-        <category>microservice</category>
-        
-        <category>microservices</category>
-        
-        
-        <category>blog</category>
         
       </item>
     
