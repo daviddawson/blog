@@ -1,31 +1,19 @@
 ---
 layout: blog
 ---
+
 <div class='full documentation'>
   <div class='row'>
         <div class='images'>
           {% if page.image %}
-            <div class='image'><img alt="" src="{{site.url}}/{{page.image}}" /></div>
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="{{site.url}}/{{page.image}}" /></div>
           {% endif %}
         </div>
         <div class='content'>
           <p class='info'>
+
+
             <span>{{page.date | date: "%B %d, %Y" }}</span>
-            /
-            <span>
-              by
-              <a href="#">{{page.author}}</a>
-            </span>
-            /
-            <span>
-              In
-              {% for cat in page.categories %}
-                <a href="#">{{cat}}</a>
-                {% unless forloop.last %}
-                    ,
-                {% endunless %}
-              {% endfor %}
-            </span>
           </p>
           <h3><a href="{{page.url}}">{{page.title}}</a></h3>
           {{ content }}

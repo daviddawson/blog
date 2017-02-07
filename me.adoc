@@ -10,10 +10,16 @@ layout: documentation
 :toc-title: About Me
 :toclevels: 6
 
-## Hello World
+## About Me
 
-I do all of the things
+I am a
 
-### Wibble MOnkey
+### What I do
+
+### Open Source Work
+
+### Books
+
+### CV | Resume
 
 Simples is as sinple does
