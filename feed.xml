@@ -5,8 +5,8 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Feb 2017 11:40:00 +0000</pubDate>
-    <lastBuildDate>Tue, 07 Feb 2017 11:40:00 +0000</lastBuildDate>
+    <pubDate>Tue, 07 Feb 2017 13:34:44 +0000</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 13:34:44 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -25,7 +25,7 @@ started to run a software consultancy.&lt;/p&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;For those who&amp;#8217;ve never been in this situation, software consulting is both easy and hard.  It&amp;#8217;s easy, you need no
 real investment to get going, just a confident sales pitch and the ability to pull off what you just sold. It&amp;#8217;s hard
-in that cloning yourself is currently impossible.&lt;/p&gt;
+in that cloning yourself is currently impossible, so how do you scale?&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The past 5 years have been an incredible learning experience, but I have to accept that, like the allegory of the Curates Egg,
@@ -220,9 +220,9 @@ of the greater good.&lt;/p&gt;
         <link>/blog/2017/02/04/simplicity-itself-shutdown.html</link>
         <guid isPermaLink="true">/blog/2017/02/04/simplicity-itself-shutdown.html</guid>
         
-        <category>architecture</category>
+        <category>business</category>
         
-        <category>continuousdelivery</category>
+        <category>lmug</category>
         
         <category>microservices</category>
         
