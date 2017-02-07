@@ -16,12 +16,16 @@ I operate as a freelancer out of the UK. I do significant work in Europe and occ
 and the Middle East.  I do approximately half of my work remotely, and look well on any engagements that offer this
 as an option.
 
-If you want to start on a Microservice journey, health check a cloud deployment, or need an experienced systems architect
+If you want to start on a Microservice journey, health check a cloud deployment, design a resilient data architecture or need an experienced systems architect
 and team lead, get in touch.
+
+I use three commercial models, Simple T&M, Fixed Price delivery and Monthly Retainer. See below for details.
 
 Here are some of the services I can provide.
 
 ### Microservices and Cloud Computing
+
+I work extensively in cloud environments, following my work over the past 5 years in Microservices and related domains.
 
 #### Microservices
 
@@ -58,3 +62,35 @@ These use a combination of LoRa wide area communications (up to 10 mile rangeon 
 a custom gateway hardware for backhaul to the Muon based back end.
 
 If you have a need for deploying sensors distributed across a large area and processing the data analytically, get in touch.
+
+## Engagement Styles
+
+I am available as a freelancer only, not as a permanent employee or full time contractor.
+
+### T&M
+
+You want work doing, we agree an hourly or daily rate and I do it for you. I expect a simple interview process, no multi
+week processes please.
+
+I am not available full time, but I can give you booked out weeks and days in a month to give consistency, just not all of them.
+
+### Fixed Price Delivery
+
+You have a project that needs completing, I scope it and give you a fixed price to deliver.
+
+If I need more resources, I will engage contractors, freelancers and agencies to help deliver and maintain it.
+
+This engagement is best if you have a discrete, well defined piece of work that you don't have the resources to deliver
+and would like to engage me long term to build and look after it.
+
+Once it's built, we'll move to a monthly retainer for ongoing work.
+
+### Monthly Retainer
+
+In this model, you buy a certain number of hours per month, at a reduced rate compared to simple T&M. You agree a contract 6-12 months
+in advance that is then fixed.
+
+If you need more hours in a month, the T&M rate will apply.
+
+This engagement works best if you have an existing system that I have either built, designed or consulted on that
+you need ongoing maintenance, advice and consultancy in the long term.
