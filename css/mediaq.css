@@ -1,0 +1,25 @@
+
+.top-bar .name h1.sitetitle a {
+  font-size: 1rem;
+}
+
+.top-bar .name h1.sitetitle a small {
+  display: none;
+}
+
+
+@media only screen and (min-width: 300px) {
+
+
+}
+
+@media only screen and (min-width: 1280px) {
+  .top-bar .name h1.sitetitle a small {
+    display: inline-block;
+    font-size:40%;
+  }
+}
+
+@media only screen and (min-width: 1450px) {
+
+}
