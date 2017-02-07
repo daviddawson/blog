@@ -74,7 +74,6 @@ body.toc2.toc-right {
 
 #toc {
   z-index: 20;
-  padding-top: 120px;
 }
 
 #documentation {
@@ -107,12 +106,19 @@ code span {
 .modBlogPost.big {
   width:100%;
 }
+
 }
 
 @media only screen and (min-width: 970px) {
 
-  #main div.full {
+  .modBlogPost.big .content {
+    width:auto;
     margin-right:8em;
+  }
+
+
+  #main div.full {
+    margin-right: 8em;
   }
 
   #toc {
@@ -124,14 +130,12 @@ code span {
     border-top-width: 0 !important;
     border-bottom-width: 0 !important;
     z-index: 20;
-    padding: 5.25em 1em;
+    padding: 6.5em 1em;
     height: 100%;
     overflow: auto
   }
 
 }
-
-
 
 @media only screen and (min-width: 1280px) {
 
