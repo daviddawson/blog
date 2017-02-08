@@ -144,7 +144,7 @@ in Microservices.  Which is correct.
 
 For me, and others in the company, this was not everything we wanted to do. We discussed AI, data tech, I loved electronics hardware.
 
-Lots of areas, but how can you talk about these things without diluting the company marketing push?  It's hard to, esepcially when
+Lots of areas, but how can you talk about these things without diluting the company marketing push?  It's hard to, especially when
 you're running on fairly low marketing budgets.
 
 ### Summary
