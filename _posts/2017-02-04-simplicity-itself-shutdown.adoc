@@ -46,7 +46,9 @@ I will remember 2016 as a bit of a blur. The SI team as was worked hard, but we 
  became harder. Everything needed to be tied to implementing technologies, and we had found ourselves competitively boxed in, as the pure play
   tech consultancies won deals where we would have done previously.
 
-All the issues I describe below came in. Ordinarily, this would have been found, but I found my interest in pure play consultancy decreasing
+All the issues I describe below came in to play, consultancy can be tough!
+
+Ordinarily, this would have been fine, but I found my interest in pure play consultancy decreasing
 through the year. I got into software for the love of creating it, and it got to the point where I was presented a choice, either give up
  on development (even in free time!), or not do a good enough job in biz dev for a consultancy.
 
