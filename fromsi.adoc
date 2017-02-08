@@ -1,0 +1,17 @@
+
+[NOTE]
+
+====
+This article was originally posted at simplicityitself.com.
+
+Simplicity Itself has now closed, and so I have moved my articles here.
+
+If you would like to read up on why it closed - See link:/blog/2017/02/04/simplicity-itself-shutdown.html[here]
+
+I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.
+
+I run the link:http://muoncore.io/[Muon microservices platform project] and the link:http://meetup.com/London-Microservices-User-Group/[London Microservices User Group]
+
+I'm link:/hireme.html[available to hire] for small and large projects
+
+====

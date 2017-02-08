@@ -15,6 +15,8 @@ redirect_from:
   - "/microservices-reactive/microservices-security-oauth-vs-session.html"
   - "/microservices-reactive/microservices-security-oauth-vs-session/index.html"
 ---
+include::fromsi.adoc[]
+
 
 A question often posed to us during our research and project work is "_how should I secure a Microservice?_"
 

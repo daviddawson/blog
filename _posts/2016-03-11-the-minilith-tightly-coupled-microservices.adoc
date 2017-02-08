@@ -11,6 +11,7 @@ tags:
  - microservices
 
 ---
+include::fromsi.adoc[]
 
 Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.
 

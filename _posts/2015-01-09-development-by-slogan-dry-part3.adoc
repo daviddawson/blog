@@ -20,6 +20,7 @@ redirect_from:
   - "/our-team/development-by-slogan-dry-part3.html"
   - "/our-team/development-by-slogan-dry-part3/index.html"
 ---
+include::fromsi.adoc[]
 
 # Development by Slogan with DRY: Part 3, DRY vs WET
 

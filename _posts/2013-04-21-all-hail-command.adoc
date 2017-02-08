@@ -15,6 +15,9 @@ redirect_from:
   - "/our-team/all-hail-command/index.html"
 ---
 
+include::fromsi.adoc[]
+
+
 # All Hail the Command Object
 
 This is a follow on to link:/blog/2013/03/28/stateless-services-are-evil.html[Simplicity in Web Architecture - Beware the Stateless Service]

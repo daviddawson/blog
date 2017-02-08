@@ -15,6 +15,9 @@ redirect_from:
   - "/microservices-reactive/avoid-microservice-platform-lock-in-service-discovery.html"
   - "/microservices-reactive/avoid-microservice-platform-lock-in-service-discovery/index.html"
 ---
+include::fromsi.adoc[]
+
+
 The promises of adopting the cloud for your software are enticing. Effectively limitless scalability, large reductions in capital expenditure, efficiency savings in staffing through automation. An exciting prospective, and one that has being brought into even greater focus by the rise and rise of Microservices.
 
 Not all is sweetness and light, however. There is significant investment required in ensuring your organisation and software can make best use of the new environment of the cloud. That investment in technology, training, development approaches and aligning the business with the new adaptable technology world can be significant, and the potential for a misstep to cost and lead your organisation into a dead end is present and you are right to be wary.

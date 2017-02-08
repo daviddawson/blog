@@ -12,6 +12,9 @@ redirect_from:
   - "/our-team/future-of-grails.html"
   - "/our-team/future-of-grails/index.html"
 ---
+
+include::fromsi.adoc[]
+
 This is a response to a blog post by Peter Ledbrook on link:http://www.cacoethes.co.uk/blog/groovyandgrails/where-next-for-grails[his blog]
 
 In it he asks about the future of Grails (and links to a recent talk of mine, thanks Peter!). I've briefly had this discussion with him before and I'm very glad that he's banging the drum on the subject and driving deep thoughts required around the future of Grails as a platform.

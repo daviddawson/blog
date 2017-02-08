@@ -9,6 +9,7 @@ redirect_from:
   - "/learning/getting-started-microservices/service-discovery-overview/index.html"
   - "/articles/service-discovery-overview.html"
 ---
+include::fromsi.adoc[]
 
 
 When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a cloud environment, and often using _immutable infrastructure_. Ironically, this means that your virtual machines or containers are created and destroyed much more often than normal, as this immutable nature means that you don't maintain them.

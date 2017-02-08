@@ -18,6 +18,8 @@ redirect_from:
   - "/our-team/stateless-services-are-evil/index.html"
 ---
 
+include::fromsi.adoc[]
+
 # Simplicity in Web Architecture - Beware the Stateless Service
 
 This article is related to my recent talk at the London Groovy/ Grails User Group which you can see at link:http://skillsmatter.com/podcast/groovy-grails/all-hail-the-command-object-are-stateless-services-the-only-way[SkillsMatter]

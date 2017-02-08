@@ -10,7 +10,10 @@ redirect_from:
   - "/microservices-reactive/defining-the-microservice-architecture.html"
   - "/microservices-reactive/defining-the-microservice-architecture/index.html"
 ---
-Recently (June 2015), I gave a <a title="MIcroservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank">talk</a> at the DDD Exchange at Skills Matter in London.
+include::fromsi.adoc[]
+
+
+Recently (June 2015), I gave a <a title="Microservices Done RIght" href="https://skillsmatter.com/skillscasts/6274-david-dawson" target="_blank">talk</a> at the DDD Exchange at Skills Matter in London.
 
 This was a little last minute! Our CTO, Russ Miles, was originally scheduled to deliver at the conference, but he had to be out of the country visiting one of our partners and so I was drafted in to deliver.
 

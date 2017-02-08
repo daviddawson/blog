@@ -10,6 +10,7 @@ redirect_from:
   - "/our-team/the-role-of-data-in-microservices.html"
   - "/our-team/the-role-of-data-in-microservices/index.html"
 ---
+include::fromsi.adoc[]
 
 # The Role of Data in Microservices
 

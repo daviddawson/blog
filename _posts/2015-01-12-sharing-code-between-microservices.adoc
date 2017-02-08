@@ -9,6 +9,7 @@ redirect_from:
   - "/our-team/sharing-code-between-microservices.html"
   - "/our-team/sharing-code-between-microservices/index.html"
 ---
+include::fromsi.adoc[]
 
 # Sharing Code Between Microservices?
 
