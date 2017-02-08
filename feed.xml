@@ -5,8 +5,8 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Feb 2017 11:38:52 +0000</pubDate>
-    <lastBuildDate>Wed, 08 Feb 2017 11:38:52 +0000</lastBuildDate>
+    <pubDate>Wed, 08 Feb 2017 15:01:34 +0000</pubDate>
+    <lastBuildDate>Wed, 08 Feb 2017 15:01:34 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -236,7 +236,36 @@ of the greater good.&lt;/p&gt;
     
       <item>
         <title>A Microservices Developer API using .... Make</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &amp;#8230;&amp;#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -347,7 +376,36 @@ give them consistency and an ease of use.&lt;/p&gt;
     
       <item>
         <title>Microservices and Philosophy</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, &quot;what is a Microservice?&quot;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -611,7 +669,36 @@ that there is an objective measure you can use to evaluate your success, or othe
     
       <item>
         <title>The Minilith - Tightly Coupled Microservices</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -749,8 +836,37 @@ deployed at some point.&lt;/p&gt;
     
       <item>
         <title>Defining The Microservice Architecture</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Recently (June 2015), I gave a &amp;lt;a title=&quot;MIcroservices Done RIght&quot; href=&quot;https://skillsmatter.com/skillscasts/6274-david-dawson&quot; target=&quot;_blank&quot;&amp;gt;talk&amp;lt;/a&amp;gt; at the DDD Exchange at Skills Matter in London.&lt;/p&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Recently (June 2015), I gave a &amp;lt;a title=&quot;Microservices Done RIght&quot; href=&quot;https://skillsmatter.com/skillscasts/6274-david-dawson&quot; target=&quot;_blank&quot;&amp;gt;talk&amp;lt;/a&amp;gt; at the DDD Exchange at Skills Matter in London.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This was a little last minute! Our CTO, Russ Miles, was originally scheduled to deliver at the conference, but he had to be out of the country visiting one of our partners and so I was drafted in to deliver.&lt;/p&gt;
@@ -907,7 +1023,36 @@ Microservices is undergoing a hype cycle, this is certainly true, yet that does 
     
       <item>
         <title>Service Discovery Overview</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a cloud environment, and often using &lt;em&gt;immutable infrastructure&lt;/em&gt;. Ironically, this means that your virtual machines or containers are created and destroyed much more often than normal, as this immutable nature means that you don&amp;#8217;t maintain them.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1107,7 +1252,36 @@ We very much like the relation between client and server in the Eureka design, a
     
       <item>
         <title>Microservices Security&amp;#58; OAuth vs Session</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;A question often posed to us during our research and project work is &quot;&lt;em&gt;how should I secure a Microservice?&lt;/em&gt;&quot;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1154,7 +1328,36 @@ We very much like the relation between client and server in the Eureka design, a
     
       <item>
         <title>Best Practice Developer techniques&amp;#58; The Hunt for The Silver Bullet</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Over the past 15 years of software development, especially since the XP movement gained traction, a series of styles, techniques and processes have gained broad industry adoption. These are, at times, called 'best practices'. At others times they are referred to as dogma or 'cargo cult'.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1407,7 +1610,36 @@ Looping back to where we started then, these 'best practices', you will notice t
     
       <item>
         <title>Retiring Microservices Using Strangulation</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;No programmer likes to plan for their work to be taken offline and shutdown, but part of good antifragile thinking is allowing things that aren&amp;#8217;t successful, to end. Applying that to Microservices, one of the natural parts of that architectural style is creating and destroying instances of a service. As part of the lifecycle of services, you sometimes have to create different versions of a service, and so manage the retiring of a previous version (although we try to avoid versioning where possible).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
@@ -1495,7 +1727,36 @@ Retiring a service isn&amp;#8217;t something that you should put on your todo li
     
       <item>
         <title>Avoid Microservice Platform Lock In using Service Discovery</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The promises of adopting the cloud for your software are enticing. Effectively limitless scalability, large reductions in capital expenditure, efficiency savings in staffing through automation. An exciting prospective, and one that has being brought into even greater focus by the rise and rise of Microservices.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
