@@ -15,21 +15,21 @@ include::fromsi.adoc[]
 
 Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.
 
-We've found that, contrary to what many will tell you, it defies [tight definition](http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html). Specifying how microservices should interact with each other, how they should store and master data, and how they should be deployed is great for a conference talk, but the style has been adopted too broadly now to be prescriptively tied down by anyone. Opinions abound, and yet you will find **no** consensus in what microservices actually are beyond the use of some form of effective isolation, usually network based.
+We've found that, contrary to what many will tell you, it defies http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html[tight definition]. Specifying how microservices should interact with each other, how they should store and master data, and how they should be deployed is great for a conference talk, but the style has been adopted too broadly now to be prescriptively tied down by anyone. Opinions abound, and yet you will find **no** consensus in what microservices actually are beyond the use of some form of effective isolation, usually network based.
 
 This lack of definition is in many ways good. In fact what it allows is the creation of many definitions, all of them good for different purposes and different reasons.
 
 The Agile wars seem to be coming to an end, I truly hope we won't now have the Microservices wars, another strain of dogma would frankly be upsetting.
 
-WIth that in mind, I sat down to read about and then watch a recent [talk by Ben Christensen](http://www.infoq.com/news/2016/02/services-distributed-monolith)
+WIth that in mind, I sat down to read about and then watch a recent http://www.infoq.com/news/2016/02/services-distributed-monolith[talk by Ben Christensen]
 
 I recommend you watch, it's an interesting take, and one worth analysing for yourself.
 
-I've written on the perils of DRY [a](http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html) [fair](http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html) [amount](http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html), and so to a large extent I totally agree. Where I diverge from much of the discussion is on the principle of autonomy and runtime coupling. Here, I am certainly a huge proponent of generating autonomy between services. The more a service can orient itself and figure out what to do, the better.
+I've written on the perils of DRY http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html[a] http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html[fair] http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html[amount], and so to a large extent I totally agree. Where I diverge from much of the discussion is on the principle of autonomy and runtime coupling. Here, I am certainly a huge proponent of generating autonomy between services. The more a service can orient itself and figure out what to do, the better.
 
 This though, is an arbitrary statement, and digging deeper, is fairly biased towards a certain definition of 'a good microservice'.
 
-This definition hinges purely on being able to change this service with scant regard for others in the system, the principle of *autonomy*. When analysing the benefits of this though, you have to step back to the original business benefits that you are implementing. *Autonomy* gives powerful benefits, but could it be overriden by other business needs in some circumstances?
+This definition hinges purely on being able to change this service with scant regard for others in the system, the principle of *autonomy*. When analysing the benefits of this though, you have to step back to the original business benefits that you are implementing. *Autonomy* gives powerful benefits, but could it be overridden by other business needs in some circumstances?
 
 The simple answer is yes, sometimes full autonomy for an individual service isn't worth the investment to create. To create a fully autonomous service, you need to go through a set of steps, deliver a set of capabilities.
 
@@ -70,7 +70,7 @@ We accept that deployment is broader than a single service, and that there are d
 
 The concept of closely related services is not new. We use the term ***minilith***, invoking megalith, but smaller :-)
 
-I pinched this term from [Gawain Hammond](https://skillsmatter.com/legacy_profile/gawain-hammond), currently of the Sky Tech Futures team.
+I pinched this term from https://skillsmatter.com/legacy_profile/gawain-hammond[Gawain Hammond], currently of the Sky Tech Futures team.
 
 A megalith is a collection of standing stones, most often interlocked in some way. Stone Henge is probably the most famous, and works for the analogy. The stones were all arranged in concentric circles, with top stones linking them all together.
 
