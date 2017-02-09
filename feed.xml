@@ -5,8 +5,8 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Feb 2017 15:01:34 +0000</pubDate>
-    <lastBuildDate>Wed, 08 Feb 2017 15:01:34 +0000</lastBuildDate>
+    <pubDate>Thu, 09 Feb 2017 14:59:38 +0000</pubDate>
+    <lastBuildDate>Thu, 09 Feb 2017 14:59:38 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -702,7 +702,7 @@ that there is an objective measure you can use to evaluate your success, or othe
 &lt;p&gt;Without a doubt, Microservices as an architecture has grasped the imagination of modern development like no other.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve found that, contrary to what many will tell you, it defies [tight definition](&lt;a href=&quot;http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html&lt;/a&gt;). Specifying how microservices should interact with each other, how they should store and master data, and how they should be deployed is great for a conference talk, but the style has been adopted too broadly now to be prescriptively tied down by anyone. Opinions abound, and yet you will find &lt;strong&gt;no&lt;/strong&gt; consensus in what microservices actually are beyond the use of some form of effective isolation, usually network based.&lt;/p&gt;
+&lt;p&gt;We&amp;#8217;ve found that, contrary to what many will tell you, it defies &lt;a href=&quot;http://www.simplicityitself.io/microservices%20and%20reactive/2015/06/16/defining-microservice-architecture.html&quot;&gt;tight definition&lt;/a&gt;. Specifying how microservices should interact with each other, how they should store and master data, and how they should be deployed is great for a conference talk, but the style has been adopted too broadly now to be prescriptively tied down by anyone. Opinions abound, and yet you will find &lt;strong&gt;no&lt;/strong&gt; consensus in what microservices actually are beyond the use of some form of effective isolation, usually network based.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This lack of definition is in many ways good. In fact what it allows is the creation of many definitions, all of them good for different purposes and different reasons.&lt;/p&gt;
@@ -711,19 +711,19 @@ that there is an objective measure you can use to evaluate your success, or othe
 &lt;p&gt;The Agile wars seem to be coming to an end, I truly hope we won&amp;#8217;t now have the Microservices wars, another strain of dogma would frankly be upsetting.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;WIth that in mind, I sat down to read about and then watch a recent [talk by Ben Christensen](&lt;a href=&quot;http://www.infoq.com/news/2016/02/services-distributed-monolith&quot; class=&quot;bare&quot;&gt;http://www.infoq.com/news/2016/02/services-distributed-monolith&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;WIth that in mind, I sat down to read about and then watch a recent &lt;a href=&quot;http://www.infoq.com/news/2016/02/services-distributed-monolith&quot;&gt;talk by Ben Christensen&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I recommend you watch, it&amp;#8217;s an interesting take, and one worth analysing for yourself.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;ve written on the perils of DRY [a](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html&lt;/a&gt;) [fair](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html&lt;/a&gt;) [amount](&lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html&quot; class=&quot;bare&quot;&gt;http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html&lt;/a&gt;), and so to a large extent I totally agree. Where I diverge from much of the discussion is on the principle of autonomy and runtime coupling. Here, I am certainly a huge proponent of generating autonomy between services. The more a service can orient itself and figure out what to do, the better.&lt;/p&gt;
+&lt;p&gt;I&amp;#8217;ve written on the perils of DRY &lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/01/development-by-slogan-dry-part1.html&quot;&gt;a&lt;/a&gt; &lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/08/development-by-slogan-dry-part2.html&quot;&gt;fair&lt;/a&gt; &lt;a href=&quot;http://www.simplicityitself.io/our%20team/2015/01/09/development-by-slogan-dry-part3.html&quot;&gt;amount&lt;/a&gt;, and so to a large extent I totally agree. Where I diverge from much of the discussion is on the principle of autonomy and runtime coupling. Here, I am certainly a huge proponent of generating autonomy between services. The more a service can orient itself and figure out what to do, the better.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This though, is an arbitrary statement, and digging deeper, is fairly biased towards a certain definition of 'a good microservice'.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This definition hinges purely on being able to change this service with scant regard for others in the system, the principle of &lt;strong&gt;autonomy&lt;/strong&gt;. When analysing the benefits of this though, you have to step back to the original business benefits that you are implementing. &lt;strong&gt;Autonomy&lt;/strong&gt; gives powerful benefits, but could it be overriden by other business needs in some circumstances?&lt;/p&gt;
+&lt;p&gt;This definition hinges purely on being able to change this service with scant regard for others in the system, the principle of &lt;strong&gt;autonomy&lt;/strong&gt;. When analysing the benefits of this though, you have to step back to the original business benefits that you are implementing. &lt;strong&gt;Autonomy&lt;/strong&gt; gives powerful benefits, but could it be overridden by other business needs in some circumstances?&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;The simple answer is yes, sometimes full autonomy for an individual service isn&amp;#8217;t worth the investment to create. To create a fully autonomous service, you need to go through a set of steps, deliver a set of capabilities.&lt;/p&gt;
@@ -796,7 +796,7 @@ deployed at some point.&lt;/p&gt;
 &lt;p&gt;The concept of closely related services is not new. We use the term &lt;strong&gt;&lt;strong&gt;minilith&lt;/strong&gt;&lt;/strong&gt;, invoking megalith, but smaller :-)&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I pinched this term from [Gawain Hammond](&lt;a href=&quot;https://skillsmatter.com/legacy_profile/gawain-hammond&quot; class=&quot;bare&quot;&gt;https://skillsmatter.com/legacy_profile/gawain-hammond&lt;/a&gt;), currently of the Sky Tech Futures team.&lt;/p&gt;
+&lt;p&gt;I pinched this term from &lt;a href=&quot;https://skillsmatter.com/legacy_profile/gawain-hammond&quot;&gt;Gawain Hammond&lt;/a&gt;, currently of the Sky Tech Futures team.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;A megalith is a collection of standing stones, most often interlocked in some way. Stone Henge is probably the most famous, and works for the analogy. The stones were all arranged in concentric circles, with top stones linking them all together.&lt;/p&gt;
