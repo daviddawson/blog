@@ -12,7 +12,7 @@ tags:
  - microservices
  - devops
  - antifragile
-
+excerpt: Understanding Microservices by seeing Architecture as Software Philosophy
 ---
 include::fromsi.adoc[]
 

@@ -11,7 +11,7 @@ tags:
  - continuousdelivery
  - microservices
  - make
-
+excerpt: Handling the plethora of developer tooling by using Make as the top level developer tool.
 ---
 include::fromsi.adoc[]
 

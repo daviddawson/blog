@@ -1,0 +1,150 @@
+---
+excerpt: Introduction to the Muon project, it's goals, aspirations and getting started. Muon is a system for building distributed systems well, including Microservices. It enables the use of many design styles, such as DDD and Reactive and covers language libraries, infrastructure integration and a set of functional services for you to use in production.
+title: Introducing Muon
+layout: post
+author: David Dawson
+date: 2017-02-10 12:18
+image: images/vis/clouds1.jpg
+categories:
+ - blog
+tags:
+ - architecture
+ - continuousdelivery
+ - microservices
+---
+
+video::rPQoq7ThGAU[youtube]
+
+For the past bunch of years, I've been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It's fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!
+
+Over the past 5 years or so, these systems I have been involved with have been recognisably what are now called Microservice systems. The only difference I see between them is the underlying link:/microservices/2016/07/20/microservices-philosophy.html[motivations and philosophy]
+
+As I've built these systems, large, small, high performance, low performance and so on. I've noticed a set of things that keep on coming up. Noq quite common problems, but common complaints perhaps. My current bug bears in the Microservices world are the *abuse of http* for local communication and the discarding of *polyglot*
+
+HTTP is a lovely protocol, easy to grasp, easy to use. It is at the same time, too flexible and semantically weak to be the one and only protocol for use in a Microservice system.  It is too flexible, as some of the most important things are left unspecified, for example versioning/ upgrades, schemas, conversational state management.   It is semantically weak in that it can do request->response, and nothing more.
+
+I don't wish to criticise HTTP as a protocol, only to say that it isn't good enough to be the only basis for a distributed system tocommunicate with. Every microservice system that I've seen beyond the trivial uses messaging of some sort, either replacing HTTP fully, or relegating HTTP to queries. The aim is to get rid of HTTP in order to get rid of what is being *done with HTTP*, which is building deep RPC style dependency webs. Which are awful.
+
+The polyglot nature of Microservices is now under threat. Pretty much every Microservice framework is language locked, and seems to be happy to remain that way. I don't like this state of affairs, I code in several languages at once, and I see benefits in doing this. Others may disagree, but if you buy into one of the current fameworks around, you are locked to a runtime by the investment in that framework, even if you've Swaggerred up. less so than a monolith, yes, but locked in all the same.
+
+A couple of years ago, I started a research project into the communication aspects of Microservices and how that can be made more effective.
+
+This project was called Muon, and I've talked about it a couple of times since. Showing where the research has gotten up to.  I then worked with a research time at Sky, CIS Tech Futures, ably led by Gawain Hammond. THat team has recently been dissolved, but in the 2 years we researched and built together, we did some fascinating things.
+
+This post is to introduce the Muon projects and give a taster to what they promise.
+
+## What does it let me do?
+
+Muon lets you build and then attach services together very quickly, allows them to communicate in a variety of
+ways that we call `Protocols`. We have a set of re-usable microservices
+that help you do certain things out of the box, and none of this cares about your infrastructure. You can choose Kubernetes, Mesos and AWS, or all at the same time and Muon services will run happily.
+
+It gives you support in all the right places, works with your infrastructure of choice, and gets out of the way
+of you writing code that *makes you money* (or whatever your motivation is!).
+
+For example, here's a simple node service
+
+[source, javascript]
+----
+
+----
+
+Here's a Java service that consumes it
+
+[source, java]
+----
+
+----
+
+Quick, right?
+
+So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form.
+
+At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a `bichannel` to that service, arbitrarily complex message protocols can be written that make use of this.
+
+Making this easy to use and extend is where we've spent our time, but all aspects of Muon implement this core idea.
+
+### Protocol Example: Reactive Streams
+
+To take an example of a commonly required for of networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.
+
+The RS specification describes a set of signals being sent back and forth between a `Publisher` and a `Subscriber`. In Muon, we can model these as messages sent between two services along their connecting `bichannel`.
+
+This is in fact what we have as one of the Muon protocols, an implementation of Reactive Streams at the network level, so you can discover and subscribe to networked `Observables`.
+
+This means we can network reactive streams implementations very easily, and support this across different languages and runtimes, so long as they have the Muon Reactive Streams protocol implemented.  If you have a Java RS `Publisher`, Muon can let you subscribe to that directly from a browser, including native back pressure signals, via the Muon.js browser implementation.
+
+Of course, this is just one protocol that we can implement. There are others, and soon there will be many others, all cross platform and able to be formally verified.
+
+
+### Protocol Example: Introspection
+
+This idea of defining messaging protocols as the basis of Muon had some interesting effects. Since we are specifying the interface as a rich, message protocol, including interaction and message content (both the structure/ schema and also semantically), we decided that we could have each Muon library implement an *_Introspection_* protocol. This is the ability to ask a running service what it can do.
+
+This means that we can use the Muon cli, for example, to do this :
+
+```
+muon introspect remote-service
+```
+
+It will then show what the service can do, across all of the implemented protocols
+
+```
+
+```
+
+This fairly rich introspection information allows you, and running services, to understand the environment they are running in and begin to intelligently interact with it. It allows them to run *autonomously*.
+
+It also let us implement advanced tab completion on the CLI. So you can, for example, tab complete service names and streams provided by a service
+
+```
+> muon stream <TAB>
+photon my-remote-service aether ather-password random-service
+
+> muon stream my-remote-service <TAB>
+/stream1 /stream2 /mystream
+```
+
+The same can be done for event source replay streams, RPC and is fairly easy to add for your own Protocols 9and will become even easier!)
+
+## Technology
+
+Muon is a broad set of projects, but also fairly simple. There are a set of implementation of Muon available now, covering Java, Clojure and Nodejs. These are all roughly feature equivalent and compatible with each other. A C++ version is being developed, which will enable very broad language support via language bindings.
+
+Alongside these, there are a set of prebuilt Muon microservices that implement commonly required features. The most advanced of these is Photon, an event store with event projection support that provides the backing for the Muon `event` protocols.
+
+You can see these as a platform of sorts, or as a set of tools you pull together to build your own services and use the ones we've made.
+
+There are a set of plugins that are being developed to extend the Muon libraries to support working with your existing technologies. These cover *service discovery*, *network transport* and *protocols*.
+
+.Muon architecture, showing a Reactive Stream Client connecting to a remote Reactive Stream server
+image::/images/muon-architecture.png[Muon Architecture]
+
+### Discovery
+
+### Transports
+
+
+
+### Protocols
+
+Enabling users to define their own protocols and allow them to be used cross platform is one of the key aims of the Muon project. This is requiring fairly advanced work to design and develop a portable *Protocol Language* that supports verification, is reactive in nature and can run across the Muon implementations.
+
+This work is well underway, we hope to have something to show within the next month or two that will enable you to define a messaging protocol in a simple, clean, declarative way that will support debugging, easy testing and enable a huge leap forward.
+
+## Getting Started
+
+The best place to get started is to visit the http://muoncore.io/guide/getting-involved.html[Getting Involved] page.
+
+If you are interested in Muon and would like to help the project then it is open to being sponsored by friendly organisations. The more time the core contributors dedicate to the project the faster it will move. link:/me.html[Get in touch] for more info on sponsoring.
+
+I hope to see you there!
+
+
+
+
+
+
+
+
+

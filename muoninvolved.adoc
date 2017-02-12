@@ -1,0 +1,8 @@
+
+[NOTE]
+
+====
+This is a developer diary entry for the Muon project, showing what we've done on the project over the past week.
+
+You can find the home of the Muon project at http://muoncore.io, and at the http://github.com/muoncore[Muon Core] github org.
+====

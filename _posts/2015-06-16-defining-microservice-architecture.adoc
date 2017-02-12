@@ -9,6 +9,8 @@ image: images/vis/cogs.jpg
 redirect_from:
   - "/microservices-reactive/defining-the-microservice-architecture.html"
   - "/microservices-reactive/defining-the-microservice-architecture/index.html"
+
+excerpt: A write up of a talk to the DDD Exchange in London about DDD Microservices
 ---
 include::fromsi.adoc[]
 

@@ -1,0 +1,47 @@
+---
+name: The name of the platform
+image:
+description:
+license: commercial license
+deploy-model: saas, saas and self hosted, self hosted
+deploy-method:
+  - api
+  - git push
+  - container image
+
+buildpacks: it supports buildbacks yes/no
+docker: can push docker images y/n
+rkt: can push rocket images y/n
+virt-platforms:
+  - kvm
+  - aws
+
+platform-services: what services ship ...
+  - data?
+
+apm-integration:
+  - appdynamics
+
+protocol-support:
+  - http
+  - websockets
+  - https
+
+service-discovery:
+  - service system
+  - eureka via built in SCS
+
+developer-interface:
+  - yes
+
+operator-interface:
+  - yes
+
+platform-deployment:
+  - n/a (hosted)
+  - BOSH
+  - Terraform
+
+minimal-platform-size: 5 VM
+
+data-model: stateful/ stateless/ cloud function

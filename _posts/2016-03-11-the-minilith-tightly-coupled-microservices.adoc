@@ -9,7 +9,7 @@ categories:
 tags:
  - architecture
  - microservices
-
+excerpt: Handling early Microservices deployments by locking deployments together. Enter the Minilith.
 ---
 include::fromsi.adoc[]
 
