@@ -1,7 +1,9 @@
 
-run:
+.PHONY: images
+
+run: images
 	jekyll clean
-	jekyll serve --incremental
+	jekyll serve --drafts --incremental
 
 clean:
 	jekyll clean
@@ -21,3 +23,6 @@ prepare:
 
 install: prepare render
 	./buildsite.sh
+
+images:
+	$(MAKE) -C $@

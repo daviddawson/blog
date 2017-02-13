@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Microservices and Philosophy</title>
-  <meta name="description" content="Understanding Microservices by seeing Architecture as Software Philosophy">
+  <title>Introducing Muon</title>
+  <meta name="description" content="Introduction to the Muon project, it's goals, aspirations and getting started. Muon is a system for building distributed systems well, including Microservice...">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/microservices/2016/07/20/microservices-philosophy.html">
+  <link rel="canonical" href="/2017-02-10-muon-intro.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -125,285 +125,199 @@
   <div class='row'>
         <div class='images'>
           
-            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="/images/vis/thinking.jpg" /></div>
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="/images/vis/clouds1.jpg" /></div>
           
         </div>
         <div class='content'>
           <p class='info'>
 
 
-            <span>July 20, 2016</span>
+            <span>February 10, 2017</span>
           </p>
-          <h3><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></h3>
-          <div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This article was originally posted at simplicityitself.com.</p>
+          <h3><a href="/2017-02-10-muon-intro.html">Introducing Muon</a></h3>
+          <div class="videoblock">
+<div class="content">
+<iframe src="https://www.youtube.com/embed/rPQoq7ThGAU?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
 </div>
 <div class="paragraph">
-<p>Simplicity Itself has now closed, and so I have moved my articles here.</p>
+<p>For the past bunch of years, I&#8217;ve been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It&#8217;s fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!</p>
 </div>
 <div class="paragraph">
-<p>If you would like to read up on why it closed - See <a href="/blog/2017/02/04/simplicity-itself-shutdown.html">here</a></p>
+<p>Over the past 5 years or so, these systems I have been involved with have been recognisably what are now called Microservice systems. The only difference I see between them is the underlying <a href="/microservices/2016/07/20/microservices-philosophy.html">motivations and philosophy</a></p>
 </div>
 <div class="paragraph">
-<p>I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.</p>
+<p>As I&#8217;ve built these systems, large, small, high performance, low performance and so on. I&#8217;ve noticed a set of things that keep on coming up. Noq quite common problems, but common complaints perhaps. My current bug bears in the Microservices world are the <strong>abuse of http</strong> for local communication and the discarding of <strong>polyglot</strong></p>
 </div>
 <div class="paragraph">
-<p>I run the <a href="http://muoncore.io/">Muon microservices platform project</a> and the <a href="http://meetup.com/London-Microservices-User-Group/">London Microservices User Group</a></p>
+<p>HTTP is a lovely protocol, easy to grasp, easy to use. It is at the same time, too flexible and semantically weak to be the one and only protocol for use in a Microservice system.  It is too flexible, as some of the most important things are left unspecified, for example versioning/ upgrades, schemas, conversational state management.   It is semantically weak in that it can do request&#8594;response, and nothing more.</p>
 </div>
 <div class="paragraph">
-<p>I&#8217;m <a href="/hireme.html">available to hire</a> for small and large projects</p>
-</div>
-</td>
-</tr>
-</table>
+<p>I don&#8217;t wish to criticise HTTP as a protocol, only to say that it isn&#8217;t good enough to be the only basis for a distributed system tocommunicate with. Every microservice system that I&#8217;ve seen beyond the trivial uses messaging of some sort, either replacing HTTP fully, or relegating HTTP to queries. The aim is to get rid of HTTP in order to get rid of what is being <strong>done with HTTP</strong>, which is building deep RPC style dependency webs. Which are awful.</p>
 </div>
 <div class="paragraph">
-<p>When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, "what is a Microservice?"</p>
+<p>The polyglot nature of Microservices is now under threat. Pretty much every Microservice framework is language locked, and seems to be happy to remain that way. I don&#8217;t like this state of affairs, I code in several languages at once, and I see benefits in doing this. Others may disagree, but if you buy into one of the current fameworks around, you are locked to a runtime by the investment in that framework, even if you&#8217;ve Swaggerred up. less so than a monolith, yes, but locked in all the same.</p>
 </div>
 <div class="paragraph">
-<p>In many respects, it&#8217;s a question that defies a single answer.</p>
+<p>A couple of years ago, I started a research project into the communication aspects of Microservices and how that can be made more effective.</p>
 </div>
 <div class="paragraph">
-<p>Since we&#8217;re a consultancy specialising in Microservices, we did a review a while ago with our clients and partners (some of you may remember), asking
-this very question!</p>
+<p>This project was called Muon, and I&#8217;ve talked about it a couple of times since. Showing where the research has gotten up to.  I then worked with a research time at Sky, CIS Tech Futures, ably led by Gawain Hammond. THat team has recently been dissolved, but in the 2 years we researched and built together, we did some fascinating things.</p>
 </div>
 <div class="paragraph">
-<p>The answers we got back were informative and ranged from the specific and technical, to the vague and emotional.</p>
-</div>
-<div class="paragraph">
-<p>Some examples :-</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Small web services</p>
-</li>
-<li>
-<p>Bounded Contexts</p>
-</li>
-<li>
-<p>Low LOC (yep!)</p>
-</li>
-<li>
-<p>Small REST services</p>
-</li>
-<li>
-<p>Pipes and filters</p>
-</li>
-<li>
-<p>Not SOA</p>
-</li>
-<li>
-<p>Fine grained SOA!</p>
-</li>
-<li>
-<p>OO in the large</p>
-</li>
-<li>
-<p>Functional in the large</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>and many, many others.</p>
-</div>
-<div class="paragraph">
-<p>The problem we ended up with was that, when we layed them out to sort the common definition, we found that there wasn&#8217;t one.</p>
-</div>
-<div class="paragraph">
-<p>As in, there wasn&#8217;t a point of agreement. Instead we had broadly disjoint sets. This kind of accounts for the lack of a
-clear definition!</p>
-</div>
-<div class="paragraph">
-<p>Digging a little deeper, we found two things that did find general agreement.</p>
-</div>
-<div class="paragraph">
-<p>The first, is <strong>isolation</strong>. The property of pulling a system apart, generally using a network boundary, although not always (eg OSGI and NetKernel).</p>
-</div>
-<div class="paragraph">
-<p>The second point of agreement was a deep <strong>aspiration</strong>. The quality that the world would be better, if we deploy microservices.</p>
-</div>
-<div class="paragraph">
-<p>Obviously, with my background as a hard technologist, this was fairly appalling. (although as a consultant, my proposal press fluttered!)</p>
+<p>This post is to introduce the Muon projects and give a taster to what they promise.</p>
 </div>
 <div class="sect1">
-<h2 id="the-microservice-architecture">The Microservice Architecture</h2>
+<h2 id="what-does-it-let-me-do">What does it let me do?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An interesting thing came up though, which was the terminology that people use when talking microservices. For much of the conversations, the phrase
-used is actually "a microservice architecture", rather than just "microservices".</p>
+<p>Muon lets you build and then attach services together very quickly, allows them to communicate in a variety of
+ways that we call <code>Protocols</code>. We have a set of re-usable microservices
+that help you do certain things out of the box, and none of this cares about your infrastructure. You can choose Kubernetes, Mesos and AWS, or all at the same time and Muon services will run happily.</p>
 </div>
 <div class="paragraph">
-<p>This intrigued me, as it leads directly to the question, if I can&#8217;t define Microservices, can I define <strong>architecture</strong>?</p>
+<p>It gives you support in all the right places, works with your infrastructure of choice, and gets out of the way
+of you writing code that <strong>makes you money</strong> (or whatever your motivation is!).</p>
 </div>
 <div class="paragraph">
-<p>Well, to me, software architecture is something of a debased term, being stolen from construction. Is it the same as
- design?  Many would say, yes it is.</p>
+<p>For example, here&#8217;s a simple node service</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="javascript"></code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>I&#8217;d take the opposite and say that, no, it can&#8217;t be, and this is simply proven through cardinality.</p>
+<p>Here&#8217;s a Java service that consumes it</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"></code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Looking over a system, you see myriad design decisions, each line has some aspect of design associated with it.
-There appears to be an unlimited number of design decisions available to the software developer.</p>
+<p>Quick, right?</p>
 </div>
 <div class="paragraph">
-<p>Architecture?  There&#8217;s recognisably fairly few software architectures. Certainly a number with a limit, maybe a few dozen that
-are in active use. Consider things such as <strong>n-tier</strong>, <strong>SEDA</strong>, <strong>event based</strong> etc.</p>
+<p>So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form.</p>
 </div>
 <div class="paragraph">
-<p>So, just with counting, they aren&#8217;t the same thing.</p>
+<p>At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a <code>bichannel</code> to that service, arbitrarily complex message protocols can be written that make use of this.</p>
 </div>
 <div class="paragraph">
-<p>When I think of architecture, certain ideas and phrases go through my mind :-</p>
+<p>Making this easy to use and extend is where we&#8217;ve spent our time, but all aspects of Muon implement this core idea.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>A set of constraints put on the system</p>
-</li>
-<li>
-<p>A set of mental tools used to understand problems and create solutions</p>
-</li>
-<li>
-<p>The route to the design, rather than the design itself</p>
-</li>
-<li>
-<p>A framework for arranging your skills, knowledge and aims within.</p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="protocol-example-reactive-streams">Protocol Example: Reactive Streams</h3>
+<div class="paragraph">
+<p>To take an example of a commonly required for of networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.</p>
 </div>
 <div class="paragraph">
-<p>Sound fair?</p>
+<p>The RS specification describes a set of signals being sent back and forth between a <code>Publisher</code> and a <code>Subscriber</code>. In Muon, we can model these as messages sent between two services along their connecting <code>bichannel</code>.</p>
 </div>
 <div class="paragraph">
-<p>I know all these ideas from another field, well outside of software. <strong>Philosophy</strong></p>
+<p>This is in fact what we have as one of the Muon protocols, an implementation of Reactive Streams at the network level, so you can discover and subscribe to networked <code>Observables</code>.</p>
 </div>
 <div class="paragraph">
-<p>From this point of view, software architecture is a form of philosophy, and that leads us to an
-interesting place as far as <strong>The Microservice Architecture</strong> goes.</p>
+<p>This means we can network reactive streams implementations very easily, and support this across different languages and runtimes, so long as they have the Muon Reactive Streams protocol implemented.  If you have a Java RS <code>Publisher</code>, Muon can let you subscribe to that directly from a browser, including native back pressure signals, via the Muon.js browser implementation.</p>
 </div>
 <div class="paragraph">
-<p>We can reframe this as the <strong>Microservices Philosophy</strong> and have it mean fundamentally the same thing. This is something I&#8217;m far more comfortable with,
- it&#8217;s actually much more concrete!</p>
+<p>Of course, this is just one protocol that we can implement. There are others, and soon there will be many others, all cross platform and able to be formally verified.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="protocol-example-introspection">Protocol Example: Introspection</h3>
+<div class="paragraph">
+<p>This idea of defining messaging protocols as the basis of Muon had some interesting effects. Since we are specifying the interface as a rich, message protocol, including interaction and message content (both the structure/ schema and also semantically), we decided that we could have each Muon library implement an <strong><em>Introspection</em></strong> protocol. This is the ability to ask a running service what it can do.</p>
 </div>
 <div class="paragraph">
-<p>We&#8217;ve been understanding and grappling with philosophy for thousands of years, and we&#8217;ve got a lot of wisdom to draw upon.</p>
+<p>This means that we can use the Muon cli, for example, to do this :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>muon introspect remote-service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will then show what the service can do, across all of the implemented protocols</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This fairly rich introspection information allows you, and running services, to understand the environment they are running in and begin to intelligently interact with it. It allows them to run <strong>autonomously</strong>.</p>
+</div>
+<div class="paragraph">
+<p>It also let us implement advanced tab completion on the CLI. So you can, for example, tab complete service names and streams provided by a service</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>&gt; muon stream &lt;TAB&gt;
+photon my-remote-service aether ather-password random-service
+
+&gt; muon stream my-remote-service &lt;TAB&gt;
+/stream1 /stream2 /mystream</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same can be done for event source replay streams, RPC and is fairly easy to add for your own Protocols 9and will become even easier!)</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="the-microservice-philosophy">The Microservice Philosophy</h2>
+<h2 id="technology">Technology</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>From this point of view then, we can begin to frame Microservices very differently. Instead of reaching for a highly prescriptive
-view on the particular methods, technologies or techniques, we can start to frame our microservices journey in more philosophical terms.</p>
+<p>Muon is a broad set of projects, but also fairly simple. There are a set of implementation of Muon available now, covering Java, Clojure and Nodejs. These are all roughly feature equivalent and compatible with each other. A C++ version is being developed, which will enable very broad language support via language bindings.</p>
 </div>
 <div class="paragraph">
-<p>What is your end goal? What properties of the resulting system do you actually want to achieve?</p>
+<p>Alongside these, there are a set of prebuilt Muon microservices that implement commonly required features. The most advanced of these is Photon, an event store with event projection support that provides the backing for the Muon <code>event</code> protocols.</p>
 </div>
 <div class="paragraph">
-<p>This turns the discussion of 'what makes a microservices' from the prescriptive, to the descriptive. It allows us to evaluate
-the resulting systems not in terms of how they were constructed, or what they used, but what they actually <strong>do</strong>.</p>
+<p>You can see these as a platform of sorts, or as a set of tools you pull together to build your own services and use the ones we&#8217;ve made.</p>
 </div>
 <div class="paragraph">
-<p>For us, the essential properties of a successful Microservice system are all about responding positively to change pressure.
-A system that not only accepts and adapts to change, but learns and improves itself in response to that change happening.</p>
+<p>There are a set of plugins that are being developed to extend the Muon libraries to support working with your existing technologies. These cover <strong>service discovery</strong>, <strong>network transport</strong> and <strong>protocols</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/muon-architecture.png" alt="Muon Architecture">
+</div>
+<div class="title">Figure 1. Muon architecture, showing a Reactive Stream Client connecting to a remote Reactive Stream server</div>
+</div>
+<div class="sect2">
+<h3 id="discovery">Discovery</h3>
+
+</div>
+<div class="sect2">
+<h3 id="transports">Transports</h3>
+
+</div>
+<div class="sect2">
+<h3 id="protocols">Protocols</h3>
+<div class="paragraph">
+<p>Enabling users to define their own protocols and allow them to be used cross platform is one of the key aims of the Muon project. This is requiring fairly advanced work to design and develop a portable <strong>Protocol Language</strong> that supports verification, is reactive in nature and can run across the Muon implementations.</p>
 </div>
 <div class="paragraph">
-<p>Luckily, a term was invented for this property <strong>antifragile</strong>.</p>
+<p>This work is well underway, we hope to have something to show within the next month or two that will enable you to define a messaging protocol in a simple, clean, declarative way that will support debugging, easy testing and enable a huge leap forward.</p>
 </div>
-<div class="paragraph">
-<p>This was coined by Nicolas Taleb, originally referring to economic and financial systems that benefit from stresses, rather than collapsing.</p>
-</div>
-<div class="paragraph">
-<p>From a pure tech point of view, this seems of limited use, is it really broadly applicable to have a system that responds to stresses?</p>
-</div>
-<div class="paragraph">
-<p>When you are considering Microservices as a purely technical endeavour, then frankly no, its not really a properyy we can easily generate.</p>
-</div>
-<div class="paragraph">
-<p>When looking at Microservices as a distributed system philosophy, and tech as a means to an end, then we have the opportunity to broaden our horizons
-somewhat in pursuit of Antifragility.</p>
-</div>
-<div class="paragraph">
-<p>As soon as we bring people into the definition of 'the system', the development team in particular, then generating antifragile behaviour becomes easy and desirable.</p>
-</div>
-<div class="paragraph">
-<p>The famous <strong>Chaos Monkey</strong> from Netflix is an excellent example of architecture given form. It isn&#8217;t merely a failure testing tool, it&#8217;s the architecture of the system
- enforced by a tool.</p>
-</div>
-<div class="paragraph">
-<p>The antifragile feedback cycle in this case runs like this :-</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>The dev team is made responsible for production outages.</p>
-</li>
-<li>
-<p>Chaos Monkey generates production outages, on the weekend.</p>
-</li>
-<li>
-<p>The dev team comes in on Monday, and changes the system so that it can tolerate partial failure and still run.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The system then has been stressed, and then visibly improved itself in response to that stress. It can now tolerate failure in VM resources.</p>
-</div>
-<div class="paragraph">
-<p>The system has become Antifragile.</p>
-</div>
-<div class="paragraph">
-<p>This is done by creating the appropriate feedback loops, and then generating appropriate stress to push signals down those feedback loops.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="of-devops-and-continuous-delivery">Of DevOps and Continuous Delivery</h2>
+<h2 id="getting-started">Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is where Microservices overlaps heavily with the DevOps movement and Continuous Delivery.</p>
+<p>The best place to get started is to visit the <a href="http://muoncore.io/guide/getting-involved.html">Getting Involved</a> page.</p>
 </div>
 <div class="paragraph">
-<p>Both place value on feedback cycles and improvement.</p>
+<p>If you are interested in Muon and would like to help the project then it is open to being sponsored by friendly organisations. The more time the core contributors dedicate to the project the faster it will move. <a href="/me.html">Get in touch</a> for more info on sponsoring.</p>
 </div>
 <div class="paragraph">
-<p>DevOps comes from a cultural and operational viewpoint, Continuous Delivery approaches from the process space, Microservices from the runtime technical viewpoint.</p>
-</div>
-<div class="paragraph">
-<p>All are speaking similar language, and I don&#8217;t really care which you subscribe to in order to back up your philosophy of benefiting from change.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="where-does-this-lead">Where does this lead?</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Of course, this leads to building highly distributed systems. All the issues that are discussed, from log management,
-platform comparison, containerisation, data handling and the like are all valid.</p>
-</div>
-<div class="paragraph">
-<p>Your system will almost certain look like a set of processes coordinating over requests. What I&#8217;d like you to take away is
-that there is an objective measure you can use to evaluate your success, or otherwise, when deploying a Microservice system.</p>
-</div>
-<div class="paragraph">
-<p>That measure is how well your system expresses the essential properties defined by your architecture. These essential
- properties don&#8217;t tend to change, so they can be used to measure against over the lifetime of a system.</p>
-</div>
-<div class="paragraph">
-<p>For us, the ability to change and benefit from that change is paramout. You may be looking more at team scaling, or simple runtime scaling.</p>
-</div>
-<div class="paragraph">
-<p>If you aren&#8217;t achieving these properties, and yet paying the Microservices tax (which can be <strong>expensive!</strong>) then Microservices may well not be for you.</p>
+<p>I hope to see you there!</p>
 </div>
 </div>
 </div>
@@ -420,12 +334,6 @@ that there is an objective measure you can use to evaluate your success, or othe
                 
 
                 <a href="/blog/tags#microservices">microservices</a>,
-                
-
-                <a href="/blog/tags#devops">devops</a>,
-                
-
-                <a href="/blog/tags#antifragile">antifragile</a>,
                 
                 <a href="/blog/tags"><em>Browse all tags</em></a>
             </p>
