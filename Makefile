@@ -8,7 +8,7 @@ run: images
 clean:
 	jekyll clean
 
-render: images
+render:
 	jekyll clean
 	jekyll build
 
