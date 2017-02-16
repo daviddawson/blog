@@ -13,7 +13,7 @@ tags:
  - microservices
 ---
 
-video::rPQoq7ThGAU[youtube]
+//video::rPQoq7ThGAU[youtube]
 
 For the past bunch of years, I've been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It's fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!
 
@@ -58,15 +58,29 @@ Here's a Java service that consumes it
 
 Quick, right?
 
-So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form.
+So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form. Muon is about distributed communication.
 
 At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a `bichannel` to that service, arbitrarily complex message protocols can be written that make use of this.
 
 Making this easy to use and extend is where we've spent our time, but all aspects of Muon implement this core idea.
 
+.Communicating Sequential Processes - CSP
+****
+Muon is implemented using a form of CSP. It uses the core concept of the `channel` to attach logic together. Logic
+code sees only the channels it is connected to, not the agents or processes at the other end of the channel.
+
+In Muon, the CSP model is both simplified, and extended. It is simplified in that much of the advanced process algebra isn't present, only channel->process->channel with async dispatching and limited other special cases. It is extended in that all channels in Muon are fully bidirectional, to make that explicit we often refer to them as a `bichannel`.
+
+This model allows us to create channels that compress, encrypt and cross a network, where the Protocol code we actually care about is kept insulated.
+****
+
+The concept of a message *Protocol* is core to Muon. It describes the ability to define interactions that are far richer than HTTP could be, coordinating multiple services, handling errors, being efficient in directing and orchestrating remote services, giving the ability to maintain long running conversations across the system.
+
+All the while, with the hard Protocol/ BiChannel split, these are easily testable away from your transport implementations.
+
 ### Protocol Example: Reactive Streams
 
-To take an example of a commonly required for of networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.
+To take an example of something commonly required when using networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.
 
 The RS specification describes a set of signals being sent back and forth between a `Publisher` and a `Subscriber`. In Muon, we can model these as messages sent between two services along their connecting `bichannel`.
 
