@@ -135,12 +135,7 @@
             <span>February 10, 2017</span>
           </p>
           <h3><a href="/2017-02-10-muon-intro.html">Introducing Muon</a></h3>
-          <div class="videoblock">
-<div class="content">
-<iframe src="https://www.youtube.com/embed/rPQoq7ThGAU?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
-<div class="paragraph">
+          <div class="paragraph">
 <p>For the past bunch of years, I&#8217;ve been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It&#8217;s fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!</p>
 </div>
 <div class="paragraph">
@@ -199,7 +194,7 @@ of you writing code that <strong>makes you money</strong> (or whatever your moti
 <p>Quick, right?</p>
 </div>
 <div class="paragraph">
-<p>So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form.</p>
+<p>So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form. Muon is about distributed communication.</p>
 </div>
 <div class="paragraph">
 <p>At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a <code>bichannel</code> to that service, arbitrarily complex message protocols can be written that make use of this.</p>
@@ -207,10 +202,31 @@ of you writing code that <strong>makes you money</strong> (or whatever your moti
 <div class="paragraph">
 <p>Making this easy to use and extend is where we&#8217;ve spent our time, but all aspects of Muon implement this core idea.</p>
 </div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Communicating Sequential Processes - CSP</div>
+<div class="paragraph">
+<p>Muon is implemented using a form of CSP. It uses the core concept of the <code>channel</code> to attach logic together. Logic
+code sees only the channels it is connected to, not the agents or processes at the other end of the channel.</p>
+</div>
+<div class="paragraph">
+<p>In Muon, the CSP model is both simplified, and extended. It is simplified in that much of the advanced process algebra isn&#8217;t present, only channel&#8594;process&#8594;channel with async dispatching and limited other special cases. It is extended in that all channels in Muon are fully bidirectional, to make that explicit we often refer to them as a <code>bichannel</code>.</p>
+</div>
+<div class="paragraph">
+<p>This model allows us to create channels that compress, encrypt and cross a network, where the Protocol code we actually care about is kept insulated.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The concept of a message <strong>Protocol</strong> is core to Muon. It describes the ability to define interactions that are far richer than HTTP could be, coordinating multiple services, handling errors, being efficient in directing and orchestrating remote services, giving the ability to maintain long running conversations across the system.</p>
+</div>
+<div class="paragraph">
+<p>All the while, with the hard Protocol/ BiChannel split, these are easily testable away from your transport implementations.</p>
+</div>
 <div class="sect2">
 <h3 id="protocol-example-reactive-streams">Protocol Example: Reactive Streams</h3>
 <div class="paragraph">
-<p>To take an example of a commonly required for of networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.</p>
+<p>To take an example of something commonly required when using networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.</p>
 </div>
 <div class="paragraph">
 <p>The RS specification describes a set of signals being sent back and forth between a <code>Publisher</code> and a <code>Subscriber</code>. In Muon, we can model these as messages sent between two services along their connecting <code>bichannel</code>.</p>
@@ -562,6 +578,17 @@ photon my-remote-service aether ather-password random-service
   ga('require', 'linkid');
   ga('send', 'pageview');
 
+</script>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- test -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6919980001759109"
+     data-ad-slot="9931486671"
+     data-ad-format="auto"></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
 
