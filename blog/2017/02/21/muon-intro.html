@@ -153,16 +153,16 @@
 <p>Over the past 5 years or so, these systems I have been involved with have been recognisably what are now called Microservice systems. The only difference I see between them is the underlying <a href="/microservices/2016/07/20/microservices-philosophy.html">motivations and philosophy</a></p>
 </div>
 <div class="paragraph">
-<p>As I&#8217;ve built these systems, large, small, high performance, low performance and so on. I&#8217;ve noticed a set of things that keep on coming up. Noq quite common problems, but common complaints perhaps. My current bug bears in the Microservices world are the <strong>abuse of http</strong> for local communication and the discarding of <strong>polyglot</strong></p>
+<p>As I&#8217;ve built these systems, large, small, high performance, low performance and so on. I&#8217;ve noticed a set of things that keep on coming up. Not quite common problems, but common complaints perhaps. My current bug bears in the Microservices world are the <strong>abuse of http</strong> for local communication and the discarding of <strong>polyglot</strong></p>
 </div>
 <div class="paragraph">
 <p>HTTP is a lovely protocol, easy to grasp, easy to use. It is at the same time, too flexible and semantically weak to be the one and only protocol for use in a Microservice system.  It is too flexible, as some of the most important things are left unspecified, for example versioning/ upgrades, schemas, conversational state management.   It is semantically weak in that it can do request&#8594;response, and nothing more.</p>
 </div>
 <div class="paragraph">
-<p>I don&#8217;t wish to criticise HTTP as a protocol, only to say that it isn&#8217;t good enough to be the only basis for a distributed system tocommunicate with. Every microservice system that I&#8217;ve seen beyond the trivial uses messaging of some sort, either replacing HTTP fully, or relegating HTTP to queries. The aim is to get rid of HTTP in order to get rid of what is being <strong>done with HTTP</strong>, which is building deep RPC style dependency webs. Which are awful.</p>
+<p>I don&#8217;t wish to criticise HTTP as a protocol, only to say that it isn&#8217;t good enough to be the only basis for a distributed system to communicate with. Every microservice system that I&#8217;ve seen beyond the trivial uses messaging of some sort, either replacing HTTP fully, or relegating HTTP to queries. The aim is to get rid of HTTP in order to get rid of what is being <strong>done with HTTP</strong>, which is building deep RPC style dependency webs. Which are awful.</p>
 </div>
 <div class="paragraph">
-<p>The polyglot nature of Microservices is now under threat. Pretty much every Microservice framework is language locked, and seems to be happy to remain that way. I don&#8217;t like this state of affairs, I code in several languages at once, and I see benefits in doing this. Others may disagree, but if you buy into one of the current fameworks around, you are locked to a runtime by the investment in that framework, even if you&#8217;ve Swaggerred up. less so than a monolith, yes, but locked in all the same.</p>
+<p>The polyglot nature of Microservices is now under threat. Pretty much every Microservice framework is language locked, and seems to be happy to remain that way. I don&#8217;t like this state of affairs, I code in several languages at once, and I see benefits in doing this. Others may disagree, but if you buy into one of the current frameworks around, you are locked to a runtime by the investment in that framework, even if you&#8217;ve Swaggerred up. less so than a monolith, yes, but locked in all the same.</p>
 </div>
 <div class="paragraph">
 <p>A couple of years ago, I started a research project into the communication aspects of Microservices and how that can be made more effective.</p>
@@ -455,7 +455,7 @@ photon my-remote-service aether ather-password random-service
                 <a href="/blog/tags#architecture">architecture</a>,
                 
 
-                <a href="/blog/tags#continuousdelivery">continuousdelivery</a>,
+                <a href="/blog/tags#muon">muon</a>,
                 
 
                 <a href="/blog/tags#microservices">microservices</a>,
