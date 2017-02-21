@@ -200,6 +200,14 @@ This work is well underway, we have developed running protocols using it already
 
 I'm going to be writing a series of developer diaries on the project, highlighting different areas and the progress that is being made. Subscribe to the RSS feed or follow me on Twitter for updates.
 
+Muon focuses hard on the nature of distributed communication, this leads to some interesting places, which I'll be writing about in their own right.
+
+* State management, CQRS, DDD and stream processing and how they interelate. This will introduce the Muon project event store, link:http://muoncore.io/submodules/photon/docs/index.html[Photon.]
+* Protocols, how to define them and the upcoming Protocol Language
+* Creating Transports and Discovery implementations for Muon
+* Handling failures
+* Optimising messaging performance in various ways.
+
 ## Getting Started
 
 The best place to get started is to visit the http://muoncore.io/guide/getting-involved.html[Getting Involved] page.
