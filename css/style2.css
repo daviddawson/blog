@@ -3466,6 +3466,9 @@ body ul.sequence-canvas .button.medium.success {
   .modBlogPost.big .content {
     padding:0 15px;
   }
+  div.documentation #main h2 {
+    margin-top:0
+  }
 }
 
 @media only screen and (min-width: 1280px) {
