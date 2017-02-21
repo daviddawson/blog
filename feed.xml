@@ -5,9 +5,307 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 18 Feb 2017 17:51:12 +0000</pubDate>
-    <lastBuildDate>Sat, 18 Feb 2017 17:51:12 +0000</lastBuildDate>
+    <pubDate>Tue, 21 Feb 2017 12:22:38 +0000</pubDate>
+    <lastBuildDate>Tue, 21 Feb 2017 12:22:38 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Introducing Muon</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This article introduces a project I&amp;#8217;ve been working on for the past few years in one form or another. Muon&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For the past bunch of years, I&amp;#8217;ve been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It&amp;#8217;s fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over the past 5 years or so, these systems I have been involved with have been recognisably what are now called Microservice systems. The only difference I see between them is the underlying &lt;a href=&quot;/microservices/2016/07/20/microservices-philosophy.html&quot;&gt;motivations and philosophy&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;As I&amp;#8217;ve built these systems, large, small, high performance, low performance and so on. I&amp;#8217;ve noticed a set of things that keep on coming up. Noq quite common problems, but common complaints perhaps. My current bug bears in the Microservices world are the &lt;strong&gt;abuse of http&lt;/strong&gt; for local communication and the discarding of &lt;strong&gt;polyglot&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;HTTP is a lovely protocol, easy to grasp, easy to use. It is at the same time, too flexible and semantically weak to be the one and only protocol for use in a Microservice system.  It is too flexible, as some of the most important things are left unspecified, for example versioning/ upgrades, schemas, conversational state management.   It is semantically weak in that it can do request&amp;#8594;response, and nothing more.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I don&amp;#8217;t wish to criticise HTTP as a protocol, only to say that it isn&amp;#8217;t good enough to be the only basis for a distributed system tocommunicate with. Every microservice system that I&amp;#8217;ve seen beyond the trivial uses messaging of some sort, either replacing HTTP fully, or relegating HTTP to queries. The aim is to get rid of HTTP in order to get rid of what is being &lt;strong&gt;done with HTTP&lt;/strong&gt;, which is building deep RPC style dependency webs. Which are awful.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The polyglot nature of Microservices is now under threat. Pretty much every Microservice framework is language locked, and seems to be happy to remain that way. I don&amp;#8217;t like this state of affairs, I code in several languages at once, and I see benefits in doing this. Others may disagree, but if you buy into one of the current fameworks around, you are locked to a runtime by the investment in that framework, even if you&amp;#8217;ve Swaggerred up. less so than a monolith, yes, but locked in all the same.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A couple of years ago, I started a research project into the communication aspects of Microservices and how that can be made more effective.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This project was called Muon, and I&amp;#8217;ve talked about it a couple of times since. Showing where the research has gotten up to.  I then worked with a research time at Sky, CIS Tech Futures, ably led by Gawain Hammond. THat team has recently been dissolved, but in the 2 years we researched and built together, we did some fascinating things.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This post is to introduce the Muon projects and give a taster to what they promise.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;what-does-it-let-me-do&quot;&gt;What does it let me do?&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Muon lets you build and then attach services together very quickly, allows them to communicate in a variety of
+ways that we call &lt;code&gt;Protocols&lt;/code&gt;. We have a set of re-usable microservices
+that help you do certain things out of the box, and none of this cares about your infrastructure. You can choose Kubernetes, Mesos and AWS, or all at the same time and Muon services will run happily.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It gives you support in all the right places, works with your infrastructure of choice, and gets out of the way
+of you writing code that &lt;strong&gt;makes you money&lt;/strong&gt; (or whatever your motivation is!).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For example, here&amp;#8217;s a simple Java service, exposing a simple request/ response protocol (ie, what is used for_RPC_)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code data-lang=&quot;java&quot;&gt;&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;static&lt;/span&gt; &lt;span style=&quot;color: #B00040&quot;&gt;void&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;main&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;String&lt;span style=&quot;color: #666666&quot;&gt;[]&lt;/span&gt; args&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;throws&lt;/span&gt; Exception &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+
+    AutoConfiguration config &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; MuonConfigBuilder&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;withServiceIdentifier&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;rpc-test&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;build&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;();&lt;/span&gt;
+
+    Muon muon &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; MuonBuilder&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;withConfig&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;config&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;build&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;();&lt;/span&gt;
+
+    muon&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;getDiscovery&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;().&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;blockUntilReady&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;();&lt;/span&gt;
+
+    muon&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;handleRequest&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;path&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;),&lt;/span&gt; wrapper &lt;span style=&quot;color: #666666&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+      wrapper&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;ok&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;Hello World&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;);&lt;/span&gt;
+    &lt;span style=&quot;color: #666666&quot;&gt;});&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Apart from the build file, this is it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Here&amp;#8217;s a JavaScript service that consumes it&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code data-lang=&quot;javascript&quot;&gt;&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;var&lt;/span&gt; muoncore &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; require(&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;muon-core&amp;#39;&lt;/span&gt;)
+
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;var&lt;/span&gt; amqpurl &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;amqp://muon:microservices@localhost&amp;quot;&lt;/span&gt;
+muon &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; muoncore.create(&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;nodejs-client&amp;quot;&lt;/span&gt;, amqpurl)
+
+muon.request(&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;rpc://rpc-test/ping&amp;#39;&lt;/span&gt;, &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;i love dogs&amp;quot;&lt;/span&gt;).then(&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;function&lt;/span&gt; (event) {
+    logger.warn(&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;response received! event=&amp;quot;&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;+&lt;/span&gt; JSON.stringify(event))
+}, &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;function&lt;/span&gt; (err) {
+    logger.error(&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;error received!!!!!&amp;quot;&lt;/span&gt;)
+})&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Again, you&amp;#8217;ll need a package.json/ NPM setup, but nothing else.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Quick, right?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What just happened there is that we defined an endpoint in the Request/Response &lt;strong&gt;&lt;em&gt;messaging protocol&lt;/em&gt;&lt;/strong&gt;. When you call &lt;code&gt;muon.request&lt;/code&gt;, the remote service is discovered, a method of network communication is chosen (in this case AMQP), a connection is made to the remote, a message representing the request is sent and packaged into something to be sent across the AMQP broker (in this case). The server side receives it, unpacks it into a Request and gives the ability to respond to the message via the &lt;code&gt;requestWrapper.ok&lt;/code&gt; method. This gives good threading behaviour as in all cases, conversation state is bound up to the logical Muon channel, not to any particular thread.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Although Muon lets you build Microservices, as you just saw a very simple example of, it does much more than that. We researched into the nature of &lt;strong&gt;&lt;em&gt;distributed communication&lt;/em&gt;&lt;/strong&gt;, and how we might tackle it in a generalised form. Muon is about distributed communication and making this as easy to use, reason about and importantly, &lt;strong&gt;extend&lt;/strong&gt;, as local method calls.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a &lt;code&gt;bichannel&lt;/code&gt; to that service, arbitrarily complex message protocols can be written that make use of this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Making this easy to use and extend is where we&amp;#8217;ve spent our time, but all aspects of Muon implement this core idea.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sidebarblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Communicating Sequential Processes - CSP&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Muon is implemented using a form of CSP. It uses the core concept of the &lt;code&gt;channel&lt;/code&gt; to attach logic together. Logic
+code sees only the channels it is connected to, not the agents or processes at the other end of the channel.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In Muon, the CSP model is both simplified, and extended. It is simplified in that much of the advanced process algebra isn&amp;#8217;t present, only channel&amp;#8594;process&amp;#8594;channel with async dispatching and limited other special cases. It is extended in that all channels in Muon are fully bidirectional, to make that explicit we often refer to them as a &lt;code&gt;bichannel&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This model allows us to create channels that compress, encrypt and cross a network, where the Protocol code we actually care about is kept insulated.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;protocols-codifying-interactions-between-microservices&quot;&gt;Protocols - Codifying interactions between microservices&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The concept of a message &lt;strong&gt;Protocol&lt;/strong&gt; is core to Muon. It describes the ability to define interactions that are far richer than HTTP could be, coordinating multiple services, handling errors, being efficient in directing and orchestrating remote services, giving the ability to maintain long running conversations across the system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;All the while, with the hard Protocol/ BiChannel split, these are easily testable away from your transport implementations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;protocol-example-reactive-streams&quot;&gt;Protocol Example: Reactive Streams&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To take an example of something commonly required when using networked data, streaming. Currently the JVM world has standardised on the &lt;a href=&quot;www.reactive-streams.org&quot;&gt;Reactive Streams&lt;/a&gt; specification as the gold standard for streaming interoperability within the JVM. This has been adopted into Java 9, and so can be relied on to have broad support.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Wouldn&amp;#8217;t it be useful to have access to this standard &lt;strong&gt;&lt;em&gt;outside&lt;/em&gt;&lt;/strong&gt; of the JVM?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The RS specification describes a set of signals being sent back and forth between a &lt;code&gt;Publisher&lt;/code&gt; and a &lt;code&gt;Subscriber&lt;/code&gt;. These are method calls, however in Muon, we can model these signals as messages sent between two services along their connecting &lt;code&gt;bichannel&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is in fact what we have as one of the Muon protocols, an implementation of Reactive Streams at the network level, so you can discover and subscribe to networked &lt;code&gt;Publishers&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This means we can network reactive streams implementations very easily, and support this across different languages and runtimes, so long as they have the Muon Reactive Streams protocol implemented.  If you have a Java RS &lt;code&gt;Publisher&lt;/code&gt;, Muon can let you subscribe to that directly from a Nodejs service, or another language, event directly from a browser, including all the native back pressure signals, via the Muon.js browser implementation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Of course, this is just one protocol that we can implement. There are others, and soon there will be many others, all cross platform and able to be formally verified.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;protocol-example-introspection&quot;&gt;Protocol Example: Introspection&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This idea of defining messaging protocols as the basis of Muon had some interesting effects. Since we are specifying the interface as a rich, message protocol, including interaction and message content (both the structure/ schema and also semantically), we decided that we could have each Muon library implement an &lt;strong&gt;&lt;em&gt;Introspection&lt;/em&gt;&lt;/strong&gt; protocol. This is the ability to ask a running service what it can do.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This means that we can use the Muon cli, for example, to do this :&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code&gt;muon introspect remote-service&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It will then show what the service can do, across all of the implemented protocols.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This fairly rich introspection information allows you, and running services, to understand the environment they are running in and begin to intelligently interact with it. It allows them to run &lt;strong&gt;autonomously&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It also let us implement advanced tab completion on the CLI. So you can, for example, tab complete service names and streams provided by a service&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code&gt;&amp;gt; muon stream &amp;lt;TAB&amp;gt;
+photon my-remote-service aether ather-password random-service
+
+&amp;gt; muon stream my-remote-service &amp;lt;TAB&amp;gt;
+/stream1 /stream2 /mystream&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The same can be done for event source replay streams, RPC and is fairly easy to add for your own Protocols 9and will become even easier!)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;building-a-business-protocol-of-your-own&quot;&gt;Building a business protocol of your own&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Both Introspection and Reactive Stream are both technically oriented messaging protocols. They are defined to support the technical capability that is needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Of particular interest to many is the ability to design and build &lt;strong&gt;business oriented&lt;/strong&gt; protocols. Where messages that have semantics at the level of the business are being specified, and a distributed set of Muon agents can coordinate with each other in business terms.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is currently possible with Muon, however there is more to do in this area. The problem we foresee is something we&amp;#8217;re calling the &quot;Matrix Effect&quot; (not that Matrix, Neo!). We are supporting many languages, and we want to support many protocols. Done naively, these will multiply together as you implement each protocol in each language and lead to fragmentation of the nascent Muon world.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We are avoiding this with two major initiatives. We are handling the language runtime problem by implementing Muon natively, in C++ and providing language bindings for the majority of langauges, alonside our Java and JavaScript implementations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The protocol question is something we have spent the last year researching, and we are well on the way to building a portable &lt;strong&gt;Protocol Language&lt;/strong&gt;. This will provide the ability to define Muon protocols, whether purely technical, or more likely, business oriented, in a declarative language that is converted into a Buchi Automaton managing the internal protocol finite state machine.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Together, these will mean that you can write a protocol once, test it once and then quickly interate and use it in the languages that you want to.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;technology&quot;&gt;Technology&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Muon is a broad set of projects, but also fairly simple. There are a set of implementation of Muon available now, covering Java, Clojure and Nodejs. These are all roughly feature equivalent and compatible with each other. A C++ version is being developed, which will enable very broad language support via language bindings.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Alongside these, there are a set of prebuilt Muon microservices that implement commonly required features. The most advanced of these is Photon, an event store with event projection support that provides the backing for the Muon &lt;code&gt;event&lt;/code&gt; protocols.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can see these as a platform of sorts, or as a set of tools you pull together to build your own services and use the ones we&amp;#8217;ve made.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are a set of plugins that are being developed to extend the Muon libraries to support working with your existing technologies. These cover &lt;strong&gt;service discovery&lt;/strong&gt;, &lt;strong&gt;network transport&lt;/strong&gt; and &lt;strong&gt;protocols&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;imageblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;img src=&quot;/images/muon-architecture.png&quot; alt=&quot;Muon Architecture&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;Figure 1. Muon architecture, showing a Reactive Stream Client connecting to a remote Reactive Stream server&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;transports&quot;&gt;Transports&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A Muon transport takes the core channel concept of Muon and puts it across a network. This can take many forms, depending on the use case and surrounding technology stack. So long as the transport can expose the ability to connect to another service and exchange messages with it bidirectionally, it fits the Muon model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The best supported transport at the moment is AMQP, this is the one used in all the documentation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We are experimenting with supporting transports across Muon implementations by writing them in C++, wrapping them and importing into the various Muon libraries. This is being done on a Websocket based transport at &lt;a href=&quot;http://github.com/muoncore/transport-websocket&quot; class=&quot;bare&quot;&gt;http://github.com/muoncore/transport-websocket&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;discovery&quot;&gt;Discovery&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Service Discovery is a core need of Microservice systems. In Muon we have a discovery concept built in that enables you to find services, understand how to connect to them (ie, the &lt;em&gt;transport&lt;/em&gt; to use) along with some hints on the capabilities of the remote system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Currently available are &lt;strong&gt;AMQP&lt;/strong&gt; and &lt;strong&gt;Multicast&lt;/strong&gt;. Many others could be supported, covering services such as Consul and Etc, DNS or Netflix Eureka. Similarly to Transport, we are experimenting with a build once and integrate approach in concert with the native libMuon effort.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;protocols&quot;&gt;Protocols&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Enabling users to define their own protocols and allow them to be used cross platform is one of the key aims of the Muon project. This is requiring fairly advanced work to design and developing the Protocol Language that supports verification, is reactive in nature and can run across the Muon implementations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This work is well underway, we have developed running protocols using it already and we hope to have something fully integrated into Muon to show within the next month or two that will enable you to define a messaging protocol in a simple, clean, declarative way that will support debugging, easy testing and enable a huge leap forward.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;coming-up-soon&quot;&gt;Coming up soon&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m going to be writing a series of developer diaries on the project, highlighting different areas and the progress that is being made. Subscribe to the RSS feed or follow me on Twitter for updates.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The best place to get started is to visit the &lt;a href=&quot;http://muoncore.io/guide/getting-involved.html&quot;&gt;Getting Involved&lt;/a&gt; page.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you are interested in Muon and would like to help the project then it is open to being sponsored by friendly organisations supplying time. The more time the core contributors dedicate to the project the faster it will move. &lt;a href=&quot;/me.html&quot;&gt;Get in touch&lt;/a&gt; for more info on sponsoring.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I hope to see you there!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Tue, 21 Feb 2017 10:18:00 +0000</pubDate>
+        <link>/blog/2017/02/21/muon-intro.html</link>
+        <guid isPermaLink="true">/blog/2017/02/21/muon-intro.html</guid>
+        
+        <category>architecture</category>
+        
+        <category>continuousdelivery</category>
+        
+        <category>microservices</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Shutting down Simplicity Itself</title>
@@ -1719,119 +2017,6 @@ Retiring a service isn&amp;#8217;t something that you should put on your todo li
         <category>retire</category>
         
         <category>strangler</category>
-        
-        
-        <category>Microservices and Reactive</category>
-        
-      </item>
-    
-      <item>
-        <title>Avoid Microservice Platform Lock In using Service Discovery</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The promises of adopting the cloud for your software are enticing. Effectively limitless scalability, large reductions in capital expenditure, efficiency savings in staffing through automation. An exciting prospective, and one that has being brought into even greater focus by the rise and rise of Microservices.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Not all is sweetness and light, however. There is significant investment required in ensuring your organisation and software can make best use of the new environment of the cloud. That investment in technology, training, development approaches and aligning the business with the new adaptable technology world can be significant, and the potential for a misstep to cost and lead your organisation into a dead end is present and you are right to be wary.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;One question that we are asked during our consultancy and project oversight engagements is &lt;em&gt;*&quot;which deployment platform should we use?&quot;*&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&amp;lt;a title=&quot;Microservice Deployment Overview&quot; href=&quot;/learning/getting-started-microservices/microservice-deployment-overview/&quot;&amp;gt;This is far more complex than initially appears&amp;lt;/a&amp;gt;. You could use IaaS style bare virtual machines, and build your own management infrastructure. Or, you could use one of the PaaS products and accept the restrictions they impose. New on the block are the the container management solutions, taking Docker and friends and bonding them into a more cohesive, manageable solution.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I could give examples of all of these different types of system that are good products and good solutions. They are very different from each other in the way they work and in the way they require your organisation to work with them. This speaks to one of the issues of the cloud, it is far from a single technology set or even a cohesive set of ideas.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Which then, do you choose? How can you begin to evaluate which is going to be the best fit for your needs?  This is not easy as you have to balance the differing capabilities of the platform against your applications, decide which applications are going to have to run sub-optimally, which need to be rewritten, which need to be abandoned.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This difficulty of this choice is telling you something.  It is telling that you are attempting to pick a single solution, a single platform to rule them all. It will take your applications, manage them, secure them, keep the cosseted and safe. In return, you will embed that platform into the heart of your organisation and it will become virtually impossible to remove it.
-&lt;mark&gt;#&lt;/mark&gt; The New Mainframe
-This cloud platform lock-in is unexpected. No vendor will tell you that this is the direction you are heading, and yet by attempting to evaluate and choose a single platform, you are heading for lock in and limitation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Now, that lock in may be a good solution for your business, and it may not be. Take Netflix, they currently run exclusively on Amazon Web Services. They have built all of their internal tooling and processes around this platform and are effectively attached to it. The reason they did this is because it was worth trading the ability to move for the ability to focus more deeply on a single target. This works because the IaaS market is in a period of intense price and feature competition between large organisations with deep pockets (ie, Google, Microsoft). We can expect this to be the case for some time.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Thus, there is little risk to Netflix that they will be trapped by a future AWS that has an abusive monopoly position.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The same decision presents when evaluating the new Platforms, whether that is Cloud Foundry, Kubernetes, Openshift, CoreOS, Mesosphere or others. They are constructed to provide ease of use and a layer of control and management. You must cede that control to them so that they in turn provide their promised utility.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Are you willing to make that trade?
-&lt;mark&gt;#&lt;/mark&gt; Build in Antifragility, Retain the Ability to Act
-An interesting observation on the Netflix technology stack. The engineers and architects at Netflix are obviously very intelligent, and from what we see of their publicly released software they have not fully wedded themselves to AWS in the way that it first appears and that I alluded to above.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;They have retained their ability to act, their ability to move by choosing to ignore certain AWS technologies. They may, or may not, have consciously done this, but by applying the architectural principles they call &lt;em&gt;Cloud Native&lt;/em&gt; they force their systems in a certain shape that values change and movement.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The ones I&amp;#8217;m looking at in particular at are &amp;lt;a title=&quot;Service Discovery Overview&quot; href=&quot;/learning/getting-started-microservices/service-discovery-overview/#eureka&quot; target=&quot;_blank&quot;&amp;gt;Eureka&amp;lt;/a&amp;gt; and &amp;lt;a href=&quot;/learning/getting-started-microservices/service-discovery-overview/#zookeeper&quot; target=&quot;_blank&quot;&amp;gt;Curator&amp;lt;/a&amp;gt;.  These implement a system known as _&amp;lt;a title=&quot;Service Discovery Overview&quot; href=&quot;/learning/getting-started-microservices/service-discovery-overview/&quot; target=&quot;_blank&quot;&amp;gt;Service Discovery&amp;lt;/a&amp;gt;. _These enable the various pieces of the Netflix infrastructure to find each other at runtime, so allowing those pieces to move around as needed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;By retaining full control of this aspect of their architecture, Netflix have given themselves the option of moving sections of their infrastructure off of the AWS stack.  Realising this option will take some effort, of course, but it has been retained.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;A key tenet of Antifragility is the creation of multiple options for the future. This &lt;em&gt;optionality&lt;/em&gt; allows you to take positive actions in response to change.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Maintaining control of your overall Service Discovery function delivers options for you and sets you up to be able to improve in response to change. Ceding this function to any platform in it&amp;#8217;s entirety will destroy those options and you will have just bought yourself a new Mainframe, a new system at the heart of your organisation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;With retained control, you do not have to choose between platforms in a strategic sense. You can implement several, including custom ones and use your overall service discovery system to permit services to locate each other between the platforms.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This does come with the cost of building and maintaining that aspect of your infrastructure, which the various platforms also provide a greater or lesser capability in. This then is the trade you must make and the cost of making it. In order to retain your ability to act in the future, you pay now by keeping control of your service discovery infrastructure.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Each has been chosen for the particular technical benefits that it gives, without the need for any strategic commitment to any of the platforms, as we have retained the ability to de-prioritise and remove it as we deem it necessary. The services hosted with them are able to locate each other (with some extra setup in the kubernetes infrastructure) via our service discovery setup.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In this way, your platform evaluation and final decision is reduced to a tactical and technical one, based on on what you need _right now. _There is no need to try to predict what your needs will be going forward.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The future can be left safely in the hands of the options you have just generated, and you can rest in the knowledge that &lt;em&gt;when you need to act, you can&lt;/em&gt;.&lt;/p&gt;
-&lt;/div&gt;</description>
-        <pubDate>Tue, 10 Feb 2015 22:52:00 +0000</pubDate>
-        <link>/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html</link>
-        <guid isPermaLink="true">/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html</guid>
-        
-        <category>antifragile</category>
-        
-        <category>microservice</category>
-        
-        <category>service discovery</category>
         
         
         <category>Microservices and Reactive</category>

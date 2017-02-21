@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>/blog/2017/02/21/muon-intro.html</loc>
+<lastmod>2017-02-21T10:18:00+00:00</lastmod>
+</url>
+<url>
 <loc>/blog/2017/02/04/simplicity-itself-shutdown.html</loc>
 <lastmod>2017-02-04T12:18:00+00:00</lastmod>
 </url>
@@ -73,9 +77,6 @@
 <lastmod>2013-03-28T12:18:00+00:00</lastmod>
 </url>
 <url>
-<loc>/2017-02-10-muon-intro.html</loc>
-</url>
-<url>
 <loc>/404.html</loc>
 </url>
 <url>
@@ -97,7 +98,13 @@
 <loc>/me.html</loc>
 </url>
 <url>
+<loc>/microservices-course.html</loc>
+</url>
+<url>
 <loc>/muoninvolved.html</loc>
+</url>
+<url>
+<loc>/projects/skyshows.html</loc>
 </url>
 <url>
 <loc>/blog/tags.html</loc>

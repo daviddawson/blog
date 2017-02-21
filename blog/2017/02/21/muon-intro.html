@@ -42,7 +42,7 @@
   <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
-  <link rel="canonical" href="/2017-02-10-muon-intro.html">
+  <link rel="canonical" href="/blog/2017/02/21/muon-intro.html">
   <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
           <link rel="stylesheet" href="/css/asciidoc.css">
@@ -140,10 +140,13 @@
           <p class='info'>
 
 
-            <span>February 10, 2017</span>
+            <span>February 21, 2017</span>
           </p>
-          <h3><a href="/2017-02-10-muon-intro.html">Introducing Muon</a></h3>
+          <h3><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></h3>
           <div class="paragraph">
+<p>This article introduces a project I&#8217;ve been working on for the past few years in one form or another. Muon</p>
+</div>
+<div class="paragraph">
 <p>For the past bunch of years, I&#8217;ve been working with distributed systems, often with a messaging component. This is a fun and rewarding part of software development, up there with UI development. It&#8217;s fairly involved, and often hard, but covers lots of different areas, both deeply theoretical and very practical. Once you solve an issue involving a race condition that requires networks, heavy load and specific hardware to trigger, you become far more interested in the world of concurrency, networking and spreading beyond the regular languages you are used to!</p>
 </div>
 <div class="paragraph">
@@ -183,26 +186,55 @@ that help you do certain things out of the box, and none of this cares about you
 of you writing code that <strong>makes you money</strong> (or whatever your motivation is!).</p>
 </div>
 <div class="paragraph">
-<p>For example, here&#8217;s a simple node service</p>
+<p>For example, here&#8217;s a simple Java service, exposing a simple request/ response protocol (ie, what is used for_RPC_)</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="javascript"></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">static</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">main</span><span style="color: #666666">(</span>String<span style="color: #666666">[]</span> args<span style="color: #666666">)</span> <span style="color: #008000; font-weight: bold">throws</span> Exception <span style="color: #666666">{</span>
+
+    AutoConfiguration config <span style="color: #666666">=</span> MuonConfigBuilder<span style="color: #666666">.</span><span style="color: #7D9029">withServiceIdentifier</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;rpc-test&quot;</span><span style="color: #666666">).</span><span style="color: #7D9029">build</span><span style="color: #666666">();</span>
+
+    Muon muon <span style="color: #666666">=</span> MuonBuilder<span style="color: #666666">.</span><span style="color: #7D9029">withConfig</span><span style="color: #666666">(</span>config<span style="color: #666666">).</span><span style="color: #7D9029">build</span><span style="color: #666666">();</span>
+
+    muon<span style="color: #666666">.</span><span style="color: #7D9029">getDiscovery</span><span style="color: #666666">().</span><span style="color: #7D9029">blockUntilReady</span><span style="color: #666666">();</span>
+
+    muon<span style="color: #666666">.</span><span style="color: #7D9029">handleRequest</span><span style="color: #666666">(</span>path<span style="color: #666666">(</span><span style="color: #BA2121">&quot;/&quot;</span><span style="color: #666666">),</span> wrapper <span style="color: #666666">-&gt;</span> <span style="color: #666666">{</span>
+      wrapper<span style="color: #666666">.</span><span style="color: #7D9029">ok</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;Hello World&quot;</span><span style="color: #666666">);</span>
+    <span style="color: #666666">});</span>
+<span style="color: #666666">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Here&#8217;s a Java service that consumes it</p>
+<p>Apart from the build file, this is it.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a JavaScript service that consumes it</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"></code></pre>
+<pre class="pygments highlight"><code data-lang="javascript"><span style="color: #008000; font-weight: bold">var</span> muoncore <span style="color: #666666">=</span> require(<span style="color: #BA2121">&#39;muon-core&#39;</span>)
+
+<span style="color: #008000; font-weight: bold">var</span> amqpurl <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;amqp://muon:microservices@localhost&quot;</span>
+muon <span style="color: #666666">=</span> muoncore.create(<span style="color: #BA2121">&quot;nodejs-client&quot;</span>, amqpurl)
+
+muon.request(<span style="color: #BA2121">&#39;rpc://rpc-test/ping&#39;</span>, <span style="color: #BA2121">&quot;i love dogs&quot;</span>).then(<span style="color: #008000; font-weight: bold">function</span> (event) {
+    logger.warn(<span style="color: #BA2121">&quot;response received! event=&quot;</span> <span style="color: #666666">+</span> JSON.stringify(event))
+}, <span style="color: #008000; font-weight: bold">function</span> (err) {
+    logger.error(<span style="color: #BA2121">&quot;error received!!!!!&quot;</span>)
+})</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Again, you&#8217;ll need a package.json/ NPM setup, but nothing else.</p>
 </div>
 <div class="paragraph">
 <p>Quick, right?</p>
 </div>
 <div class="paragraph">
-<p>So, although Muon lets you build Microservices, it does much more than that. We researched into the nature of communication, and how we might tackle it in a generalised form. Muon is about distributed communication.</p>
+<p>What just happened there is that we defined an endpoint in the Request/Response <strong><em>messaging protocol</em></strong>. When you call <code>muon.request</code>, the remote service is discovered, a method of network communication is chosen (in this case AMQP), a connection is made to the remote, a message representing the request is sent and packaged into something to be sent across the AMQP broker (in this case). The server side receives it, unpacks it into a Request and gives the ability to respond to the message via the <code>requestWrapper.ok</code> method. This gives good threading behaviour as in all cases, conversation state is bound up to the logical Muon channel, not to any particular thread.</p>
+</div>
+<div class="paragraph">
+<p>Although Muon lets you build Microservices, as you just saw a very simple example of, it does much more than that. We researched into the nature of <strong><em>distributed communication</em></strong>, and how we might tackle it in a generalised form. Muon is about distributed communication and making this as easy to use, reason about and importantly, <strong>extend</strong>, as local method calls.</p>
 </div>
 <div class="paragraph">
 <p>At its core, Muon implements a few fairly simple concepts, that all communication can be reduced to messages over bidirectional channels between services. Once you have the ability to find remote services and open a <code>bichannel</code> to that service, arbitrarily complex message protocols can be written that make use of this.</p>
@@ -225,6 +257,11 @@ code sees only the channels it is connected to, not the agents or processes at t
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="protocols-codifying-interactions-between-microservices">Protocols - Codifying interactions between microservices</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The concept of a message <strong>Protocol</strong> is core to Muon. It describes the ability to define interactions that are far richer than HTTP could be, coordinating multiple services, handling errors, being efficient in directing and orchestrating remote services, giving the ability to maintain long running conversations across the system.</p>
 </div>
@@ -234,16 +271,19 @@ code sees only the channels it is connected to, not the agents or processes at t
 <div class="sect2">
 <h3 id="protocol-example-reactive-streams">Protocol Example: Reactive Streams</h3>
 <div class="paragraph">
-<p>To take an example of something commonly required when using networked data, streaming. Currently the JVM world has standardised on the Reactive Streams specification as the gold standard for streaming interoperability. This has been adopted into Java 9, and so can be relied on to have broad support.</p>
+<p>To take an example of something commonly required when using networked data, streaming. Currently the JVM world has standardised on the <a href="www.reactive-streams.org">Reactive Streams</a> specification as the gold standard for streaming interoperability within the JVM. This has been adopted into Java 9, and so can be relied on to have broad support.</p>
 </div>
 <div class="paragraph">
-<p>The RS specification describes a set of signals being sent back and forth between a <code>Publisher</code> and a <code>Subscriber</code>. In Muon, we can model these as messages sent between two services along their connecting <code>bichannel</code>.</p>
+<p>Wouldn&#8217;t it be useful to have access to this standard <strong><em>outside</em></strong> of the JVM?</p>
 </div>
 <div class="paragraph">
-<p>This is in fact what we have as one of the Muon protocols, an implementation of Reactive Streams at the network level, so you can discover and subscribe to networked <code>Observables</code>.</p>
+<p>The RS specification describes a set of signals being sent back and forth between a <code>Publisher</code> and a <code>Subscriber</code>. These are method calls, however in Muon, we can model these signals as messages sent between two services along their connecting <code>bichannel</code>.</p>
 </div>
 <div class="paragraph">
-<p>This means we can network reactive streams implementations very easily, and support this across different languages and runtimes, so long as they have the Muon Reactive Streams protocol implemented.  If you have a Java RS <code>Publisher</code>, Muon can let you subscribe to that directly from a browser, including native back pressure signals, via the Muon.js browser implementation.</p>
+<p>This is in fact what we have as one of the Muon protocols, an implementation of Reactive Streams at the network level, so you can discover and subscribe to networked <code>Publishers</code>.</p>
+</div>
+<div class="paragraph">
+<p>This means we can network reactive streams implementations very easily, and support this across different languages and runtimes, so long as they have the Muon Reactive Streams protocol implemented.  If you have a Java RS <code>Publisher</code>, Muon can let you subscribe to that directly from a Nodejs service, or another language, event directly from a browser, including all the native back pressure signals, via the Muon.js browser implementation.</p>
 </div>
 <div class="paragraph">
 <p>Of course, this is just one protocol that we can implement. There are others, and soon there will be many others, all cross platform and able to be formally verified.</p>
@@ -263,12 +303,7 @@ code sees only the channels it is connected to, not the agents or processes at t
 </div>
 </div>
 <div class="paragraph">
-<p>It will then show what the service can do, across all of the implemented protocols</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code></code></pre>
-</div>
+<p>It will then show what the service can do, across all of the implemented protocols.</p>
 </div>
 <div class="paragraph">
 <p>This fairly rich introspection information allows you, and running services, to understand the environment they are running in and begin to intelligently interact with it. It allows them to run <strong>autonomously</strong>.</p>
@@ -288,6 +323,29 @@ photon my-remote-service aether ather-password random-service
 <div class="paragraph">
 <p>The same can be done for event source replay streams, RPC and is fairly easy to add for your own Protocols 9and will become even easier!)</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building-a-business-protocol-of-your-own">Building a business protocol of your own</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Both Introspection and Reactive Stream are both technically oriented messaging protocols. They are defined to support the technical capability that is needed.</p>
+</div>
+<div class="paragraph">
+<p>Of particular interest to many is the ability to design and build <strong>business oriented</strong> protocols. Where messages that have semantics at the level of the business are being specified, and a distributed set of Muon agents can coordinate with each other in business terms.</p>
+</div>
+<div class="paragraph">
+<p>This is currently possible with Muon, however there is more to do in this area. The problem we foresee is something we&#8217;re calling the "Matrix Effect" (not that Matrix, Neo!). We are supporting many languages, and we want to support many protocols. Done naively, these will multiply together as you implement each protocol in each language and lead to fragmentation of the nascent Muon world.</p>
+</div>
+<div class="paragraph">
+<p>We are avoiding this with two major initiatives. We are handling the language runtime problem by implementing Muon natively, in C++ and providing language bindings for the majority of langauges, alonside our Java and JavaScript implementations.</p>
+</div>
+<div class="paragraph">
+<p>The protocol question is something we have spent the last year researching, and we are well on the way to building a portable <strong>Protocol Language</strong>. This will provide the ability to define Muon protocols, whether purely technical, or more likely, business oriented, in a declarative language that is converted into a Buchi Automaton managing the internal protocol finite state machine.</p>
+</div>
+<div class="paragraph">
+<p>Together, these will mean that you can write a protocol once, test it once and then quickly interate and use it in the languages that you want to.</p>
 </div>
 </div>
 </div>
@@ -313,21 +371,42 @@ photon my-remote-service aether ather-password random-service
 <div class="title">Figure 1. Muon architecture, showing a Reactive Stream Client connecting to a remote Reactive Stream server</div>
 </div>
 <div class="sect2">
-<h3 id="discovery">Discovery</h3>
-
+<h3 id="transports">Transports</h3>
+<div class="paragraph">
+<p>A Muon transport takes the core channel concept of Muon and puts it across a network. This can take many forms, depending on the use case and surrounding technology stack. So long as the transport can expose the ability to connect to another service and exchange messages with it bidirectionally, it fits the Muon model.</p>
+</div>
+<div class="paragraph">
+<p>The best supported transport at the moment is AMQP, this is the one used in all the documentation.</p>
+</div>
+<div class="paragraph">
+<p>We are experimenting with supporting transports across Muon implementations by writing them in C++, wrapping them and importing into the various Muon libraries. This is being done on a Websocket based transport at <a href="http://github.com/muoncore/transport-websocket" class="bare">http://github.com/muoncore/transport-websocket</a></p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="transports">Transports</h3>
-
+<h3 id="discovery">Discovery</h3>
+<div class="paragraph">
+<p>Service Discovery is a core need of Microservice systems. In Muon we have a discovery concept built in that enables you to find services, understand how to connect to them (ie, the <em>transport</em> to use) along with some hints on the capabilities of the remote system.</p>
+</div>
+<div class="paragraph">
+<p>Currently available are <strong>AMQP</strong> and <strong>Multicast</strong>. Many others could be supported, covering services such as Consul and Etc, DNS or Netflix Eureka. Similarly to Transport, we are experimenting with a build once and integrate approach in concert with the native libMuon effort.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="protocols">Protocols</h3>
 <div class="paragraph">
-<p>Enabling users to define their own protocols and allow them to be used cross platform is one of the key aims of the Muon project. This is requiring fairly advanced work to design and develop a portable <strong>Protocol Language</strong> that supports verification, is reactive in nature and can run across the Muon implementations.</p>
+<p>Enabling users to define their own protocols and allow them to be used cross platform is one of the key aims of the Muon project. This is requiring fairly advanced work to design and developing the Protocol Language that supports verification, is reactive in nature and can run across the Muon implementations.</p>
 </div>
 <div class="paragraph">
-<p>This work is well underway, we hope to have something to show within the next month or two that will enable you to define a messaging protocol in a simple, clean, declarative way that will support debugging, easy testing and enable a huge leap forward.</p>
+<p>This work is well underway, we have developed running protocols using it already and we hope to have something fully integrated into Muon to show within the next month or two that will enable you to define a messaging protocol in a simple, clean, declarative way that will support debugging, easy testing and enable a huge leap forward.</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="coming-up-soon">Coming up soon</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I&#8217;m going to be writing a series of developer diaries on the project, highlighting different areas and the progress that is being made. Subscribe to the RSS feed or follow me on Twitter for updates.</p>
 </div>
 </div>
 </div>
@@ -338,7 +417,7 @@ photon my-remote-service aether ather-password random-service
 <p>The best place to get started is to visit the <a href="http://muoncore.io/guide/getting-involved.html">Getting Involved</a> page.</p>
 </div>
 <div class="paragraph">
-<p>If you are interested in Muon and would like to help the project then it is open to being sponsored by friendly organisations. The more time the core contributors dedicate to the project the faster it will move. <a href="/me.html">Get in touch</a> for more info on sponsoring.</p>
+<p>If you are interested in Muon and would like to help the project then it is open to being sponsored by friendly organisations supplying time. The more time the core contributors dedicate to the project the faster it will move. <a href="/me.html">Get in touch</a> for more info on sponsoring.</p>
 </div>
 <div class="paragraph">
 <p>I hope to see you there!</p>
@@ -371,6 +450,9 @@ photon my-remote-service aether ather-password random-service
   <ul>
     
     
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing muon</a></li>
+    
+    
     <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down simplicity itself</a></li>
     
     
@@ -386,9 +468,6 @@ photon my-remote-service aether ather-password random-service
     <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining the microservice architecture</a></li>
     
     
-    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service discovery overview</a></li>
-    
-    
     
   </ul>
 </div>
@@ -402,6 +481,11 @@ photon my-remote-service aether ather-password random-service
   <ul>
     
     
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
     <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
     
   
