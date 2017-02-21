@@ -1,0 +1,19 @@
+---
+title: Portfolio: Sky Shows
+layout: 12days
+author: David Dawson
+date: 2013-03-28 12:18
+image: images/vis/clouds1.jpg
+categories:
+ - blog
+tags:
+ - architecture
+ - grails
+ - groovy
+ - spring
+ - web
+---
+
+## Hello World!!
+
+Hi there all

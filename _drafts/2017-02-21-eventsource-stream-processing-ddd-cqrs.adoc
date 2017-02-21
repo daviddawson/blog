@@ -1,0 +1,16 @@
+---
+excerpt: CQRS is cool
+title: CQRS Applied - Event Sourcing and Stream Processing using Muon and co
+layout: post
+author: David Dawson
+date: 2017-02-20 12:18
+image: images/vis/clouds1.jpg
+categories:
+ - blog
+tags:
+ - architecture
+ - continuousdelivery
+ - microservices
+---
+
+CQRS and event sourcing.

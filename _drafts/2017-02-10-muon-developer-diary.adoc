@@ -3,7 +3,7 @@ excerpt: Weekly developer diary for the Muon project.
 title: Muon Developer Diary
 layout: post
 author: David Dawson
-date: 2017-02-10 12:18
+date: 2017-02-20 12:18
 image: images/vis/clouds1.jpg
 categories:
  - blog
@@ -17,7 +17,7 @@ I'm going to be writing regular updates on what we are doing in the Muon project
 
 In this inaugural post, I give an overview of the projects and how they fit together.
 
-Read the intro blog post here
+Read the intro blog post link:/here
 
 The projects can be split up into *Muon Implementations*, *Muon Plugins* and *Services built with Muon*
 

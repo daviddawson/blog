@@ -1,0 +1,51 @@
+---
+layout: documentation
+---
+:title: Microservices Course
+:date: 2015-01-05 11:40
+:comments: true
+:sharing: true
+:source-highlighter: pygments
+:toc: right
+:toc-title: Learn Microservices
+:toclevels: 6
+
+## Learn Microservices with David Dawson
+
+### Day 1 - Architecture & Design for Simplicity and Antifragility:
+
+* Introducing Antifragile Software and Simplicity
+* Defining Microservices in term of their Principles, Benefits and Challenges
+* Understand and explore the forces (stressors) of change on software
+* Applying Simplicity, with O.R.E.
+* Architecting and Designing for Software System Evolution with the Life Preserver tool
+* Organising for concerns and simple components
+* How to collaborate to discover change stressors on your software system
+* Organising components for change
+
+### Day 2 - Implementing Antifragile Software with Simple Components, Events & Microservices
+
+* Exploring and Managing change-stressor fault-lines between areas of your system
+* Designing software bridges that handle change across fault-lines
+* Applying de-coupling intelligently, balancing flexibility and complexity
+* Applying Request-Response, Messaging and Events
+* Designing when to apply and implement Postel’s Law
+
+### Day 3 - Deploying, Running, Testing & Managing Antifragile Software with Microservices
+
+* Extracting components into Microservices
+* Building, Deploying and Managing Effective Unix-style Microservice
+* Pipelines
+* Simplifying Microservice Management using Immutable Service Deployments
+* Designing and Implementing Reactive Microservices
+* Applying effective health and monitoring for microservices
+* Designing and Implementing Microservice Failover and Auto-Recovery Strategies using the Circuit Breaker Pattern and Friends
+* Designing and Implementing for Autonomy with Microservice ‘Cells'
+* Enabling Governance and Innovation with Microservices
+* Enabling Variation and Experimentation in Languages and Frameworks through Microservices
+* Testing stressors for failure to avoid failure
+* Testing and Continuous Delivery for Microservices
+* Containerisation and Docker
+
+## Booking
+
