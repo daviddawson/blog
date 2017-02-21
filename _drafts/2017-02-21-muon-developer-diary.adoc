@@ -3,10 +3,10 @@ excerpt: Weekly developer diary for the Muon project.
 title: Muon Developer Diary
 layout: post
 author: David Dawson
-date: 2017-02-20 12:18
-image: images/vis/clouds1.jpg
+date: 2017-02-21 12:38
+image: images/vis/knowledge.jpg
 categories:
- - blog
+ - muon-devdiary
 tags:
  - diary
  - muon
@@ -17,7 +17,7 @@ I'm going to be writing regular updates on what we are doing in the Muon project
 
 In this inaugural post, I give an overview of the projects and how they fit together.
 
-Read the intro blog post link:/here
+Read the link:/blog/2017/02/21/muon-intro.html[intro blog post]
 
 The projects can be split up into *Muon Implementations*, *Muon Plugins* and *Services built with Muon*
 
@@ -32,18 +32,24 @@ The projects can be split up into *Muon Implementations*, *Muon Plugins* and *Se
 
 ## Muon Plugins
 
-Given the aggressively polyglot nature of Muon, we have to find a way to avoid the _matrix effect_ of having extensions and an arbitrary number of Muon implementations. We're handling this by defining APIs to allow us to build most implementations in C++ and have a method for integrating into the three major Muon environments. This will cover Discovery and Transport plugins. Protocols will be handled by the upcoming Muon Protocol Language.
+Given the aggressively polyglot nature of Muon, we have to find a way to avoid the _matrix effect_ of having extensions and an arbitrary number of Muon implementations. We're handling this by defining APIs to allow us to build most implementations in C++ and have a method for integrating into the three major Muon environments. This will cover *Discovery* and *Transport* plugins. Protocols will be handled by the Protocol Language.
 
 * link:https://github.com/muoncore/transport-websocket[Websocket Transport Native Plugin]. Experiments in building cross language plugins.
 
-Expect many more of these when the native build pipeline is completed.
+*These are not yet usable*, however do expect many more of these when the native build pipeline and language wrapping approach is completed.
 
 ## Services built with Muon
 
-* link:http://muoncore.io/submodules/photon/docs/index.html[Photon] - an advanced event store
+Many protocols don't operate in a peer fashion. Instead there is a definite server side that does something rich on your behalf.
+
+The prime example is Photon, an event store.
+
+* link:http://muoncore.io/submodules/photon/docs/index.html[Photon] - an advanced event store and stream server
 * link:http://muoncore.io/submodules/aether/docs/index.html[Aether] - Identity management facade for Muon systems.
 * link:http://muoncore.io/submodules/muonjs-gateway/doc/index.html[Muonjs Gateway] - allow Muon systems in the browser to connect to server side via a transport level message router.
 
-This is a quick overview of the current projects. There's lots in flight, more next week!
+There are a set of other experimental projects in the repos that I'll leave for now.
+
+This is a quick overview of the current projects. There's lots in flight, more next time!
 
 include::muoninvolved.adoc[]
