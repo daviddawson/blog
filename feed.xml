@@ -5,8 +5,8 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Feb 2017 12:22:38 +0000</pubDate>
-    <lastBuildDate>Tue, 21 Feb 2017 12:22:38 +0000</lastBuildDate>
+    <pubDate>Tue, 21 Feb 2017 12:31:15 +0000</pubDate>
+    <lastBuildDate>Tue, 21 Feb 2017 12:31:15 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -275,6 +275,28 @@ photon my-remote-service aether ather-password random-service
 &lt;div class=&quot;sectionbody&quot;&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I&amp;#8217;m going to be writing a series of developer diaries on the project, highlighting different areas and the progress that is being made. Subscribe to the RSS feed or follow me on Twitter for updates.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Muon focuses hard on the nature of distributed communication, this leads to some interesting places, which I&amp;#8217;ll be writing about in their own right.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;State management, CQRS, DDD and stream processing and how they interelate. This will introduce the Muon project event store, &lt;a href=&quot;http://muoncore.io/submodules/photon/docs/index.html&quot;&gt;Photon.&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Protocols, how to define them and the upcoming Protocol Language&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Creating Transports and Discovery implementations for Muon&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Handling failures&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Optimising messaging performance in various ways.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
