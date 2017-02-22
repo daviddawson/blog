@@ -43,7 +43,7 @@ that help you do certain things out of the box, and none of this cares about you
 It gives you support in all the right places, works with your infrastructure of choice, and gets out of the way
 of you writing code that *makes you money* (or whatever your motivation is!).
 
-For example, here's a simple Java service, exposing a simple request/ response protocol (ie, what is used for_RPC_)
+For example, here's a simple Java service, exposing a simple request/ response protocol (ie, what is used for _RPC_)
 
 [source, java]
 ----

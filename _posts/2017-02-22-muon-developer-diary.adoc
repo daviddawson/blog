@@ -3,7 +3,7 @@ excerpt: Weekly developer diary for the Muon project.
 title: Muon Developer Diary
 layout: post
 author: David Dawson
-date: 2017-02-21 12:38
+date: 2017-02-22 10:38
 image: images/vis/knowledge.jpg
 categories:
  - muon-devdiary
@@ -15,13 +15,17 @@ tags:
 
 I'm going to be writing regular updates on what we are doing in the Muon project and highlighting different areas of the projects. I'll try to keep this weekly, but we'll see how that goes!
 
+They will split into two main sections, *Focus* and *Updates*. Focus will feature a part of Muon and related projects and go in depth on some area or other. Updates will describe the week by week developments in the world of Muon.
+
+## Focus - An Overview of Muon
+
 In this inaugural post, I give an overview of the projects and how they fit together.
 
 Read the link:/blog/2017/02/21/muon-intro.html[intro blog post]
 
 The projects can be split up into *Muon Implementations*, *Muon Plugins* and *Services built with Muon*
 
-## Muon Projects
+### Muon Projects
 
 * link:http://muoncore.io/submodules/java/doc/[Muon CLI] - The CLI interface to Muon systems.
 * link:http://muoncore.io/submodules/java/doc/[Muon Java] - Java implementation. First built and generally the place things are experimented with first.
@@ -30,7 +34,7 @@ The projects can be split up into *Muon Implementations*, *Muon Plugins* and *Se
 * http://muoncore.io/submodules/muonjs/doc/index.html[MuonJs] - Muon running in the browser.
 * https://github.com/muoncore/libmuon[libMuon] - C++ implementation of Muon, highly experimental.
 
-## Muon Plugins
+### Muon Plugins
 
 Given the aggressively polyglot nature of Muon, we have to find a way to avoid the _matrix effect_ of having extensions and an arbitrary number of Muon implementations. We're handling this by defining APIs to allow us to build most implementations in C++ and have a method for integrating into the three major Muon environments. This will cover *Discovery* and *Transport* plugins. Protocols will be handled by the Protocol Language.
 
@@ -38,11 +42,11 @@ Given the aggressively polyglot nature of Muon, we have to find a way to avoid t
 
 *These are not yet usable*, however do expect many more of these when the native build pipeline and language wrapping approach is completed.
 
-## Services built with Muon
+### Services built with Muon
 
 Many protocols don't operate in a peer fashion. Instead there is a definite server side that does something rich on your behalf.
 
-The prime example is Photon, an event store.
+The prime example right now is Photon, an event storage microservice.
 
 * link:http://muoncore.io/submodules/photon/docs/index.html[Photon] - an advanced event store and stream server
 * link:http://muoncore.io/submodules/aether/docs/index.html[Aether] - Identity management facade for Muon systems.
@@ -50,6 +54,14 @@ The prime example is Photon, an event store.
 
 There are a set of other experimental projects in the repos that I'll leave for now.
 
-This is a quick overview of the current projects. There's lots in flight, more next time!
+This is a quick overview of the current projects. There is a lot in flight, more next time!
+
+## Updates
+
+Over the past few weeks :-
+
+* We've made substantial progress on the protocol language, ably led by Sergio Alvarez and Luis Oliva. See the link:https://github.com/tranchis/ltl-engine[repo where work is underway]
+* We added features to Photon to support DDD style event sourced aggregate routes (shallow streams) and initial clent support. More in a couple of dev diaries time where I'll focus on Photon.
+* Created an link:https://github.com/muoncore/test-event-stores[embedded Muon event store ] to support unit testing event sourced applications. This implements the event related protocols and operates over the Muon in-mem transport/ discovery. Initially, this is for the JVM. Node will be next.
 
 include::muoninvolved.adoc[]
