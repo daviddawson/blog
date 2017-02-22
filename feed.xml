@@ -5,9 +5,153 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Feb 2017 15:58:33 +0000</pubDate>
-    <lastBuildDate>Tue, 21 Feb 2017 15:58:33 +0000</lastBuildDate>
+    <pubDate>Wed, 22 Feb 2017 18:51:54 +0000</pubDate>
+    <lastBuildDate>Wed, 22 Feb 2017 18:51:54 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Muon Developer Diary</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m going to be writing regular updates on what we are doing in the Muon project and highlighting different areas of the projects. I&amp;#8217;ll try to keep this weekly, but we&amp;#8217;ll see how that goes!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;They will split into two main sections, &lt;strong&gt;Focus&lt;/strong&gt; and &lt;strong&gt;Updates&lt;/strong&gt;. Focus will feature a part of Muon and related projects and go in depth on some area or other. Updates will describe the week by week developments in the world of Muon.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;focus-an-overview-of-muon&quot;&gt;Focus - An Overview of Muon&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this inaugural post, I give an overview of the projects and how they fit together.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Read the &lt;a href=&quot;/blog/2017/02/21/muon-intro.html&quot;&gt;intro blog post&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The projects can be split up into &lt;strong&gt;Muon Implementations&lt;/strong&gt;, &lt;strong&gt;Muon Plugins&lt;/strong&gt; and &lt;strong&gt;Services built with Muon&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;muon-projects&quot;&gt;Muon Projects&lt;/h3&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/java/doc/&quot;&gt;Muon CLI&lt;/a&gt; - The CLI interface to Muon systems.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/java/doc/&quot;&gt;Muon Java&lt;/a&gt; - Java implementation. First built and generally the place things are experimented with first.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/node/doc/index.html&quot;&gt;Muon Node&lt;/a&gt; - Node implementation of Muon&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/clojure/doc/index.html&quot;&gt;Muon Clojure&lt;/a&gt; - Clojure wrapper around Muon Java.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/muonjs/doc/index.html&quot;&gt;MuonJs&lt;/a&gt; - Muon running in the browser.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/muoncore/libmuon&quot;&gt;libMuon&lt;/a&gt; - C++ implementation of Muon, highly experimental.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;muon-plugins&quot;&gt;Muon Plugins&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Given the aggressively polyglot nature of Muon, we have to find a way to avoid the &lt;em&gt;matrix effect&lt;/em&gt; of having extensions and an arbitrary number of Muon implementations. We&amp;#8217;re handling this by defining APIs to allow us to build most implementations in C++ and have a method for integrating into the three major Muon environments. This will cover &lt;strong&gt;Discovery&lt;/strong&gt; and &lt;strong&gt;Transport&lt;/strong&gt; plugins. Protocols will be handled by the Protocol Language.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/muoncore/transport-websocket&quot;&gt;Websocket Transport Native Plugin&lt;/a&gt;. Experiments in building cross language plugins.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;These are not yet usable&lt;/strong&gt;, however do expect many more of these when the native build pipeline and language wrapping approach is completed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;services-built-with-muon&quot;&gt;Services built with Muon&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Many protocols don&amp;#8217;t operate in a peer fashion. Instead there is a definite server side that does something rich on your behalf.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The prime example right now is Photon, an event storage microservice.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/photon/docs/index.html&quot;&gt;Photon&lt;/a&gt; - an advanced event store and stream server&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/aether/docs/index.html&quot;&gt;Aether&lt;/a&gt; - Identity management facade for Muon systems.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://muoncore.io/submodules/muonjs-gateway/doc/index.html&quot;&gt;Muonjs Gateway&lt;/a&gt; - allow Muon systems in the browser to connect to server side via a transport level message router.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are a set of other experimental projects in the repos that I&amp;#8217;ll leave for now.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a quick overview of the current projects. There is a lot in flight, more next time!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Over the past few weeks :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;We&amp;#8217;ve made substantial progress on the protocol language, ably led by Sergio Alvarez and Luis Oliva. See the &lt;a href=&quot;https://github.com/tranchis/ltl-engine&quot;&gt;repo where work is underway&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;We added features to Photon to support DDD style event sourced aggregate routes (shallow streams) and initial clent support. More in a couple of dev diaries time where I&amp;#8217;ll focus on Photon.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Created an &lt;a href=&quot;https://github.com/muoncore/test-event-stores&quot;&gt;embedded Muon event store &lt;/a&gt; to support unit testing event sourced applications. This implements the event related protocols and operates over the Muon in-mem transport/ discovery. Initially, this is for the JVM. Node will be next.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;admonitionblock note&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class=&quot;icon&quot;&gt;
+&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class=&quot;content&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a developer diary entry for the Muon project, showing what we&amp;#8217;ve done on the project over the past week.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can find the home of the Muon project at &lt;a href=&quot;http://muoncore.io&quot; class=&quot;bare&quot;&gt;http://muoncore.io&lt;/a&gt;, and at the &lt;a href=&quot;http://github.com/muoncore&quot;&gt;Muon Core&lt;/a&gt; github org.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Wed, 22 Feb 2017 10:38:00 +0000</pubDate>
+        <link>/muon-devdiary/2017/02/22/muon-developer-diary.html</link>
+        <guid isPermaLink="true">/muon-devdiary/2017/02/22/muon-developer-diary.html</guid>
+        
+        <category>diary</category>
+        
+        <category>muon</category>
+        
+        <category>microservices</category>
+        
+        
+        <category>muon-devdiary</category>
+        
+      </item>
     
       <item>
         <title>Introducing Muon</title>
@@ -54,7 +198,7 @@ that help you do certain things out of the box, and none of this cares about you
 of you writing code that &lt;strong&gt;makes you money&lt;/strong&gt; (or whatever your motivation is!).&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For example, here&amp;#8217;s a simple Java service, exposing a simple request/ response protocol (ie, what is used for_RPC_)&lt;/p&gt;
+&lt;p&gt;For example, here&amp;#8217;s a simple Java service, exposing a simple request/ response protocol (ie, what is used for &lt;em&gt;RPC&lt;/em&gt;)&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;listingblock&quot;&gt;
 &lt;div class=&quot;content&quot;&gt;
@@ -1922,123 +2066,6 @@ Looping back to where we started then, these 'best practices', you will notice t
         <category>simplicity</category>
         
         <category>training</category>
-        
-        
-        <category>Microservices and Reactive</category>
-        
-      </item>
-    
-      <item>
-        <title>Retiring Microservices Using Strangulation</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;No programmer likes to plan for their work to be taken offline and shutdown, but part of good antifragile thinking is allowing things that aren&amp;#8217;t successful, to end. Applying that to Microservices, one of the natural parts of that architectural style is creating and destroying instances of a service. As part of the lifecycle of services, you sometimes have to create different versions of a service, and so manage the retiring of a previous version (although we try to avoid versioning where possible).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;One part that you can&amp;#8217;t avoid is the ultimate killing of an entire service. Eventually, your model of the world will not match the reality, and so you &lt;em&gt;must&lt;/em&gt; then kill that service or you will find that changes become progressively harder as it drifts away from reality.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;There lies legacy, a system that is hard and expensive to change and is becoming progressively out of touch with it&amp;#8217;s current environment.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Nobody wants that, so how should you go about killing a service?
-&lt;mark&gt;#&lt;/mark&gt; Motivation Matters
-Why you want to kill the service matters.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I see two broad motivations for removing a service that influence the approach you need to take during the retirement process, which I classify as &lt;em&gt;Demand Driven and Supply Driven.&lt;/em&gt;
-&amp;lt;h4&amp;gt;_Demand Driven_&amp;lt;/h4&amp;gt;
-In the Demand Driven case, the service in question is becoming less and less used. The demand for it is becoming progressively lower over time, and you are looking at it&amp;#8217;s removal as a recognition this. This may be because you have a newer version you are running in parallel, or just that the service isn&amp;#8217;t that useful anymore. This tends to be a very passive approach, you let it whither and die and your interaction is mainly to mainly to monitor it to understand when it can be deemed as dead and switched off.
-&amp;lt;h4&amp;gt;_Supply Driven_&amp;lt;/h4&amp;gt;
-Supply Driven removal is where you have some external motivation for removing service beyond lack of use. Your ability to continue supplying the service to the rest of the system is going to be removed, and so you must kill the service even though it&amp;#8217;s still in use. This is an active approach, and involves identifying the impact of the removal, understanding the valuable functionality of the service and where that should reside post removal.
-&lt;mark&gt;#&lt;/mark&gt; Strangulation
-The process of microservice retirement feels very similar to decommissioning of a 'legacy' system, for those readers that have performed that feat of extraction. We have found that the process to be applied can be the same in both cases.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Following that instinct, what lessons could we learn from the past decommissioning processes and techniques?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;One of the better known and more powerful approaches for decommissioning systems is known as the &lt;em&gt;Strangler Application&lt;/em&gt;. This was identified by Martin Fowler &amp;lt;a href=&quot;http://www.martinfowler.com/bliki/StranglerApplication.html&quot; target=&quot;_blank&quot;&amp;gt;back in 2004&amp;lt;/a&amp;gt; as a way to safely remove or replace a legacy application while still delivering business value.  This is now &amp;lt;a href=&quot;http://paulhammant.com/2013/07/14/legacy-application-strangulation-case-studies/&quot; target=&quot;_blank&quot;&amp;gt;fairly&amp;lt;/a&amp;gt; &amp;lt;a href=&quot;http://agilefromthegroundup.blogspot.co.uk/2011/03/strangulation-pattern-of-choice-for.html&quot; target=&quot;_blank&quot;&amp;gt;well&amp;lt;/a&amp;gt; &amp;lt;a href=&quot;http://cdn.pols.co.uk/papers/agile-approach-to-legacy-systems.pdf&quot; target=&quot;_blank&quot;&amp;gt;documented&amp;lt;/a&amp;gt; and understood and is the approach that we use to decommission systems, identifying value and extract it. Should the retiring of Microservices be any different?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;No, and yes.  They are a system the same as any other and the techniques that have been described in the past _are applicable. _Their highly network distributed nature means that the approach needs to be slightly more nuanced.  That nuance is what I would like to discuss here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The high level approach of the Strangler is to understand the data/ event flows in and out of a component and incrementally redirect them to a new location that you build alongside or around it.  Once all of the event flows are intercepted, the component is no longer being used and can be switched off.
-&lt;mark&gt;#&lt;/mark&gt; Data
-Event interception then is key. You have to understand the application or service in terms of its data flows, not it&amp;#8217;s functionality per se.  Identifying the data flows that remain in use and remain valuable is an integral step towards being able to remove the services that for part of that data flow.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;One of the benefits of a Microservices approach is that your systems are (&amp;lt;a title=&quot;Approaching the Design of a Microservices Based Architecture&quot; href=&quot;/learning/the-life-preserver/approaching-the-design-of-a-microservices-based-architecture/&quot; target=&quot;_blank&quot;&amp;gt;or should be&amp;lt;/a&amp;gt;) well split apart into separately evolving pieces. This is different to a 'classic' legacy decommissioning, as you are cutting a single service, not the system as a whole.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This means that you need to be able to intercept events between services, rather than just those coming from outside. Having some rich system of monitoring intra-service communications and using that as the basis of reasoning about the system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In a future article, I will discuss how this can actually enable the component health checks so beloved of microservices frameworks and tutorials to be slimmed down, and even removed in many cases.
-&lt;mark&gt;#&lt;/mark&gt; Measure the Impact
-Once you understand the data flowing through your services, you are in a position to begin to reason about altering how those event streams are processed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This reasoning process is influenced by your motivations above. If it&amp;#8217;s demand side, you just wait. You now have the information you need to be able to declare a service to be dead&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you are actively removing a service, though, you need to be start judging the impact of reworking these event flows and how far that impact might spread through your system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Tools for this vary, depending on how permeable your service contracts are. You may be in a position to only traverse as far as the direct service dependencies in order to understand the impact. This will be the case if your service boundaries are very strong. One of the aspect of microservice design helped by &amp;lt;a title=&quot;Development by Slogan:Part 1, Really DRY&quot; href=&quot;/our-team/development-by-slogan-dry-part1/&quot;&amp;gt;reducing your reliance on DRY&amp;lt;/a&amp;gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Otherwise, you may need to apply graph theory and tooling to understand the impact of the service being removed.
-&lt;mark&gt;#&lt;/mark&gt; Summary
-Retiring a service isn&amp;#8217;t something that you should put on your todo list, it&amp;#8217;s an integral part of your microservice setup and you need the capability from day 1 or you will have begun to develop a legacy problem under the guise of Microservice development.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Baking in the ability to remove a service requires understanding and monitoring of the event flows. In turn, this requires the large scale monitoring of inter-service communication and the ability to comprehend what that is telling you. The data collection capability is fairly straightforward to add in up front, but requires more effort to retrofit, so we recommend that you do it up front as part of your initial rollout if you are adopting Microservices for the first time.   Comprehension of the event flows is a subject in itself, which we will be discussing in a future article.&lt;/p&gt;
-&lt;/div&gt;</description>
-        <pubDate>Mon, 16 Feb 2015 20:04:00 +0000</pubDate>
-        <link>/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html</link>
-        <guid isPermaLink="true">/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html</guid>
-        
-        <category>decommission</category>
-        
-        <category>DRY</category>
-        
-        <category>lifecycle</category>
-        
-        <category>microservice</category>
-        
-        <category>retire</category>
-        
-        <category>strangler</category>
         
         
         <category>Microservices and Reactive</category>
