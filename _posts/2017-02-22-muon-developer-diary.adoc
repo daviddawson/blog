@@ -1,5 +1,5 @@
 ---
-excerpt: Weekly developer diary for the Muon project.
+excerpt: Regular developer diary for the Muon project. This entry focuses on the Muon project as a whole, covering the various repositories and how they relate. Updates include Photon and event stores.
 title: Muon Developer Diary
 layout: post
 author: David Dawson
