@@ -1,9 +1,9 @@
 ---
 excerpt: Rancher is an orchestrator of orchestration for containerised systems. I needed to upgrade my systems management to be more automated and robust, Rancher seemed a good option due to the flexibility. In this blog, I document some experiences with the tool/
-title: Building a deploy environment on AWS: Experiments with Rancher and Kubernetes
+title: Building a deploy environment on AWS- Experiments with Rancher and Kubernetes
 layout: post
 author: David Dawson
-date: 2017-02-20 12:18
+date: 2017-02-28 12:18
 image: images/vis/clouds1.jpg
 categories:
  - blog
@@ -24,9 +24,9 @@ The big issues when trying to scale it though are *visibility* and *multi node*.
 
 Now that I have projects here that are moving into production, and without a larger company managed infrastructure anymore, I need to come up with a solution for these that don't take lots of time and effort to install and manage.
 
-I had a good look around at a few options for managing infrastructure. I remembered a project called Rancher that was presented at LMUG a good while ago, so I went to see how it had developed.
+I had a good look around at a few options for managing infrastructure. I recently came across a project called Rancher again at a client, that was actually presented at LMUG a good while ago, so I went to see how it had developed over the past year.
 
-It had a good story to tell around making things easy, and at first glance, appears to support docker compose which fits my existing workflow. So I thought I'd give it a try. I'm writing this as I go, so it'll be a discovery for us all!
+It has a good story to tell around making management of containerised infrastructure easy, and at first glance, appears to support docker compose which fits my existing workflow. So I thought I'd give it a try. I'm writing this as I go, so it'll be a discovery for us all!
 
 ## Installation.
 
