@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>David Dawson</title>
+  <meta name="description" content="">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+  <link href="/css/sidebar2.css" rel="stylesheet"/>
+  <link href="/css/mediaq.css" rel="stylesheet"/>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              
+                <a href="/">Blog</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/me.html">About Me | What I Do</a>
+              
+
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="//training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="//training/groovy.html">Groovy</a>
+                  </li>
+                
+                  <li>
+                    <a href="//training/microservices.html">Microservices</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/hireme.html">Hire Me</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="https://github.com/daviddawson">Github</a>
+              
+
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+
+
+            <span>February 28, 2017</span>
+          </p>
+          <h3><a href="/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html"></a></h3>
+          <div class="paragraph">
+<p>Since <a href="/blog/2017/02/04/simplicity-itself-shutdown.html">coming back to freelancing</a>, I&#8217;ve (re)started a set of projects with clients, managing them end to end.
+This means that I need a deployment environment somewhere that I can throw stuff into. I have much experience with Cloud Foundry
+ (I deliver training for Pivotal on it), but its a little heavy for my needs, and I want to have relatively small stateful containers that don&#8217;t take up a full box.</p>
+</div>
+<div class="paragraph">
+<p>I have been using Docker Machine for a while to host small projects on AWS. I like the workflow that it gives, letting you deploy images from a registry, or have a docker compose file build in place and deploy directly for testing purposes.</p>
+</div>
+<div class="paragraph">
+<p>The big issues when trying to scale it though are <strong>visibility</strong> and <strong>multi node</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Now that I have projects here that are moving into production, and without a larger company managed infrastructure anymore, I need to come up with a solution for these that don&#8217;t take lots of time and effort to install and manage.</p>
+</div>
+<div class="paragraph">
+<p>I had a good look around at a few options for managing infrastructure. I remembered a project called Rancher that was presented at LMUG a good while ago, so I went to see how it had developed.</p>
+</div>
+<div class="paragraph">
+<p>It had a good story to tell around making things easy, and at first glance, appears to support docker compose which fits my existing workflow. So I thought I&#8217;d give it a try. I&#8217;m writing this as I go, so it&#8217;ll be a discovery for us all!</p>
+</div>
+<div class="sect1">
+<h2 id="installation">Installation.</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installing the server is <strong>very easy</strong></p>
+</div>
+<div class="paragraph">
+<p>Take an existing docker host (created say, via docker machine on AWS, like I did), and you can install it with a single command. This runs a docker container on the host, which then bootstraps a set of other containers that make up the Rancher server install.</p>
+</div>
+<div class="paragraph">
+<p>Once you have a running server, you need to then pick an orchestration to use for Rancher to manage your applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="orchestration-options">Orchestration Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>This confused me.</strong></p>
+</div>
+<div class="paragraph">
+<p>Rancher has half a dozen different options for container orchestration. It&#8217;s own built in "Cattle" management. This seems to be the one that attracted me to Rancher in their documentation, as it has a very similar workflow to docker compose.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can use Kubernetes, Mesos, Swarm (aka 'Docker Native') and Windows. Kube is a big draw I think, it certainly caught my eye.</p>
+</div>
+<div class="paragraph">
+<p>These are partitioned into "Environments", of which Rancher can manage multiples thereof, and support different orchestration options at the same time.  I like this, it lets Rancher be the single management tool for orchestration.</p>
+</div>
+<div class="paragraph">
+<p>What confused me, although perhaps it shouldn&#8217;t have done, is that the developer workflow for each orchestration is totally different. Rancher doesn&#8217;t wrap them particularly, it simply enables management of them in a single place. I installed Kubernetes, this was very quick and easy. I then
+very quickly realised that I didn&#8217;t remember how to use kube particularly well, and rapidly retreated. This doesn&#8217;t fit my requirement of "it has to be easy and low effort".</p>
+</div>
+<div class="paragraph">
+<p>Instead I chose "Cattle" orchestration, built into Rancher. This seems to fit the workflow that I want.   I could probably have chosen Swarm to get a similar effect, although my experiments with it showed that it deployed a container per node for services. This seems remarkably crude as far as orcehstration goes (compare that to, say Mesos or Cloud Foundry Diego and their ability for very precise positioning). I can&#8217;t imagine this is really the case, but I didn&#8217;t go any deeper than a quick eval.</p>
+</div>
+<div class="paragraph">
+<p>Cattle is easy and understandable. Low level enough without losing high level visibility and most importantly, it fits my current workflow, or so it appears.</p>
+</div>
+<div class="paragraph">
+<p>I think that the key thing is that you should pick the orchestrator that fits with your current operational and development workflow. Rancher seems
+to have good support for working with the major orchestrations and bringing them together in one place.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve kept the Kube cluster up for some things and I am intending to spend some time with Mesos in the next month or so now that I know it&#8217;s easy to set up from a single management interface.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dev-workflow">Dev workflow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I use docker compose a large amount, using it as the basis for continuous delivery workflows across all the platforms and runtimes I develop in. You can see this influence on the Muon project which promotes the tool for all of its "getting started" and other deployments.</p>
+</div>
+<div class="paragraph">
+<p>I find that this also gives a good way to deploy sets of related projects locally and then into the remote system. This disconnect between local and remote is why i&#8217;ve shied away from using Kubernetes for production, as I don&#8217;t need th massive scale or complex orchestrations it provides.</p>
+</div>
+<div class="paragraph">
+<p>Once I made the decision to choose a Cattle deployment, deployment of the projects started. I updated TeamCity with a call to rancher-compose and
+<em>most</em> projects fired up. Rancher supports <code>docker-compose.yml</code> files, with an optional override in its own <code>rancher-compose.yml</code> file.What became clear is that Rancher support most of the docker compose format, when you are dealing with prebuilt services.
+When you are using containers built from the local disk (dev style <strong>build:</strong> commands), then it seems to break with the way I was using it. At least it did on all of the projects I had that used that style.</p>
+</div>
+<div class="paragraph">
+<p>I quickly reworked those to build an image in a registry rather than pushing a locally built image using the <code>build</code> context in the docker-compose file.  All my projects then deployed, and in truth, this is a better model.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rancher-extensions-to-docker-compose">Rancher Extensions to Docker Compose</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Rancher can accept straight docker compose files and run them. It also lets you define a <code>rancher-compose.yml</code> that contains extra information Rancher Cattle can use to manage and coddle your containers a bit more</p>
+</div>
+<div class="paragraph">
+<p>This gets into active management of containers, which has been an issue on the basic docker machine environment I&#8217;ve used to host these projects before.</p>
+</div>
+<div class="paragraph">
+<p>I haven&#8217;t gone deep into what else Rancher Cattle can do in this regard, but I like its simplicity.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ha-and-maintenance">HA and Maintenance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the main motiviations for me was to get the ability to have a proper HA containerised setup. Docker machine is fine and all, but it&#8217;s
+totally fragile! I want to get an HA setup thats easy, multi cloud and reliable. Now that I&#8217;m a freelancer, I&#8217;m going to do this by myself and run
+client projects on it, so it has to be production grade, yet very low maintenance.  So, dev workflow aside, this is a very important requirement.</p>
+</div>
+<div class="sect2">
+<h3 id="setting-up-ha">Setting up HA</h3>
+<div class="paragraph">
+<p>HA in Rancher requires an external database. Since I&#8217;m on AWS, I used RDS to give a hosted MySQL that I don&#8217;t need to care about.</p>
+</div>
+<div class="paragraph">
+<p>The hardest part about this was setting up networking in RDS!  Fiddling around with VPC vs DB VPC and network routing was lots of fun and all, but
+I&#8217;ve got better things to do. In the end, I got it sorted, Rancher connected and seemed to work fine. (FYI, Frankfurt is not near Dublin)</p>
+</div>
+<div class="paragraph">
+<p>This seems to be a decent setup, essentially delegating HA synchronisation to the DB cluster/ RDS</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve hit it with a wrench a few times, destroying the odd node and the like, and it&#8217;s not gone down yet, so I&#8217;m reasonably confident it&#8217;ll survive for a while.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ops-stuff">Ops stuff</h3>
+<div class="paragraph">
+<p>With my previous little setup, scaling was a purely vertical affair, which was disruptive to say the least. Proper ops tooling wasn&#8217;t feasible to add in,
+or really worth it for a hobby system like that.</p>
+</div>
+<div class="paragraph">
+<p>Now that it&#8217;s productionising, I need some monitoring, log management and alerting.</p>
+</div>
+<div class="paragraph">
+<p>Lucky for me, Rancher has this setup in the Cattle catalogue. I installed Prometheus and ElasticSearch/Logstash. This took about 30 mins to do.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="http-load-balancing">HTTP Load Balancing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I&#8217;m hosting a fair few projects on the same containerised infrastructure. I don&#8217;t want to run the front end containers on every host, or to have a single host that is the single entry point. Instead I&#8217;d like to run 2 of each container (unless under load), spread across the various hosts, and have http traffic route to them after hitting any of the hosts. A load balancer sitting in front and distributing traffic to the host cluster completes the mix.</p>
+</div>
+<div class="paragraph">
+<p>To make this work, this is what I did.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set up an AWS Elastic Load Balancer, directing traffic at all the Rancher hosts.</p>
+</li>
+<li>
+<p>Installed an <a href="https://github.com/muoncore/muon-http-proxy">Event Sourced HTTP Proxy</a> from the Muon project.</p>
+</li>
+<li>
+<p>In Rancher, create a new user stack <code>load-balancing</code> and then added a load balancer container.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The last entry is nice, Rancher lets you create a load balancer (which is HA proxy), run an instance on all hosts and have it direct HTTP traffic to a particular internal service. So I can direct all HTTP traffic to my 2 HTTP proxy nodes that then select the target from their event sourced routing table.</p>
+</div>
+<div class="paragraph">
+<p>Adding a new http vhost is now as easy as emitting the appropriate muon event and the proxies scale horizontally very easily.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="end-result">End result.</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I managed to deploy a new Rancher server in 5 minutes, experiment with various orchestration options by deploying them to various AWS datacentres
+and settle on Cattle within an hour. Migration of projects took a simple rebuilt to deploy them onto the new Rancher environment as simple docker compose
+stacks.</p>
+</div>
+<div class="paragraph">
+<p>Rancher is an interesting tool with a lot to recommend it.  After my initial confusion on what its role actually was as distinct from the orchestrators it
+was using, I&#8217;ve come to appreciate the multi-orchestration idea. I don&#8217;t like being forced to make "strategic" decisions based on silly technical reasons,
+say Kube vs Mesos. Why not both? Rancher gives a decent answer to that, and I expect it to be my top level Ops tool of choice for the foreseeable future.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="faq">FAQ</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="em-why-didn-t-you-use-insert-cloud-provider-offering-here-em"><em>Why didn&#8217;t you use [insert cloud provider offering here].</em></h3>
+<div class="paragraph">
+<p>I want multi cloud.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="em-this-sounds-awesome-can-i-pay-you-to-do-some-work-for-me-em"><em>This sounds awesome, can I pay you to do some work for me?</em></h3>
+<div class="paragraph">
+<p>Why, <a href="/hireme.html">yes you can</a>. (ok, fair enough, this is an advert)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="em-what-kind-of-projects-are-you-deploying-em"><em>What kind of projects are you deploying?</em></h3>
+<div class="paragraph">
+<p>A fair few.</p>
+</div>
+<div class="paragraph">
+<p>On the new setup, I&#8217;m running</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A marketing experimental analytics system for a top tier broadcast media firm.</p>
+</li>
+<li>
+<p>2 startup applications to support funding and MVP building
+*</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These moving to production is the main impetus to getting someting production grade in place.</p>
+</div>
+<div class="paragraph">
+<p>Simple</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="em-are-you-deploying-stateful-containers-em"><em>Are you deploying stateful containers?</em></h3>
+<div class="paragraph">
+<p>Yes. Generally I use Cassandra to back <a href="http://muoncore.io/submodules/photon/docs/index.html">Photon</a>, an event store from the Muon project. Or run a single Photon
+with an data store embedded in its own container for small data sets/ non prod workloads. Both of these need stateful volume management.</p>
+</div>
+<div class="paragraph">
+<p>Apart from that as the data backbone, mysql and neo4j put in a good showing, although I currently have them as view data only. If they totally die, they will
+be recontstructed from the event store. For now I&#8217;m happy with that state of affairs. In the future, I may invest some time in making them HA, but I&#8217;m not
+that concerned given the ability to rebuild automatically is already there.</p>
+</div>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html"></a></li>
+    
+    
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon developer diary</a></li>
+    
+    
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing muon</a></li>
+    
+    
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down simplicity itself</a></li>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A microservices developer api using .... make</a></li>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and philosophy</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2017">February 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html"></a></li>
+    
+  
+  
+  
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon Developer Diary</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY&#58; Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY&#58; Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

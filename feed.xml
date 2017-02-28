@@ -5,9 +5,258 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 23 Feb 2017 13:52:37 +0000</pubDate>
-    <lastBuildDate>Thu, 23 Feb 2017 13:52:37 +0000</lastBuildDate>
+    <pubDate>Tue, 28 Feb 2017 20:49:28 +0000</pubDate>
+    <lastBuildDate>Tue, 28 Feb 2017 20:49:28 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Since &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;coming back to freelancing&lt;/a&gt;, I&amp;#8217;ve (re)started a set of projects with clients, managing them end to end.
+This means that I need a deployment environment somewhere that I can throw stuff into. I have much experience with Cloud Foundry
+ (I deliver training for Pivotal on it), but its a little heavy for my needs, and I want to have relatively small stateful containers that don&amp;#8217;t take up a full box.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I have been using Docker Machine for a while to host small projects on AWS. I like the workflow that it gives, letting you deploy images from a registry, or have a docker compose file build in place and deploy directly for testing purposes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The big issues when trying to scale it though are &lt;strong&gt;visibility&lt;/strong&gt; and &lt;strong&gt;multi node&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now that I have projects here that are moving into production, and without a larger company managed infrastructure anymore, I need to come up with a solution for these that don&amp;#8217;t take lots of time and effort to install and manage.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I had a good look around at a few options for managing infrastructure. I remembered a project called Rancher that was presented at LMUG a good while ago, so I went to see how it had developed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It had a good story to tell around making things easy, and at first glance, appears to support docker compose which fits my existing workflow. So I thought I&amp;#8217;d give it a try. I&amp;#8217;m writing this as I go, so it&amp;#8217;ll be a discovery for us all!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;installation&quot;&gt;Installation.&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Installing the server is &lt;strong&gt;very easy&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Take an existing docker host (created say, via docker machine on AWS, like I did), and you can install it with a single command. This runs a docker container on the host, which then bootstraps a set of other containers that make up the Rancher server install.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once you have a running server, you need to then pick an orchestration to use for Rancher to manage your applications.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;orchestration-options&quot;&gt;Orchestration Options&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;This confused me.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Rancher has half a dozen different options for container orchestration. It&amp;#8217;s own built in &quot;Cattle&quot; management. This seems to be the one that attracted me to Rancher in their documentation, as it has a very similar workflow to docker compose.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Alternatively, you can use Kubernetes, Mesos, Swarm (aka 'Docker Native') and Windows. Kube is a big draw I think, it certainly caught my eye.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;These are partitioned into &quot;Environments&quot;, of which Rancher can manage multiples thereof, and support different orchestration options at the same time.  I like this, it lets Rancher be the single management tool for orchestration.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;What confused me, although perhaps it shouldn&amp;#8217;t have done, is that the developer workflow for each orchestration is totally different. Rancher doesn&amp;#8217;t wrap them particularly, it simply enables management of them in a single place. I installed Kubernetes, this was very quick and easy. I then
+very quickly realised that I didn&amp;#8217;t remember how to use kube particularly well, and rapidly retreated. This doesn&amp;#8217;t fit my requirement of &quot;it has to be easy and low effort&quot;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Instead I chose &quot;Cattle&quot; orchestration, built into Rancher. This seems to fit the workflow that I want.   I could probably have chosen Swarm to get a similar effect, although my experiments with it showed that it deployed a container per node for services. This seems remarkably crude as far as orcehstration goes (compare that to, say Mesos or Cloud Foundry Diego and their ability for very precise positioning). I can&amp;#8217;t imagine this is really the case, but I didn&amp;#8217;t go any deeper than a quick eval.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Cattle is easy and understandable. Low level enough without losing high level visibility and most importantly, it fits my current workflow, or so it appears.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I think that the key thing is that you should pick the orchestrator that fits with your current operational and development workflow. Rancher seems
+to have good support for working with the major orchestrations and bringing them together in one place.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve kept the Kube cluster up for some things and I am intending to spend some time with Mesos in the next month or so now that I know it&amp;#8217;s easy to set up from a single management interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;dev-workflow&quot;&gt;Dev workflow&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I use docker compose a large amount, using it as the basis for continuous delivery workflows across all the platforms and runtimes I develop in. You can see this influence on the Muon project which promotes the tool for all of its &quot;getting started&quot; and other deployments.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I find that this also gives a good way to deploy sets of related projects locally and then into the remote system. This disconnect between local and remote is why i&amp;#8217;ve shied away from using Kubernetes for production, as I don&amp;#8217;t need th massive scale or complex orchestrations it provides.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Once I made the decision to choose a Cattle deployment, deployment of the projects started. I updated TeamCity with a call to rancher-compose and
+&lt;em&gt;most&lt;/em&gt; projects fired up. Rancher supports &lt;code&gt;docker-compose.yml&lt;/code&gt; files, with an optional override in its own &lt;code&gt;rancher-compose.yml&lt;/code&gt; file.What became clear is that Rancher support most of the docker compose format, when you are dealing with prebuilt services.
+When you are using containers built from the local disk (dev style &lt;strong&gt;build:&lt;/strong&gt; commands), then it seems to break with the way I was using it. At least it did on all of the projects I had that used that style.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I quickly reworked those to build an image in a registry rather than pushing a locally built image using the &lt;code&gt;build&lt;/code&gt; context in the docker-compose file.  All my projects then deployed, and in truth, this is a better model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;rancher-extensions-to-docker-compose&quot;&gt;Rancher Extensions to Docker Compose&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Rancher can accept straight docker compose files and run them. It also lets you define a &lt;code&gt;rancher-compose.yml&lt;/code&gt; that contains extra information Rancher Cattle can use to manage and coddle your containers a bit more&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This gets into active management of containers, which has been an issue on the basic docker machine environment I&amp;#8217;ve used to host these projects before.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I haven&amp;#8217;t gone deep into what else Rancher Cattle can do in this regard, but I like its simplicity.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;ha-and-maintenance&quot;&gt;HA and Maintenance&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One of the main motiviations for me was to get the ability to have a proper HA containerised setup. Docker machine is fine and all, but it&amp;#8217;s
+totally fragile! I want to get an HA setup thats easy, multi cloud and reliable. Now that I&amp;#8217;m a freelancer, I&amp;#8217;m going to do this by myself and run
+client projects on it, so it has to be production grade, yet very low maintenance.  So, dev workflow aside, this is a very important requirement.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;setting-up-ha&quot;&gt;Setting up HA&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;HA in Rancher requires an external database. Since I&amp;#8217;m on AWS, I used RDS to give a hosted MySQL that I don&amp;#8217;t need to care about.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The hardest part about this was setting up networking in RDS!  Fiddling around with VPC vs DB VPC and network routing was lots of fun and all, but
+I&amp;#8217;ve got better things to do. In the end, I got it sorted, Rancher connected and seemed to work fine. (FYI, Frankfurt is not near Dublin)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This seems to be a decent setup, essentially delegating HA synchronisation to the DB cluster/ RDS&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve hit it with a wrench a few times, destroying the odd node and the like, and it&amp;#8217;s not gone down yet, so I&amp;#8217;m reasonably confident it&amp;#8217;ll survive for a while.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;ops-stuff&quot;&gt;Ops stuff&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With my previous little setup, scaling was a purely vertical affair, which was disruptive to say the least. Proper ops tooling wasn&amp;#8217;t feasible to add in,
+or really worth it for a hobby system like that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now that it&amp;#8217;s productionising, I need some monitoring, log management and alerting.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Lucky for me, Rancher has this setup in the Cattle catalogue. I installed Prometheus and ElasticSearch/Logstash. This took about 30 mins to do.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;http-load-balancing&quot;&gt;HTTP Load Balancing&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m hosting a fair few projects on the same containerised infrastructure. I don&amp;#8217;t want to run the front end containers on every host, or to have a single host that is the single entry point. Instead I&amp;#8217;d like to run 2 of each container (unless under load), spread across the various hosts, and have http traffic route to them after hitting any of the hosts. A load balancer sitting in front and distributing traffic to the host cluster completes the mix.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;To make this work, this is what I did.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Set up an AWS Elastic Load Balancer, directing traffic at all the Rancher hosts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Installed an &lt;a href=&quot;https://github.com/muoncore/muon-http-proxy&quot;&gt;Event Sourced HTTP Proxy&lt;/a&gt; from the Muon project.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In Rancher, create a new user stack &lt;code&gt;load-balancing&lt;/code&gt; and then added a load balancer container.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The last entry is nice, Rancher lets you create a load balancer (which is HA proxy), run an instance on all hosts and have it direct HTTP traffic to a particular internal service. So I can direct all HTTP traffic to my 2 HTTP proxy nodes that then select the target from their event sourced routing table.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Adding a new http vhost is now as easy as emitting the appropriate muon event and the proxies scale horizontally very easily.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;end-result&quot;&gt;End result.&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I managed to deploy a new Rancher server in 5 minutes, experiment with various orchestration options by deploying them to various AWS datacentres
+and settle on Cattle within an hour. Migration of projects took a simple rebuilt to deploy them onto the new Rancher environment as simple docker compose
+stacks.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Rancher is an interesting tool with a lot to recommend it.  After my initial confusion on what its role actually was as distinct from the orchestrators it
+was using, I&amp;#8217;ve come to appreciate the multi-orchestration idea. I don&amp;#8217;t like being forced to make &quot;strategic&quot; decisions based on silly technical reasons,
+say Kube vs Mesos. Why not both? Rancher gives a decent answer to that, and I expect it to be my top level Ops tool of choice for the foreseeable future.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;em-why-didn-t-you-use-insert-cloud-provider-offering-here-em&quot;&gt;&lt;em&gt;Why didn&amp;#8217;t you use [insert cloud provider offering here].&lt;/em&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I want multi cloud.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;em-this-sounds-awesome-can-i-pay-you-to-do-some-work-for-me-em&quot;&gt;&lt;em&gt;This sounds awesome, can I pay you to do some work for me?&lt;/em&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Why, &lt;a href=&quot;/hireme.html&quot;&gt;yes you can&lt;/a&gt;. (ok, fair enough, this is an advert)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;em-what-kind-of-projects-are-you-deploying-em&quot;&gt;&lt;em&gt;What kind of projects are you deploying?&lt;/em&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A fair few.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On the new setup, I&amp;#8217;m running&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A marketing experimental analytics system for a top tier broadcast media firm.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;2 startup applications to support funding and MVP building
+*&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;These moving to production is the main impetus to getting someting production grade in place.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Simple&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;em-are-you-deploying-stateful-containers-em&quot;&gt;&lt;em&gt;Are you deploying stateful containers?&lt;/em&gt;&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Yes. Generally I use Cassandra to back &lt;a href=&quot;http://muoncore.io/submodules/photon/docs/index.html&quot;&gt;Photon&lt;/a&gt;, an event store from the Muon project. Or run a single Photon
+with an data store embedded in its own container for small data sets/ non prod workloads. Both of these need stateful volume management.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Apart from that as the data backbone, mysql and neo4j put in a good showing, although I currently have them as view data only. If they totally die, they will
+be recontstructed from the event store. For now I&amp;#8217;m happy with that state of affairs. In the future, I may invest some time in making them HA, but I&amp;#8217;m not
+that concerned given the ability to rebuild automatically is already there.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Tue, 28 Feb 2017 20:49:28 +0000</pubDate>
+        <link>/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html</link>
+        <guid isPermaLink="true">/2017/02/28/2017-02-21-experiments-with-rancher-and-kubernetes.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Muon Developer Diary</title>
@@ -1784,288 +2033,6 @@ We very much like the relation between client and server in the Eureka design, a
         <category>oauth</category>
         
         <category>security</category>
-        
-        
-        <category>Microservices and Reactive</category>
-        
-      </item>
-    
-      <item>
-        <title>Best Practice Developer techniques&amp;#58; The Hunt for The Silver Bullet</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Over the past 15 years of software development, especially since the XP movement gained traction, a series of styles, techniques and processes have gained broad industry adoption. These are, at times, called 'best practices'. At others times they are referred to as dogma or 'cargo cult'.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article describes some (!) of these techniques, presents some overarching ideas that connect them all, and finally a method through which you can objectively evaluate them, rather than relying on opinion or hyperbole.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;the-contenders&quot;&gt;The Contenders&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;code-review&quot;&gt;Code Review&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Code review describes a process of one developer reading through the code created by another and giving feedback. How deep that reading is and what happens with the feedback is variable.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Some teams enforce a review being 'passed', or the code being formally approved and signed off by the reviewer, others that treat review as more of a learning tool, and so feedback is more advisory than prescriptive.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This variation is something to be aware of, the term by no means has the same definition across the industry, and the intent behind applying it varies.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;pair-programming&quot;&gt;Pair Programming&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This describes the practice of two developers working on the same task, on the same machine. The method varies, some promote multiple input devices, others a driver/ navigator approach.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The premise here on why this is useful changes depending on who you ask. It can be the source of much angst, with proponents taking quite different positions, and in certain cases teams becoming divided deeply by the practice.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Some say that it helps keep code clean, others that it aids knowledge transfer,&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Some teams use it exclusively, going as far as to have less machines than people, others use it tactically, and some not at all.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;My opinion is that all of these positions hold true to a greater or lesser extent, the rub being that this completely depends on the context and participants.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;tests-as-documentation&quot;&gt;Tests as Documentation&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This if often expressed as a benefit of Test Driven Development. The underlying premise is that applying TDD is a good way to begin reasoning about the system you are constructing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Given that, the assertion is that your tests will form usable documentation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;My experience is that this is not a given, and for this to become the case, you need to explicitly make that real during writing your tests.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Slightly off topic, my personal rule of thumb is to ensure you delete at least half your tests once your primary development is complete, with that half being the 'research' style tests.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The ones that are left are the ones that you have cleaned up into usable regression tests and also, documentation.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;clean-code&quot;&gt;Clean Code&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Clean Code is the title of a book by Robert C. Martin. In it, a conceptual framework is built up and demonstrated, with examples in Java, on the subject of 'cleanliness' in writing code.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is an excellent book, and I recommend you read it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The main expected effects of applying the styling and ideas presented are improved readability and verifiable simplicity in the code being cleaned.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;There is something of a bias towards object oriented (especially Java) coding styles and patterns, but many of the ideas are readily transferable to other paradigms.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect2&quot;&gt;
-&lt;h3 id=&quot;the-complex-effects-of-a-complex-subject&quot;&gt;The Complex Effects of a Complex subject&lt;/h3&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Adopting each of these creates a complex effect. By that I mean that they, in isolation or together, do not have a single (or simple) effect that can be identified.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This leads to a variety of points of view on the subjects and much of the discussion around them falls into the realm of 'begging the question'. This is a rhetorical device meaning that they should be assumed to be correct, and not open to debate on their fundamental worth. This is a deeply foolish position to take, dogmatic at best and dangerously misguiding at worst.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is not to say that I believe any of these ideas are fundamentally flawed, I don&amp;#8217;t.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The point here is that we owe it to ourselves to ensure that everything is open to question, open to critique, open to analysis, or we are promoting code based religion.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;what-it-all-means&quot;&gt;What it all means&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The real question is, as always, why?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;There are two ways of valuing something, based on it&amp;#8217;s intrinsic or it&amp;#8217;s extrinsic value. The value that is inherent within it, or the value that it creates in it&amp;#8217;s environment.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;A technique such as this must be valued based on it&amp;#8217;s extrinsic value, the effect that it creates in the environment.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So why adopt any of the above techniques at all, what benefit are you expecting to get, what effect are you expecting to be created?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The effects, complex though they are can be picked apart and analysed for their worth, but you need some way of identifying the value they bring in your environment.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For me, the question often revolves around the learning process. This is a fundamental part of software development.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It is even more fundamental than this. Moving between codebases, coming back after a holiday, getting up to date with a new version of a tool or technique. This is all learning.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Learning takes time. &lt;em&gt;It cannot be rushed.&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Following an intensive learning session, you will see a drop of of around 50-80% of what you learned over the subsequent weeks., depending how often you use it. With that, you must continue the learning process over months to fully absorb a subject.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;programming-as-theory-building&quot;&gt;Programming as Theory Building&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Peter Naur is a deep thinker, who has been active in the world of software over decades. He is the N in BNF, a language used to formally describe computer language grammars and has made many other contributions to the field that affect the way we work.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In 1985, he wrote an article, &quot;Programming as Theory Building&quot;. This uses the terminology of the time (eg, Structure Programming), but the subject it approaches is timeless.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The premise is this, the code you write is not the system. The documentation is not the system, neither is the deployment environment, tests or other artifacts.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;All of these are the concrete outworkings of the real thing, which he refers to as 'The Theory'. This Theory is the real system, and it is the tacit knowledge, the deep understanding of all of the above, the various corner cases, the coding standards, performance issues, functional requirements, language preferences, development team interpersonal conflict. The whole gamut.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Only when this coherent strand of thought, encompassing all of the above, is fully understood by a developer can they make changes fully in tune with the theory. If they don&amp;#8217;t have a full understanding, they will unconsciously work against the grain of the system and quickly run into trouble. So the primary goal of programmers shouldn&amp;#8217;t be to churn code, it&amp;#8217;s building their understanding of the theories weaving their way around them.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Transferring these theories is hard and deeply context specific. Since it is not only the code, self documenting code can only go so far. Pair programming can help, but it takes time and isn&amp;#8217;t repeatable or able to be reviewed later (&quot;what did he say about that again?&quot;), clean code helps, but won&amp;#8217;t necessarily tell you much about the production environment.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When seen in the light of this very hard job of distributing the theory, the tacit understanding of the system all of the above can be seen as a potential solution to part of the problem, but they can never be the whole solution.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Thus, I would put it to anyone holding a more dogmatic position (sometimes expressed as &quot;X is the basis of all that we do&quot;), unless your chosen technique solves this problem entirely, you are misguided in your belief.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I recommend you fully read the article and absorb before continuing. You can do so &lt;a href=&quot;http://alistair.cockburn.us/ASD+book+extract%3A+%22Naur,+Ehn,+Musashi%22&quot;&gt;Programming as Theory Building&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;we-don-t-have-months&quot;&gt;We don&amp;#8217;t have months!&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It&amp;#8217;s often true, there simply isn&amp;#8217;t the time to spend months bringing someone up to speed on a system. They need to get productive, now.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The context, the Theory, is not something that can be ignored. Allowing a developer to operate effectively without gaining the full context in a system is a route to a productivity boost. It allows safer development to happen in organisations with higher staff turnover, or any with movement of developers across multiple systems.
-Looping back to where we started then, these 'best practices', you will notice that they all focus around a few ideas. Readability, transfer of knowledge, building understanding. The promoters of these techniques sometimes fall into trying to describe them in terms of their essential qualities, how powerful they are in and of themselves, rather than the utility that they give. That&amp;#8217;s because, frankly, it&amp;#8217;s often hard to succinctly describe their utility.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;They are all speaking to this same subject, what Peter Naur calls the Theory Building, and importantly, how to make that Theory Building as fast and accurate as possible.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is a major part of the utility of all of the techniques, aiding Theory Building, which is why I chose these in particular.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So, one question you can now ask, how well do they fulfil this essential knowledge transfer function, passing along the Theory. This will vary between teams and contexts, and it&amp;#8217;s hard. Since it&amp;#8217;s so hard, and such a real and measurable cost, I would suggest that this becomes your primary measure of how useful these techniques and ideas are.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can measure the transfer of the Theory. It&amp;#8217;s not always easy, but it&amp;#8217;s much easier to test for than the subjective measures (aka flame wars!) you will end up with otherwise.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;My answer for this is that, there is no right answer. You must test, and measure. With those measurements in hand, you make an objective decision on the utility of the techniques.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Some measurements of these can take the form of :-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Knowledge retention over time, on whatever subject you want to target.&amp;lt;/li&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Mean time to push - how long it takes a new dev to make a prod change&amp;lt;/li&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Orientation time - how long it takes a dev to start making changes to a codebase they switch onto.&amp;lt;/li&amp;gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Techniques that improve Theory Building will affect these metrics.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;microservices-as-a-learning-tool&quot;&gt;Microservices as a learning tool&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This concept of aiding learning by reducing the system scope is one motivation behind the burgeoning Microservices movement. A component &quot;small enough to fit in your head&quot; is how it expressed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Code with well enough defined contracts that you can pick it up and make many changes without reference to the full system. In terms of Theory Building, you have reduced the amount of the full Theory you have to absorb in order to be able to make changes that work within in sympathy with the overall grain of the system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;There are other benefits, of course, such as enabling antifragile behaviour, creating runtime granularity, thriving on change and so on.  Being able to make changes quickly, and also enabling the behaviours described makes Microservices a very powerful tool.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;what-next&quot;&gt;What next?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Now that you have a picture of the full context of learning, the tacit Theory of software, you are in a position to make objective decisions about the tools and techniques you use.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can select any of the above, or others, and do so objectively. This is huge.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You don&amp;#8217;t need arguments between developer opinions. Simply run a test, gather metrics, make a decision.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you&amp;#8217;d like help with this and with learning in general, get in touch.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-        <pubDate>Mon, 02 Mar 2015 21:19:00 +0000</pubDate>
-        <link>/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html</link>
-        <guid isPermaLink="true">/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html</guid>
-        
-        <category>adaptive learning</category>
-        
-        <category>complexity</category>
-        
-        <category>knowledge</category>
-        
-        <category>learning</category>
-        
-        <category>simplicity</category>
-        
-        <category>training</category>
         
         
         <category>Microservices and Reactive</category>
