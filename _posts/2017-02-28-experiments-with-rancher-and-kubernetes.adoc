@@ -4,7 +4,7 @@ title: Building a deploy environment on AWS- Experiments with Rancher and Kubern
 layout: post
 author: David Dawson
 date: 2017-02-28 12:18
-image: images/vis/clouds1.jpg
+image: images/vis/knowledge.jpg
 categories:
  - blog
 tags:
