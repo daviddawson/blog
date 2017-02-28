@@ -4,6 +4,14 @@
 - name: About Me | What I Do
   path: "/me.html"
   section_id: why
+- name: Training
+  path: "/training/microservices.html"
+  section_id: contact
+  children:
+    - name: Groovy
+      path: "/training/groovy.html"
+    - name: Microservices
+      path: "/training/microservices.html"
 - name: Hire Me
   path: "/hireme.html"
   section_id: why
