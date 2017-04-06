@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Generic DAO in Spring with Parameterized Types</title>
+  <meta name="description" content="In this post I document how we created the Repository system in the Newton framework. Enabling auto creation of repositories and injection of interfaces that...">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="/blog/2017/04/06/spring-generic-dao-generics.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+  <link href="/css/sidebar2.css" rel="stylesheet"/>
+  <link href="/css/mediaq.css" rel="stylesheet"/>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              
+                <a href="/">Blog</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/me.html">About Me | What I Do</a>
+              
+
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="//training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="//training/groovy.html">Groovy</a>
+                  </li>
+                
+                  <li>
+                    <a href="//training/microservices.html">Microservices</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="/hireme.html">Hire Me</a>
+              
+
+            </li>
+          
+        
+          
+            <li>
+              
+                <a href="https://github.com/daviddawson">Github</a>
+              
+
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="/images/vis/knowledge.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+
+
+            <span>April 06, 2017</span>
+          </p>
+          <h3><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic DAO in Spring with Parameterized Types</a></h3>
+          <div class="paragraph">
+<p>I&#8217;m currently finishing cleaning up a new application framework built upon the Muon communications toolkit, called <strong>Newton</strong></p>
+</div>
+<div class="paragraph">
+<p>In this framework, we provide support for building Event Sourced <strong>Aggregate Roots</strong>, Stream processed Views, long running
+transactional Sagas, commands and general event handling. Lots of good things.</p>
+</div>
+<div class="paragraph">
+<p>I want to describe the Aggregate Root handling, as I had an epic fight with Spring/ Java Generics today that left me somewhat drained!</p>
+</div>
+<div class="paragraph">
+<p>In DDD an aggregate root is the boundary of transactional consistency. Everything that happens withing the aggregate is consistent with its own rules and view of the world. In Newton, all aggregates
+  are event sourced, meaning that they are persisted as the events describing the changes in their state, and then rebuilt from
+  that stream of events.</p>
+</div>
+<div class="paragraph">
+<p>Queries on the state of the system are done exclusively against the Views, so the repositories that load/ save aggregates
+are actually all an extension of the same base class, <code>MuonEventSourceRepository&lt;A extends AggregateRoot&gt;</code>, implementing
+the interface <code>EventSourceRepository&lt;A extends AggregateRoot&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>The ideal way of using these would be like so</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Scope</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;prototype&quot;</span><span style="color: #666666">)</span>
+<span style="color: #AA22FF">@Component</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">MyCommand</span> <span style="color: #008000; font-weight: bold">implements</span> Command <span style="color: #666666">{</span>
+ <span style="color: #AA22FF">@Autowired</span>
+ <span style="color: #008000; font-weight: bold">private</span> EventSourceRepository<span style="color: #666666">&lt;</span>User<span style="color: #666666">&gt;</span> repository
+
+ <span style="color: #AA22FF">@Override</span>
+ <span style="color: #B00040">void</span> <span style="color: #0000FF">execute</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+     log<span style="color: #666666">.</span><span style="color: #7D9029">debug</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;loading account ${id} to activate it&quot;</span><span style="color: #666666">)</span>
+     User user <span style="color: #666666">=</span> repository<span style="color: #666666">.</span><span style="color: #7D9029">load</span><span style="color: #666666">(</span>id<span style="color: #666666">)</span>
+     user<span style="color: #666666">.</span><span style="color: #7D9029">activateAccount</span><span style="color: #666666">()</span>
+     repository<span style="color: #666666">.</span><span style="color: #7D9029">save</span><span style="color: #666666">(</span>user<span style="color: #666666">)</span>
+ <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is possible in vanilla spring with the appropriate beans, but you have to create extensions of the class to put in the
+generics information. So, create a <code>UserRepository extends MuonEventSourceRepository&lt;User&gt;</code>, and so on. This seems somewhat
+cluttered, and, in a little way, gets in the way of the aim of the Muon projects, which is to make distribuuted computing more approachable.</p>
+</div>
+<div class="paragraph">
+<p>Solving this problem turned out to be somewhat more involved than I first thought!</p>
+</div>
+<div class="paragraph">
+<p>The solutions I tried were :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Using a Java Proxy. This doesn&#8217;t work, you don&#8217;t get the extended generic information.</p>
+</li>
+<li>
+<p>Creating BeanDefinitions using GenericTypeResolver. This doesn&#8217;t work, its not useful for this.</p>
+</li>
+<li>
+<p>Guava TypeTokens to capture the type information.</p>
+</li>
+<li>
+<p>Finally, generating classes on the fly using Javassist. This works.</p>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="the-real-problem">The real problem</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The real problem here is the way Java implements Generics. We have all seen Type Erasure in action, so Java developers are
+trained to think that Generic information is removed from the bytecode. This isn&#8217;t actually fully true.</p>
+</div>
+<div class="paragraph">
+<p>Generic information <strong>is</strong> stripped from variable references, and never makes it into the bytecode, so any and all variables
+that you have in your code doesn&#8217;t have sufficient generic parameter information to support creating bean definitions that can
+be autowired using the generics parameters, as above.</p>
+</div>
+<div class="paragraph">
+<p>There is, though, information kept in <strong>Class</strong> definitions. Its in the class files, just kept away from prying eyes apart from
+through some reflection apis. It is these reflection APIs that Spring, and other frameworks, use to do wiring using generic params.</p>
+</div>
+<div class="paragraph">
+<p>So, to make the above work, I needed to get classes with this information in them. Its impossible to create raw instances of
+<code>MuonEventSourceRepository</code> that contain the parameter we&#8217;ve set, as only a subclass would have it in.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-solution">The solution</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The solution then is clear in hindsight, we need to create subclasses. The options were some kind of inline/ anonymous class approach,
+proxies and full on code generation.</p>
+</div>
+<div class="paragraph">
+<p>The first two failed, and fairly quickly. I recommend you skip them!</p>
+</div>
+<div class="paragraph">
+<p>The solution that worked for me was to use Javassist to generate subclasses, and explicitly insert the required generic
+parameter information into them.</p>
+</div>
+<div class="paragraph">
+<p>The broader problem was identifying all of the Aggregate classes in the application, and then generating a new repository
+for each of them. We have a utility, using the Reflections library, that can do this, given a starting point. To give that starting
+point, and to hook in the automatic creation of repositories, we created a <code>@EnableNewton</code> annotation in the tradition of
+ spring boot.</p>
+</div>
+<div class="paragraph">
+<p>This looks like this</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Target</span><span style="color: #666666">({</span>ElementType<span style="color: #666666">.</span><span style="color: #7D9029">TYPE</span><span style="color: #666666">})</span>
+<span style="color: #AA22FF">@Retention</span><span style="color: #666666">(</span>RetentionPolicy<span style="color: #666666">.</span><span style="color: #7D9029">RUNTIME</span><span style="color: #666666">)</span>
+<span style="color: #AA22FF">@Documented</span>
+<span style="color: #AA22FF">@Import</span><span style="color: #666666">(</span>EnableNewtonRegistrar<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">)</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #AA22FF">@interface</span> EnableNewton <span style="color: #666666">{</span>
+  String<span style="color: #666666">[]</span> <span style="color: #0000FF">value</span><span style="color: #666666">()</span> <span style="color: #008000; font-weight: bold">default</span> <span style="color: #666666">{};</span>       <i class="conum" data-value="2"></i><b>(2)</b>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Reference a spring managed class that can be used to implement behaviour for this annotation</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This annotation can be, optionally, passes packages to include in the scanning for AggregateRoots</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The class referenced</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>public class EnableNewtonRegistrar implements ImportBeanDefinitionRegistrar {
+
+  @Override
+  public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    try {
+      initScan(importingClassMetadata);                                                                   <i class="conum" data-value="1"></i><b>(1)</b>
+
+      MuonLookupUtils.listAllAggregateRootClass().forEach(s -&gt; {                                          <i class="conum" data-value="2"></i><b>(2)</b>
+
+        AggregateConfiguration a = s.getAnnotation(AggregateConfiguration.class);                         <i class="conum" data-value="3"></i><b>(3)</b>
+
+        if (a == null)
+          throw new IllegalArgumentException("Currently @AggregateConfiguration(context) is required");
+        }
+
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();                              <i class="conum" data-value="4"></i><b>(4)</b>
+        beanDefinition.setBeanClass(makeRepo(s));                                                        <i class="conum" data-value="5"></i><b>(5)</b>
+        ConstructorArgumentValues vals = new ConstructorArgumentValues();
+        vals.addGenericArgumentValue(s);                                                                 <i class="conum" data-value="6"></i><b>(6)</b>
+        vals.addGenericArgumentValue(a.context());
+        beanDefinition.setConstructorArgumentValues(vals);
+
+        registry.registerBeanDefinition("newtonRepo" + s.getSimpleName(), beanDefinition);               <i class="conum" data-value="7"></i><b>(7)</b>
+      });
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  ....
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Use reflections to scan for the right classes. We end up with a list we can iterate.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the list, and iterate them all. Each class extends AggregateRoot</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Obtain an annotation on the particular AggregateRoot, ensure its there.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Create a new BeanDefinition, useful for low level adding of beans into a Spring app context.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Set the bean class to be a class returned by <code>makeRepo</code>&#8230;&#8203;. we&#8217;ll get to this ..</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Set the arguments that can&#8217;t be injected, in this case, the Class we&#8217;re working on at the String extracted from the annotation</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Register the bean</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When this has run, a new bean will have been created, the repository!  The key is the <code>makeRepo(Class)</code> method. This
+needs to generate a new repository class, that extends <code>MuonEventSourceRepository</code>, and has the correct generic param set for
+the particular AggregateRoot we are looking at.</p>
+</div>
+<div class="sect2">
+<h3 id="javassist-to-the-rescue">Javassist to the rescue</h3>
+<div class="paragraph">
+<p>By this point, I&#8217;d spent a good 3 hours hammering through this, and wanted to wrap up.  The internet showed very little
+  of anyone tackling this precise problem. By looking through the Javassist tutorials and some judicious googling, I learned
+  that Generic parameter information can be injected into a class file by Javassist.</p>
+</div>
+<div class="paragraph">
+<p>This is what I came up with</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>private Class makeRepo(Class param) {
+  ClassPool defaultClassPool = ClassPool.getDefault();
+  try {
+    CtClass superInterface = defaultClassPool.getCtClass(MuonEventSourceRepository.class
+      .getName());
+
+    String repoName = param.getName() + "Repository";
+
+    CtClass repositoryInterface = defaultClassPool.makeClass(repoName, superInterface);                <i class="conum" data-value="1"></i><b>(1)</b>
+    ClassFile classFile = repositoryInterface.getClassFile();
+
+    String sig = "Ljava/lang/Object;Lio/muoncore/newton/eventsource/muon/MuonEventSourceRepository&lt;L" + getSigName(param) + ";&gt;;";  <i class="conum" data-value="2"></i><b>(2)</b>
+
+    SignatureAttribute signatureAttribute = new SignatureAttribute(                                   <i class="conum" data-value="3"></i><b>(3)</b>
+      classFile.getConstPool(),
+      sig);
+    classFile.addAttribute(signatureAttribute);
+
+    return repositoryInterface.toClass();
+
+  } catch (NotFoundException | CannotCompileException e) {
+    e.printStackTrace();
+  }
+
+  return null;
+}
+
+private String getSigName(Class param) {
+  log.info("VAL IS " + Arrays.asList(param.getName().split("\\.")));
+  return StringUtils.arrayToDelimitedString(param.getName().split("\\."), "/");
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a new class, extending MuonEventSourceRepository. Javassist automatically creates the appropriate constructors.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This is a Java Generic Parameter signature. It is a fully qualified name of a class.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create a new attribute in the class and insert it in. <strong>This is the key!</strong></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The signature is fascinating. This is the information that is left behind after Type Erasure, the information that Spring
+and friends go hunting for to do their magic.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s fairly readable. All types extend Object, this class extends <code>MuonEventSourceRepository&lt;User&gt;</code> (or whatever the AggregateRoot is!)</p>
+</div>
+<div class="paragraph">
+<p>With this in place, tests went green across the board and everything worked. I was shocked!  After such a grind, this approach
+seems remarkably easy to work with. I&#8217;m still not fully sure of all the implications in all environments, as I expect this will
+fail in certain locked down Classloaders. They seem to be more infrequent these days, and the workaround is to go back to the old
+model of explicit repository implementations in those cases. So, I&#8217;m happy.</p>
+</div>
+<div class="paragraph">
+<p>Watch out for an announcement on the public release of Newton in the next week or two. If you&#8217;re especially keen to talk about it before hand,
+let me know and I&#8217;ll see what I can arrange.</p>
+</div>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#spring">spring</a>,
+                
+
+                <a href="/blog/tags#java">java</a>,
+                
+
+                <a href="/blog/tags#muon">muon</a>,
+                
+
+                <a href="/blog/tags#newton">newton</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic dao in spring with parameterized types</a></li>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on aws- experiments with rancher and kubernetes</a></li>
+    
+    
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon developer diary</a></li>
+    
+    
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing muon</a></li>
+    
+    
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down simplicity itself</a></li>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A microservices developer api using .... make</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2017">April 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic DAO in Spring with Parameterized Types</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">February 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</a></li>
+    
+  
+  
+  
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon Developer Diary</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY&#58; Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY&#58; Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

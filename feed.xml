@@ -5,9 +5,320 @@
     <description></description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Feb 2017 22:45:22 +0000</pubDate>
-    <lastBuildDate>Tue, 28 Feb 2017 22:45:22 +0000</lastBuildDate>
+    <pubDate>Thu, 06 Apr 2017 20:15:12 +0100</pubDate>
+    <lastBuildDate>Thu, 06 Apr 2017 20:15:12 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Generic DAO in Spring with Parameterized Types</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;m currently finishing cleaning up a new application framework built upon the Muon communications toolkit, called &lt;strong&gt;Newton&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In this framework, we provide support for building Event Sourced &lt;strong&gt;Aggregate Roots&lt;/strong&gt;, Stream processed Views, long running
+transactional Sagas, commands and general event handling. Lots of good things.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I want to describe the Aggregate Root handling, as I had an epic fight with Spring/ Java Generics today that left me somewhat drained!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In DDD an aggregate root is the boundary of transactional consistency. Everything that happens withing the aggregate is consistent with its own rules and view of the world. In Newton, all aggregates
+  are event sourced, meaning that they are persisted as the events describing the changes in their state, and then rebuilt from
+  that stream of events.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Queries on the state of the system are done exclusively against the Views, so the repositories that load/ save aggregates
+are actually all an extension of the same base class, &lt;code&gt;MuonEventSourceRepository&amp;lt;A extends AggregateRoot&amp;gt;&lt;/code&gt;, implementing
+the interface &lt;code&gt;EventSourceRepository&amp;lt;A extends AggregateRoot&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The ideal way of using these would be like so&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code data-lang=&quot;java&quot;&gt;&lt;span style=&quot;color: #AA22FF&quot;&gt;@Scope&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;prototype&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Component&lt;/span&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #0000FF; font-weight: bold&quot;&gt;MyCommand&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;implements&lt;/span&gt; Command &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+ &lt;span style=&quot;color: #AA22FF&quot;&gt;@Autowired&lt;/span&gt;
+ &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;private&lt;/span&gt; EventSourceRepository&lt;span style=&quot;color: #666666&quot;&gt;&amp;lt;&lt;/span&gt;User&lt;span style=&quot;color: #666666&quot;&gt;&amp;gt;&lt;/span&gt; repository
+
+ &lt;span style=&quot;color: #AA22FF&quot;&gt;@Override&lt;/span&gt;
+ &lt;span style=&quot;color: #B00040&quot;&gt;void&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;execute&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+     log&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;debug&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;loading account ${id} to activate it&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+     User user &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; repository&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;load&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;id&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+     user&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;activateAccount&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+     repository&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;save&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;user&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+ &lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is possible in vanilla spring with the appropriate beans, but you have to create extensions of the class to put in the
+generics information. So, create a &lt;code&gt;UserRepository extends MuonEventSourceRepository&amp;lt;User&amp;gt;&lt;/code&gt;, and so on. This seems somewhat
+cluttered, and, in a little way, gets in the way of the aim of the Muon projects, which is to make distribuuted computing more approachable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Solving this problem turned out to be somewhat more involved than I first thought!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The solutions I tried were :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Using a Java Proxy. This doesn&amp;#8217;t work, you don&amp;#8217;t get the extended generic information.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Creating BeanDefinitions using GenericTypeResolver. This doesn&amp;#8217;t work, its not useful for this.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Guava TypeTokens to capture the type information.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Finally, generating classes on the fly using Javassist. This works.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-real-problem&quot;&gt;The real problem&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The real problem here is the way Java implements Generics. We have all seen Type Erasure in action, so Java developers are
+trained to think that Generic information is removed from the bytecode. This isn&amp;#8217;t actually fully true.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Generic information &lt;strong&gt;is&lt;/strong&gt; stripped from variable references, and never makes it into the bytecode, so any and all variables
+that you have in your code doesn&amp;#8217;t have sufficient generic parameter information to support creating bean definitions that can
+be autowired using the generics parameters, as above.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There is, though, information kept in &lt;strong&gt;Class&lt;/strong&gt; definitions. Its in the class files, just kept away from prying eyes apart from
+through some reflection apis. It is these reflection APIs that Spring, and other frameworks, use to do wiring using generic params.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, to make the above work, I needed to get classes with this information in them. Its impossible to create raw instances of
+&lt;code&gt;MuonEventSourceRepository&lt;/code&gt; that contain the parameter we&amp;#8217;ve set, as only a subclass would have it in.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The solution&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The solution then is clear in hindsight, we need to create subclasses. The options were some kind of inline/ anonymous class approach,
+proxies and full on code generation.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The first two failed, and fairly quickly. I recommend you skip them!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The solution that worked for me was to use Javassist to generate subclasses, and explicitly insert the required generic
+parameter information into them.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The broader problem was identifying all of the Aggregate classes in the application, and then generating a new repository
+for each of them. We have a utility, using the Reflections library, that can do this, given a starting point. To give that starting
+point, and to hook in the automatic creation of repositories, we created a &lt;code&gt;@EnableNewton&lt;/code&gt; annotation in the tradition of
+ spring boot.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This looks like this&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code data-lang=&quot;java&quot;&gt;&lt;span style=&quot;color: #AA22FF&quot;&gt;@Target&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;({&lt;/span&gt;ElementType&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;TYPE&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;})&lt;/span&gt;
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Retention&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;RetentionPolicy&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;RUNTIME&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Documented&lt;/span&gt;
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Import&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;EnableNewtonRegistrar&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;class&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt; &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;public&lt;/span&gt; &lt;span style=&quot;color: #AA22FF&quot;&gt;@interface&lt;/span&gt; EnableNewton &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+  String&lt;span style=&quot;color: #666666&quot;&gt;[]&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;value&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;default&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{};&lt;/span&gt;       &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Reference a spring managed class that can be used to implement behaviour for this annotation&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This annotation can be, optionally, passes packages to include in the scanning for AggregateRoots&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The class referenced&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;public class EnableNewtonRegistrar implements ImportBeanDefinitionRegistrar {
+
+  @Override
+  public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    try {
+      initScan(importingClassMetadata);                                                                   &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+
+      MuonLookupUtils.listAllAggregateRootClass().forEach(s -&amp;gt; {                                          &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+
+        AggregateConfiguration a = s.getAnnotation(AggregateConfiguration.class);                         &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+
+        if (a == null)
+          throw new IllegalArgumentException(&quot;Currently @AggregateConfiguration(context) is required&quot;);
+        }
+
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();                              &lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;(4)&lt;/b&gt;
+        beanDefinition.setBeanClass(makeRepo(s));                                                        &lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;(5)&lt;/b&gt;
+        ConstructorArgumentValues vals = new ConstructorArgumentValues();
+        vals.addGenericArgumentValue(s);                                                                 &lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;(6)&lt;/b&gt;
+        vals.addGenericArgumentValue(a.context());
+        beanDefinition.setConstructorArgumentValues(vals);
+
+        registry.registerBeanDefinition(&quot;newtonRepo&quot; + s.getSimpleName(), beanDefinition);               &lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;(7)&lt;/b&gt;
+      });
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  ....
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Use reflections to scan for the right classes. We end up with a list we can iterate.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Use the list, and iterate them all. Each class extends AggregateRoot&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Obtain an annotation on the particular AggregateRoot, ensure its there.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;4&quot;&gt;&lt;/i&gt;&lt;b&gt;4&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Create a new BeanDefinition, useful for low level adding of beans into a Spring app context.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;5&quot;&gt;&lt;/i&gt;&lt;b&gt;5&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Set the bean class to be a class returned by &lt;code&gt;makeRepo&lt;/code&gt;&amp;#8230;&amp;#8203;. we&amp;#8217;ll get to this ..&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;6&quot;&gt;&lt;/i&gt;&lt;b&gt;6&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Set the arguments that can&amp;#8217;t be injected, in this case, the Class we&amp;#8217;re working on at the String extracted from the annotation&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;7&quot;&gt;&lt;/i&gt;&lt;b&gt;7&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Register the bean&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;When this has run, a new bean will have been created, the repository!  The key is the &lt;code&gt;makeRepo(Class)&lt;/code&gt; method. This
+needs to generate a new repository class, that extends &lt;code&gt;MuonEventSourceRepository&lt;/code&gt;, and has the correct generic param set for
+the particular AggregateRoot we are looking at.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect2&quot;&gt;
+&lt;h3 id=&quot;javassist-to-the-rescue&quot;&gt;Javassist to the rescue&lt;/h3&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;By this point, I&amp;#8217;d spent a good 3 hours hammering through this, and wanted to wrap up.  The internet showed very little
+  of anyone tackling this precise problem. By looking through the Javassist tutorials and some judicious googling, I learned
+  that Generic parameter information can be injected into a class file by Javassist.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is what I came up with&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre&gt;private Class makeRepo(Class param) {
+  ClassPool defaultClassPool = ClassPool.getDefault();
+  try {
+    CtClass superInterface = defaultClassPool.getCtClass(MuonEventSourceRepository.class
+      .getName());
+
+    String repoName = param.getName() + &quot;Repository&quot;;
+
+    CtClass repositoryInterface = defaultClassPool.makeClass(repoName, superInterface);                &lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;(1)&lt;/b&gt;
+    ClassFile classFile = repositoryInterface.getClassFile();
+
+    String sig = &quot;Ljava/lang/Object;Lio/muoncore/newton/eventsource/muon/MuonEventSourceRepository&amp;lt;L&quot; + getSigName(param) + &quot;;&amp;gt;;&quot;;  &lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;(2)&lt;/b&gt;
+
+    SignatureAttribute signatureAttribute = new SignatureAttribute(                                   &lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;(3)&lt;/b&gt;
+      classFile.getConstPool(),
+      sig);
+    classFile.addAttribute(signatureAttribute);
+
+    return repositoryInterface.toClass();
+
+  } catch (NotFoundException | CannotCompileException e) {
+    e.printStackTrace();
+  }
+
+  return null;
+}
+
+private String getSigName(Class param) {
+  log.info(&quot;VAL IS &quot; + Arrays.asList(param.getName().split(&quot;\\.&quot;)));
+  return StringUtils.arrayToDelimitedString(param.getName().split(&quot;\\.&quot;), &quot;/&quot;);
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;colist arabic&quot;&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;1&quot;&gt;&lt;/i&gt;&lt;b&gt;1&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Create a new class, extending MuonEventSourceRepository. Javassist automatically creates the appropriate constructors.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;2&quot;&gt;&lt;/i&gt;&lt;b&gt;2&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;This is a Java Generic Parameter signature. It is a fully qualified name of a class.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;i class=&quot;conum&quot; data-value=&quot;3&quot;&gt;&lt;/i&gt;&lt;b&gt;3&lt;/b&gt;&lt;/td&gt;
+&lt;td&gt;Create a new attribute in the class and insert it in. &lt;strong&gt;This is the key!&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The signature is fascinating. This is the information that is left behind after Type Erasure, the information that Spring
+and friends go hunting for to do their magic.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;It&amp;#8217;s fairly readable. All types extend Object, this class extends &lt;code&gt;MuonEventSourceRepository&amp;lt;User&amp;gt;&lt;/code&gt; (or whatever the AggregateRoot is!)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;With this in place, tests went green across the board and everything worked. I was shocked!  After such a grind, this approach
+seems remarkably easy to work with. I&amp;#8217;m still not fully sure of all the implications in all environments, as I expect this will
+fail in certain locked down Classloaders. They seem to be more infrequent these days, and the workaround is to go back to the old
+model of explicit repository implementations in those cases. So, I&amp;#8217;m happy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Watch out for an announcement on the public release of Newton in the next week or two. If you&amp;#8217;re especially keen to talk about it before hand,
+let me know and I&amp;#8217;ll see what I can arrange.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Thu, 06 Apr 2017 12:18:00 +0100</pubDate>
+        <link>/blog/2017/04/06/spring-generic-dao-generics.html</link>
+        <guid isPermaLink="true">/blog/2017/04/06/spring-generic-dao-generics.html</guid>
+        
+        <category>spring</category>
+        
+        <category>java</category>
+        
+        <category>muon</category>
+        
+        <category>newton</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</title>
@@ -1970,82 +2281,6 @@ We very much like the relation between client and server in the Eureka design, a
         <category>With</category>
         
         <category>Microservices</category>
-        
-      </item>
-    
-      <item>
-        <title>Microservices Security&amp;#58; OAuth vs Session</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;A question often posed to us during our research and project work is &quot;&lt;em&gt;how should I secure a Microservice?&lt;/em&gt;&quot;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is a far more complex question than it first appears, covering infrastructure, network security, transport level security, inter-service authentication and authorisation, data locality and access control and finally the authentication and authorisation of individual user requests.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Putting these points aside for the time being, what is often meant is how to externally secure an API that is backed by a Microservice. Or, as I was recently asked, why is everyone talking about OAuth, isn&amp;#8217;t session based security simpler?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Session security is what everyone already knows, a client sends authentication information to a service, which then generates a server side session that contains that identity for later use.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When put against an OAuth authentication flow, the quick answer is yes, it certainly is simpler to use sessions.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;They are, however, solving different sets of issues. There is some overlap, but the two types are by no means equivalent, and I think that this difference in scope is what brings the question up.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can use sessions, absolutely, to solve endpoint security, but they are actually solving the problem of maintaining a long running stateful conversation between client and server. That long running conversation can be used for authentication by storing the auth token server side. This gives you greater flexibility, but the drawback is that you can&amp;#8217;t subsequently recreate the authenticated state just from what the client has, the API owns the relationship. You can see this through the need to replicate sessions on the server side, essentially sharing that ownership to grant higher availability.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;OAuth/ token based security solves the problem differently, by dealing with a strictly limited subset of 'long running conversation'. They permit a system to say &quot;this client is who it claims to be&quot; by creating a trust relationship via the token provider. So in this case, the token provider (eg OAuth) owns the relationship. The upshot of this approach is that you can recreate the authenticated state from just what the client possesses, the token. That ability to recreate the relationship means you can distribute that authenticated state recreation arbitrarily.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This isn&amp;#8217;t possible with a session based approach, and is the primary difference, to my mind between the two approaches. If you don&amp;#8217;t need to distribute authentication (and I don&amp;#8217;t mean a session store, I mean pass it through different contexts in your back end services), then session based is superior due to it&amp;#8217;s simpler construction. If you do need to distribute authentication, then token based is better as it permits this to happen as a natural consequence of the design.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In future blogs we will investigate concretely how this can be used to create deeper, multi level security in a Microservices system, and what it looks like in code.&lt;/p&gt;
-&lt;/div&gt;</description>
-        <pubDate>Thu, 04 Jun 2015 17:30:00 +0100</pubDate>
-        <link>/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html</link>
-        <guid isPermaLink="true">/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html</guid>
-        
-        <category>microservice</category>
-        
-        <category>oauth</category>
-        
-        <category>security</category>
-        
-        
-        <category>Microservices and Reactive</category>
         
       </item>
     
