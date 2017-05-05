@@ -1,35 +1,49 @@
+How do you fund your software projects?  Go and get a large budget from the board? 
 
+If you are currently deciding how much capex to allocate to "going microservices". This article is for you!
 
-Ch 1.  Why you shouldn't adopt microservices.
+## capex for the uninitiated
 
-Its all about change. 
-Understandjng change.  Why it happens. What the consequences of that are.
+Capital expenditure budgets are a peculiar beast. The process looks something like this.
 
-Enabling change is the architectural goal. Scale is a form of runtime change. 
+* we have something that we need doing.
+* lets scope outvthw work involved, and come up with a budget that should cover creating it.
+* we form a project, and a project team to deliver the thing we want,  using the budget.
+* the board expect regular updates telling them how things are going and whatbthe current risks are.
+*when the project budget ends, everything stops.
 
-Costs are involved in this.
-  Cloud is a cost. Its a painful env to run in.
+The benefits to the organisation are in containing financial risk to the currently allocated budget, often tax benefits from 'investing'. The company filings don't include capex in the same manner as simple operational expenses, so the board can claim thay the company is spending less money than you would expect looking at the simple numbers.
 
-Opex vs capex. Opex is an agile funding stream
-Continuous delivery - agile process
-Devops - agile culture 
-Nosql - agile persistence 
-Microservices - agile apolication architecture 
-Reactive - agile interaction architecture 
-Event orientation - agile data architecture.
+Overall, it makes a lot of sense from a high level view to allocate capex to getvtjings done in a large company.  
 
+So what's the problem?
 
-#The network hates you.
-Cap theorum
+What are your motivationsfor adopting microservices?
 
-Distributed data
+Broadly, you are looking at adopting microservicrs because you want to change things. Either taking advantage of public cliud scaling, migrating from a legacy system, scaling your teams. The specifics are myriad,  yet the core prenise is the same. You want to change.
 
-People are hard
-Team scaling.  We seperate, yet we must recombine.  Api. 
+Capex funding will work against this agenda.
 
-Event sourcing. Command sourcing
-Stream processing for views.
+Capex funding has some significant effects that are a significant barrier to adoption.
 
-Transactional ms. The saga. Workflows.
+Teams. Too mich reliance on contractors. Who naturally fit the capex model. They cak, aftwr all, be hiref and fired as needed without recourse.
+Infrastructure. Cloud is an opex model.
+The essence of change is tjat you don't know up front how things will look at the end. So you can't effectively predict tje final costs.
 
-Communication. Messaging uncontrolled. Needs protocols to define structure.
+Using capex will mean that the cultural knowledge ob delivering ns in your org will be repeatedly lost. If yoi are constantly forming and breaking teams, you will not be able to deliver microservices beyond the simplistic,  non beneficial form ofbthe approach. Dont bother.  (Mention b&q example)
+
+What a microservice funding scheme looks like, and how you should measure it.
+
+Microservices are optimised for sustainable change. This means that in the medium to long term, you will br able to feasibly change yoir software, in ways that you wouldnt jave been able to.  They arent optimised for an initial rapid delivery effort. There are significant reasons why this woulsnt be the case.  You need cultural experience, to derive your own communication and api management approaches, api design styles. Tjia takes time. Primary development will be more expensive, and likely somewhat slower than a simple monolithic system.
+
+The best way to deliver microservices therefore is to support this process. Construct teams that have a long term funding stream and keep them there. Early on, identify what is more important, rapid primary development, or long term sustainability. 
+Lobg term funding fits an opex model. So, the most optimal funding approach for ms is long term operational funding. You are not funding a project,  you are establishing a capability, one that will be with you for a long time, all beimg well. 
+
+If this concerns you, maybe you should ask more fundamental questions.  I've had push back on this before,  along the lines of "wr need to do lots of dev now, and then reduce the headcount". Well,  that speaks volumes! 
+
+The first question i always ask in a microservices gig is "how will your system change". 
+This gives a direct answer!  If you have large areas of the system that won't change, or will change at a similar rate, then dint botherto cut them apart at tje network level.  Leave them attached, they belong together.
+
+Essentially, be selctive about what your microsevices are, based on how tou fund them. 
+
+You can fund a minolith via capex. The only model that works for microservices is long term commitment opex.
