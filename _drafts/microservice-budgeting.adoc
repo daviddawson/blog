@@ -1,0 +1,35 @@
+
+
+Ch 1.  Why you shouldn't adopt microservices.
+
+Its all about change. 
+Understandjng change.  Why it happens. What the consequences of that are.
+
+Enabling change is the architectural goal. Scale is a form of runtime change. 
+
+Costs are involved in this.
+  Cloud is a cost. Its a painful env to run in.
+
+Opex vs capex. Opex is an agile funding stream
+Continuous delivery - agile process
+Devops - agile culture 
+Nosql - agile persistence 
+Microservices - agile apolication architecture 
+Reactive - agile interaction architecture 
+Event orientation - agile data architecture.
+
+
+#The network hates you.
+Cap theorum
+
+Distributed data
+
+People are hard
+Team scaling.  We seperate, yet we must recombine.  Api. 
+
+Event sourcing. Command sourcing
+Stream processing for views.
+
+Transactional ms. The saga. Workflows.
+
+Communication. Messaging uncontrolled. Needs protocols to define structure.
