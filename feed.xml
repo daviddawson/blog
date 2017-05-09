@@ -3,10 +3,10 @@
   <channel>
     <title>David Dawson</title>
     <description></description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 09 May 2017 19:21:30 +0100</pubDate>
-    <lastBuildDate>Tue, 09 May 2017 19:21:30 +0100</lastBuildDate>
+    <link>https://daviddawson.me/</link>
+    <atom:link href="https://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 09 May 2017 19:23:48 +0100</pubDate>
+    <lastBuildDate>Tue, 09 May 2017 19:23:48 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -304,8 +304,8 @@ let me know and I&amp;#8217;ll see what I can arrange.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Thu, 06 Apr 2017 12:18:00 +0100</pubDate>
-        <link>/blog/2017/04/06/spring-generic-dao-generics.html</link>
-        <guid isPermaLink="true">/blog/2017/04/06/spring-generic-dao-generics.html</guid>
+        <link>https://daviddawson.me/blog/2017/04/06/spring-generic-dao-generics.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2017/04/06/spring-generic-dao-generics.html</guid>
         
         <category>spring</category>
         
@@ -563,8 +563,8 @@ that concerned given the ability to rebuild automatically is already there.&lt;/
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Tue, 28 Feb 2017 12:18:00 +0000</pubDate>
-        <link>/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html</link>
-        <guid isPermaLink="true">/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html</guid>
+        <link>https://daviddawson.me/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html</guid>
         
         <category>containers</category>
         
@@ -709,8 +709,8 @@ that concerned given the ability to rebuild automatically is already there.&lt;/
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Wed, 22 Feb 2017 10:38:00 +0000</pubDate>
-        <link>/muon-devdiary/2017/02/22/muon-developer-diary.html</link>
-        <guid isPermaLink="true">/muon-devdiary/2017/02/22/muon-developer-diary.html</guid>
+        <link>https://daviddawson.me/muon-devdiary/2017/02/22/muon-developer-diary.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/muon-devdiary/2017/02/22/muon-developer-diary.html</guid>
         
         <category>diary</category>
         
@@ -1029,8 +1029,8 @@ photon my-remote-service aether ather-password random-service
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Tue, 21 Feb 2017 10:18:00 +0000</pubDate>
-        <link>/blog/2017/02/21/muon-intro.html</link>
-        <guid isPermaLink="true">/blog/2017/02/21/muon-intro.html</guid>
+        <link>https://daviddawson.me/blog/2017/02/21/muon-intro.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2017/02/21/muon-intro.html</guid>
         
         <category>architecture</category>
         
@@ -1254,8 +1254,8 @@ of the greater good.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Sat, 04 Feb 2017 12:18:00 +0000</pubDate>
-        <link>/blog/2017/02/04/simplicity-itself-shutdown.html</link>
-        <guid isPermaLink="true">/blog/2017/02/04/simplicity-itself-shutdown.html</guid>
+        <link>https://daviddawson.me/blog/2017/02/04/simplicity-itself-shutdown.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2017/02/04/simplicity-itself-shutdown.html</guid>
         
         <category>business</category>
         
@@ -1392,8 +1392,8 @@ give them consistency and an ease of use.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Thu, 03 Nov 2016 11:00:00 +0000</pubDate>
-        <link>/blog/2016/11/03/make-developer-api.html</link>
-        <guid isPermaLink="true">/blog/2016/11/03/make-developer-api.html</guid>
+        <link>https://daviddawson.me/blog/2016/11/03/make-developer-api.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2016/11/03/make-developer-api.html</guid>
         
         <category>cloudnative</category>
         
@@ -1683,8 +1683,8 @@ that there is an objective measure you can use to evaluate your success, or othe
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Wed, 20 Jul 2016 12:18:00 +0100</pubDate>
-        <link>/microservices/2016/07/20/microservices-philosophy.html</link>
-        <guid isPermaLink="true">/microservices/2016/07/20/microservices-philosophy.html</guid>
+        <link>https://daviddawson.me/microservices/2016/07/20/microservices-philosophy.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/microservices/2016/07/20/microservices-philosophy.html</guid>
         
         <category>architecture</category>
         
@@ -1856,8 +1856,8 @@ deployed at some point.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Fri, 11 Mar 2016 12:18:00 +0000</pubDate>
-        <link>/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</link>
-        <guid isPermaLink="true">/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</guid>
+        <link>https://daviddawson.me/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html</guid>
         
         <category>architecture</category>
         
@@ -2047,8 +2047,8 @@ Microservices is undergoing a hype cycle, this is certainly true, yet that does 
 &lt;p&gt;We will be releasing this technology platform as open source within the next few months. If you would like more information or to be part of the beta programme &amp;lt;a href=&quot;/contact&quot; target=&quot;_blank&quot;&amp;gt;contact us&amp;lt;/a&amp;gt;&lt;/p&gt;
 &lt;/div&gt;</description>
         <pubDate>Wed, 17 Jun 2015 00:55:00 +0100</pubDate>
-        <link>/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</link>
-        <guid isPermaLink="true">/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</guid>
+        <link>https://daviddawson.me/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</guid>
         
         
         <category>Microservices and Reactive</category>
@@ -2270,8 +2270,8 @@ We very much like the relation between client and server in the Eureka design, a
 &lt;/div&gt;
 &lt;/div&gt;</description>
         <pubDate>Wed, 10 Jun 2015 00:00:00 +0100</pubDate>
-        <link>/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</link>
-        <guid isPermaLink="true">/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</guid>
+        <link>https://daviddawson.me/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</link>
+        <guid isPermaLink="true">https://daviddawson.me/getting/started/with/microservices/2015/06/10/service-discovery-overview.html</guid>
         
         
         <category>Getting</category>

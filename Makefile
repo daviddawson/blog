@@ -3,7 +3,7 @@
 
 run: images
 	jekyll clean
-	jekyll serve --drafts --incremental
+	jekyll serve --drafts --incremental --config _config.yml,_configdev.yml
 
 clean:
 	jekyll clean
