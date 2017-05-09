@@ -1,0 +1,71 @@
+---
+layout: documentation
+---
+:title: Microservices Training
+:date: 2015-01-05 11:40
+:comments: true
+:sharing: true
+:source-highlighter: pygments
+:toc: right
+:toc-title: Microservices
+:toclevels: 6
+
+## Reactive Microservices - 3 day workshop
+
+Microservices have become the goto architecture for building systems that scale, operate natively in the cloud and give you a competitive advantage.
+
+These are the promises, what are the practices that make them real?
+
+This is a 3 day workshop that will teach you the principles of microservices, and give you the tools and techniques to build, manage and deploy them into production effectively.
+
+I can also deliver this online/ remotely using the Adaptive Learning method managed by link:https://adaptos.net/effective-technology/courses/adopting-reactive-microservices/[Adaptos]
+
+## Synopsis
+
+* Understanding why microservices
+* How to decompose an existing system and then recompose it into something valuable.
+* Microservices composition using messaging
+* Microservices composition using events
+* Handing complex state using Event Sourcing
+* Complex transactional event systems using Process Managers
+* Service patterns: Gateways, Adapters, Pipelines, Choreography
+* Continuous Delivery of Microservices
+* Applying practical Domain Driven Design (DDD) and Command Query Responsibility Segregation (CQRS)
+
+## Outline
+
+### Day 1
+
+* Understanding change in a system
+* Designing for change in a system
+* APIs vs Microservices
+* Designing a delivery pipeline for Microservices
+
+### Day 2
+
+* RPCish Microservices and why they hurt you
+* Composing Microservices using Messaging
+** Brokers and Point to Point
+** Schemas
+** Identify and defining Message Protocols
+** Messaging State Machines
+
+* Composing Microservices using Events
+** Event Driven Architectures
+** Patterns for System Choreography
+** Stream Processing to materialise views of the system
+** Upgrading of views
+
+* Event Sourcing
+** The Aggregate Root
+** System Commands
+** Understanding System State as an audit log
+** Combining with Stream Processing
+** Snapshotting
+
+### Day 3
+
+* Transactions using Process Managers
+* Event based testing techniques
+* Cloud Deployment
+* Containerisation for deve process and deployment

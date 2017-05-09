@@ -1,0 +1,58 @@
+---
+layout: documentation
+---
+:title: Groovy Training
+:date: 2015-01-05 11:40
+:comments: true
+:sharing: true
+:source-highlighter: pygments
+:toc: right
+:toc-title: Groovy Training
+:toclevels: 6
+
+## Groovy 2/3 day Onsite course
+
+Groovy is a lovely language on the JVM with a syntax that is easy on the eyes
+and a distinct focus on building practical, pragmatic software.
+
+I will come to your office and deliver a 2 or 3 day introduction to Groovy that you can
+use to get started with the language and technologies.
+
+I can also deliver this online/ remotely using the Adaptive Learning method managed by link:https://adaptos.net/effective-technology/courses/groovy-intro[Adaptos]
+
+## Synopsis
+
+* Use Groovy for cross-platform scripting and application development
+* Integrate Groovy into IDEs and build tools
+* Use closures for functional-style programming
+* Take advantage of Groovy's dynamic behaviour
+* Incorporate static type checking
+* Use Spock for unit testing
+
+
+## Outline
+
+### Day 1
+
+* Installing Groovy and using its tools
+* Working with the core types (numbers, strings, collections, etc.)
+* Diagnosing and handling errors
+* Classes, interfaces, and traits
+
+### Day 2
+
+* Defining and using closures
+* Processing collections, maps and files with closures
+* Unit testing with the Spock framework
+* Gradle Introduction
+
+### Day 3
+
+* Using types with dynamic behaviour
+* Parsing and generating JSON and XML
+* Parsing existing XML with Groovy
+* Creating new XML with Groovy
+* Updating XML with Groovy
+* Validating XML with Groovy
+* Exploring techniques for modifying behaviour at runtime
+* Enabling static type checking and static compilation

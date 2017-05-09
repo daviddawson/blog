@@ -19,7 +19,7 @@ as an option.
 If you want to start on a Microservice journey, health check a cloud deployment, design a resilient data architecture or need an experienced systems architect
 and team lead, get in touch.
 
-I use three commercial models, Simple T&M, Fixed Price delivery and Monthly Retainer. See below for details.
+I use three commercial models, Simple T&M, Fixed Price delivery and Monthly Retainer. See below for details on how to engage me.
 
 Here are some of the services I can provide.
 
@@ -39,16 +39,26 @@ inter service communication, data, consistency and resilience.
 
 If you are starting on Microservices, or are well on your journey, I can help you.
 
+See link:/training/microservices.html[my 3 day Microservices adoption workshop]
+
 #### Cloud Foundry
 
 I have worked with Pivotal for many years on consultancy and training for their distribution of Cloud Foundry -
-Pivotal CF.
+PCF.
 
 I deliver much of the training across EMEA for Pivotal on their PCF product set.
 
 If you have a need to deploy, manage, extend or gain more knowledge about Cloud Foundry in general and PCF in particular,
 get in touch with your requirements. I can work with you on delivering training (Pivotal approved), consultancy and longer term
 projects.
+
+### Groovy and Groovy technologies
+
+Groovy is a rich, optionally typed language on the JVM.
+I can get you started using Groovy and provide long term help
+adopting Groovy in your organisation.
+
+See link:/training/groovy.html[my 3 day Groovy training course]
 
 ### IoT End to End System Design and Delivery
 
