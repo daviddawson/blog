@@ -19,23 +19,18 @@
         {% for item in site.data.nav %}
           {% if item.children %}
             <li class="has-dropdown">
-              <a href="/{{ item.path }}">{{ item.name }}</a>
+              <a href="{{ item.path }}">{{ item.name }}</a>
               <ul class='dropdown'>
                 {% for child in item.children %}
                   <li>
-                    <a href="/{{ child.path }}">{{ child.name }}</a>
+                    <a href="{{ child.path }}">{{ child.name }}</a>
                   </li>
                 {% endfor %}
               </ul>
             </li>
           {% else %}
             <li>
-              {% if include.base %}
-                <a href="{{ item.path }}">{{ item.name }}</a>
-              {% else %}
-                <a href="{{ item.path}}">{{ item.name }}</a>
-              {% endif %}
-
+              <a href="{{ item.path }}">{{ item.name }}</a>
             </li>
           {% endif %}
         {% endfor %}
