@@ -9,7 +9,7 @@
   section_id: contact
   children:
     - name: Free Microservice Healthcheck
-      path: "/training/groovy.html"
+      path: "/training/microservices-free.html"
     - name: 3 Reactive Microservices Workshop
       path: "/training/microservices.html"
     - name: Groovy
