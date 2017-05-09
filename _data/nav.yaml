@@ -8,14 +8,15 @@
   path: "/training/microservices.html"
   section_id: contact
   children:
+    - name: Free Microservice Healthcheck
+      path: "/training/groovy.html"
+    - name: 3 Reactive Microservices Workshop
+      path: "/training/microservices.html"
     - name: Groovy
       path: "/training/groovy.html"
-    - name: Microservices
-      path: "/training/microservices.html"
 - name: Hire Me
   path: "/hireme.html"
   section_id: why
 - name: Github
   path: "https://github.com/daviddawson"
   section_id: contact
-  base: yes

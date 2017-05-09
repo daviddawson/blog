@@ -1,0 +1,34 @@
+---
+layout: documentation
+---
+:title: Free Microservices Healthcheck
+:date: 2015-01-05 11:40
+:source-highlighter: pygments
+
+## Microservices Healthcheck
+
+So, you've gone all in on Microservices, yet you find yourself feeling pain you didn't expect...  Are you doing it right?
+
+I've had this question often enough that I've decided to offer a specialised healthcheck for new clients.
+
+The outcome you can expect is :-
+
+* An understanding of the principles of Microservices
+* What you _should_ expect your microservice system to deliver
+* What the _expected costs_ of a Microservice system
+* How your systems and processes match up against industry best practices
+
+Its a *free session*, subject to availability and convenient timing. The format is :
+
+* 1 hour long
+* Delivery is remote, via video conferencing software
+* Senior stakeholders in the room.
+* Standard questions sent by me via email before hand.
+* We then discuss them, ascertaining project health in the various areas covered.
+
+Once thats done, I will send a brief report on project health back to you, along with a set of suggestions for you to take
+your system/ project forward with.
+
+There is no obligation to ue my services to do that with.
+
+To arrange your session, http://daviddawson.me/me.html[get in contact with me]
