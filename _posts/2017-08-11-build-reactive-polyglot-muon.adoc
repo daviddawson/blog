@@ -22,10 +22,10 @@ tags:
 I have been a big fan of the Reactive approach to build software for as long as its been around. My view on the world of Microservices today is that there are several strands you need to weave together to make your software thrive.
 
 * Microservices itself - By saying "we want to build Microservices", most people I've talked to are actually saying "we want to be able to adapt more quickly, and use cloud resources well". Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.
-* Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handl distribution. This is where you will design and build your *functional requirements*.
+* Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handle distribution. This is where you will design and build your *functional requirements*.
 * link:http://www.reactivemanifesto.org/[Reactive Systems] are a set of architectural principles that will inform how you implement your functionality, but won't help in actually delivering it. The core principles of Responsive, Resilient, Elastic and Message Driven give you no approaches for functional design that you can usefully apply. Instead, Reactive gives you a set of approaches for ensuring your Microservice system will meet its *non-functional requirements*.
 
-The three together make a powerful combhined approach. How to start?
+The three together make a powerful combined approach. How to start?
 
 This is where I was several years ago, how can you go about building something that meets the above list?
 
@@ -33,27 +33,27 @@ After researching, prototyping, learning from deployed systems, gathering feedba
 
 ## The road to Muon
 
-I have written and spoken about my group of projects, Muon at length before. What I'd like to do in this article is to dig into the programming model that the projects are implementing, explain the rationale for that and then show the fairly extensive benefits that gives you.
+I have written and spoken about a group of projects, Muon, at length before. What I'd like to do in this article is to dig into the programming model that the projects are implementing, explain the rationale for that and then show the fairly extensive benefits that gives you.
 
-My vision from the start of the project has been giving the ability to decompose and recompose systems as needed, move pieces around, replace and repurpose code as needed. All without compromising the richness of interaction you have within a monolithic system. WHen you have a monolith, you have a huge variety of options for interaction models, why should we compromise for Microservices?   I've always been highly dubious of the rush to http that has happened (unless you sell API tooling, eh?). The main reason is that, while it is a commonish API format, it is semantically crippled compared to the system you are decomposing.
+My vision from the start of the project has been giving the ability to decompose and recompose systems as needed, move pieces around, replace and repurpose code as desired. All of this should be without compromising the richness of interaction you have within a monolithic system. When you have a monolith, you have a huge variety of options for interaction models, why should we compromise those for Microservices?   I've always been highly dubious of the rush to http that has happened (unless you sell API tooling, eh?). The main reason is that, while it is a commonish API format, it is _semantically crippled_ compared to the system you are decomposing. Can the variations of .NET, JVM or whatever APIs be represented in HTTP?  They cannot.
 
-The focus on *the API* though, that is certainly very real. It is the enabler of a good microservices approach, by giving an impermeable barrier that allows you to vary the implementation of on either side without being overley concerned with the other.  So, for Muon, I wanted to be able to provide APIs that weren't simply HTTP/ RPCish (pipe down REST zealots!).
+The focus on *the API* though, that is certainly very real. It is the enabler of a good microservices approach, by giving an impermeable barrier that allows you to vary the implementation of on either side without being overley concerned with the other. The nature of that API though, thats what interested me, and so for Muon I wanted to be able to provide APIs that weren't simply HTTP/ RPCish (pipe down REST zealots!). I wanted to go much, much further than that.
 
-We experimented a lot, almost totally with differing forms of messaging. We tried workflow patterns, SEDA, we wrote our own message broker, other fun things. In all we went through 7 major iterations of the ideas, refining them to bring tus to what we now have, the thing I refer to as the Muon Model.
+We experimented a lot, almost totally with differing forms of messaging. We tried workflow patterns, SEDA, we wrote our own message broker, dove deep into event patterns, built our own PaaS, other fun things. In all we went through 7 major iterations of the ideas, refining them to bring us to what we now have, the thing I refer to as the *_Muon Model_*.
 
 ## The Muon Model
 
-The focus of Muon is on the communication space. The gap between services where you need to integrate them togther in order to be valuable. In that space I want to provide the ability to bring the services together with arbitrarily complex interactions, with the base communication being mediated by messaging.
+The focus of Muon is on the communication space. The gap between services where you need to integrate them together in order to be valuable. In that space I want to provide the ability to bring the services together with arbitrarily complex interactions, with the base communication being mediated by messaging.
 
 This core concept of defining the interactions, the classes of APIs of services we refer to as a *_Protocol Stack_*. There are a variety of them, covering RPC, Reactive Streams, Events, Broadcast, SEDA, to name the major ones currently implemented.
 
-The second motivation, beyond richness of the API is to enable you to change your non functional behaviour based on the technologies you want to adopt. For example, you want to improve transactional processing in the JVM, you will often bring in a data grid, such as Hazelcast or Geode. The downside is that you need to rebuild your application to make use of that. Imagine if, for the most part, you didn't have to?  By using the Muon API stacks, you don't need to, as I'll describe in detail below.
+The second motivation, beyond richness of the API is to enable you to change, improve, your *non functional* behaviour based on the technologies you adopt. For example, if you want to improve transactional processing in the JVM you will often bring in a data grid, such as Hazelcast or Geode/ Gemfire (/others). The downside is that you need to rebuild your application to make use of that grid, using its APIs. Imagine if, for the most part, you didn't have to?  By using the Muon API stacks to handle a certain type of problem, you don't need to, as I'll describe in detail below.
 
-The Reactive Manifesto was written by a set of intelligent individuals. You will note that a few of them have had a lot of involvement in Actor based systems (Akka etc). This is not by chance, The Actor model is, at its core, message based. The main focus of Actors is on managing state effectively and making it easier to understand by giving support to the developer on managing highly concurrent systems. it does this by, for the most part, turning it in a set of problems that can be dealt with in code in serial, not in parallel. That's a very useful technique and model.   This isn't Muon.
+The Reactive Manifesto was written by a set of intelligent individuals. You will note that a few of them have had a lot of involvement in Actor based systems (Akka etc). This is not by chance, The Actor model is, at its core, message based. The main focus of Actors is on managing state effectively and making it easier to understand by giving support to the developer on managing highly concurrent, communicating systems. It does this by, for the most part, turning it in a set of problems that can be dealt with in code in serial, not in parallel. That's a very useful technique and model.   This isn't Muon.
 
-A model somewhat related to Actors in Communicating Sequential Processes (CSP). This model is related in that it is also focused on messages, and sending messages between components. The big difference between the two is on where you send messages to. In Actors, you send messages to an _actor_, in CSP, you send messages to the _channel_.   This is, crudely, the way Muon works.   It implements a restricted subset of CSP.
+A model somewhat related to Actors is Communicating Sequential Processes (CSP). This model is related in that it is also focused on messages, and sending messages between components. The big difference between the two is on where you send messages to. In Actors, you send messages to an _actor_, in CSP, you send messages to the _channel_.   This is, crudely, the way Muon works.   It implements a restricted subset of CSP.
 
-If you dig into any of the protocol stacks, you will quickly see code requesting channels to remote services, adding transform channels, channels to manage failure.  It is a system to enable you to build channels between services.
+If you dig into any of the Muon protocol stacks, you will quickly see code requesting channels to remote services, adding transform channels, channels to manage failure.  It is a system to enable you to build channels between service instances.
 
 On top of those channels, you put the messaging protocols that implement the APIs. This could be very simple (eg RPC, 3 message types), to more involved (Reactive Streams, ~10 message types) to the very complex (FIPA protocols, several dozen message types). Since the protocol is addressing a channel, the actual location of the service is fully transparent. So long as a channel exists that can move messages back and forth, the service can be anywhere at all.
 
@@ -65,7 +65,7 @@ The real win though is what relying on these APIs will do to you system and its 
 
 ## A message API: Persisted Event Streams
 
-You can, as many have told me, build an event based system using arbitrary message brokers. This is certainly true. You will likely though be either building a SEDA system (and so have compromised visibility of failure) or be using ephemeral events (and so have a system that has the consistency property of "hopeful").  I wrote the event stack to give form to what I consider to tbe the best event architecture, persisted streams of events.   To learn more about the topic, link:http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html[read here]
+You can, as many have told me, build an event based system using arbitrary message brokers. This is certainly true. You will likely though be either building a SEDA system (and so have compromised visibility of failure) or be using ephemeral events (and so have a system that has the consistency property of "hopeful") or most likely, a combination of these approaches.  I wrote the event stack to give form to what I consider to tbe the best event architecture, *persisted streams of events*.   To learn more about the topic, I jotted down a set of thoughts on event systems -> link:http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html[read here]
 
 Persisted event streams have a lot of benefits, which I won't dwell on here. The Event Stack in Muon defines an API that allows your application to move up a level from simple message brokers and cold event stores and gain access to the following operations
 
@@ -75,25 +75,23 @@ Persisted event streams have a lot of benefits, which I won't dwell on here. The
 * Cold/Hot replay (+ from X). Same as cold, then stay subscribed to any new events that come in after you started replaying
 * Hot only. Ignore the history, play only new events.
 
-For me, this is an event store worthy of the name. If it can't do all of these things, its incomplete. The important thing to understand here is that I'm describing the point of view of the *client*, the API that your application will talk to. I haven't mentioned an event store _server_. The reason is that I don't really care much about what the implementation is, that is into the realm of non-functional upgrades, so long as the API above can be met.
+For me, this is an event store worthy of the name. If it can't do all of these things, its incomplete. The important thing to understand here is that I'm describing the point of view of the *client*, the API that your application will talk to. I haven't mentioned an event store _server_. The reason is that I don't really care much about what the implementation is, that is into the realm of non-functional upgrades, so long as the API above can be met. I take a system view. I honestly don't care what your server/ service does internally, I only want to know what I can communicate with it about.
 
-Now, you could implement the above on top of Kafka, or GetEventStore, or some other store+message bus. What if you wanted to store your transactional streams (eg, DDD style event sourced aggregate roots) in a data grid, and some of your streams in Kafka (aggregated streams for stream processing)?  You'd need to put logic in to manage that.
+Now, you could implement the event API above on top of Kafka, or GetEventStore, or some other store+message bus. What if you wanted to store your transactional streams (eg, DDD style event sourced aggregate roots) in a data grid, and some of your streams in Kafka (aggregated streams for stream processing)?  You'd need to put logic in to your application code to manage that.
 
-This is all possible for you, but I'd like you to consider that what you've just done is to build a version of the Muon event stack, while remaining tied to your underlying implementing technology.
+This is all possible for you, but I'd like you to consider that what you've just done is to build a version of the already existing Muon event stack, while remaining tied to your underlying implementing technology and language.
 
-The heavy focus in Muon on API and communication, you can implement an event store on any technology that you care to, and know that your applicaiton will continue to run.
+The heavy focus in Muon on API and communication. If you implement the event api that the event stack describes, on any technology that you care to, and know that your applicaiton will continue to run.  It will have different runtime characteristics and non functional performance, but it will, at least _function_.
 
 ## Transports and location
 
 An interesting thing happened when we implemented this model and needed to test various things. We have a strong transport abstraction, one that is easy to replace with an in memory implementation. Perfect for testing.  The serendipitous thing though is that Muon libraries support more than one transport at a time, and so can be easily attached to remote and local instances, while maintaing the same APIs.
 
-The result of this is that you could implement the Event Store api above and have it run standalone, accessible over say, RabbitMQ (like Photonlite and PhotonClojure are) or gRPC and that would work well. You could also implement the event store API on top of Kafka and have it run in process.
-
-
+The result of this is that you could implement the Event Store api above and have it run standalone, accessible over say, RabbitMQ (like Photonlite and PhotonClojure are) or gRPC and that would work well. You could also implement the event store API on top of Kafka and have it run in process. This aspect is something we're building heavily on at the moment.
 
 ## Example: Building an event architecture, then scaling it over time
 
-Continuing with the Event stack as our example. It is straightforward to take the link:http://github.com/muoncore/muon-starter[Muon Starter] project, follow the instructions and come up with a simple event based system within a few minutes. If you are using Java/ Spring, your could use the Newton app framework to make a more complex system quickly following DDD patterns, and have it based on that same event stack.
+Continuing with the Event stack as our example. It is straightforward to take the link:http://github.com/muoncore/muon-starter[Muon Starter] project, follow the instructions and come up with a simple event based system within a few minutes. If you are using Java/ Spring, your could use the Newton app framework (see below) to make a more complex system quickly following DDD patterns, and have it based on that same event stack.
 
 The technology used there is
 
