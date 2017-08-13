@@ -3,7 +3,7 @@ excerpt: Learn how Muon helps you to build highly portable polyglot Reactive Mic
 title: Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends
 layout: post
 author: David Dawson
-date: 2017-05-06 12:18
+date: 2017-08-13 12:18
 image: images/muonfulllogo.jpg
 categories:
  - blog
