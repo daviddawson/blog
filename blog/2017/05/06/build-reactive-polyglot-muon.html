@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</title>
+  <meta name="description" content="Learn how Muon helps you to build highly portable polyglot Reactive Microservices. The Muon model lets you implement your systems quickly from widely availab...">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link rel="canonical" href="http://daviddawson.me/blog/2017/05/06/build-reactive-polyglot-muon.html">
+  <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="/css/asciidoc.css">
+  <link href="/css/sidebar2.css" rel="stylesheet"/>
+  <link href="/css/mediaq.css" rel="stylesheet"/>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="http://daviddawson.me/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              <a href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/me.html">About Me | What I Do</a>
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="/training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="/training/microservices-free.html">Free Microservice Healthcheck</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/microservices.html">3 Reactive Microservices Workshop</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/groovy.html">Groovy</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/hireme.html">Hire Me</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://github.com/daviddawson">Github</a>
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:90rem">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="http://daviddawson.me/images/muonfulllogo.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+
+
+            <span>May 06, 2017</span>
+          </p>
+          <h3><a href="/blog/2017/05/06/build-reactive-polyglot-muon.html">Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</a></h3>
+          <div class="paragraph">
+<p><strong>TL/DR</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Muon gives you very portable, polyglot message based APIs, across infrastructures</p>
+</li>
+<li>
+<p>It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state.</p>
+</li>
+<li>
+<p>It allows you to adopt many non functional technologies later on, such as Kafka, Hazelcast and Cassandra, without impact on your codebase.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I have been a big fan of the Reactive approach to build software for as long as its been around. My view on the world of Microservices today is that there are several strands you need to weave together to make your software thrive.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Microservices itself - By saying "we want to build Microservices", most people I&#8217;ve talked to are actually saying "we want to be able to adapt more quickly, and use cloud resources well". Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.</p>
+</li>
+<li>
+<p>Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handl distribution. This is where you will design and build your <strong>functional requirements</strong>.</p>
+</li>
+<li>
+<p><a href="http://www.reactivemanifesto.org/">Reactive Systems</a> are a set of architectural principles that will inform how you implement your functionality, but won&#8217;t help in actually delivering it. The core principles of Responsive, Resilient, Elastic and Message Driven give you no approaches for functional design that you can usefully apply. Instead, Reactive gives you a set of approaches for ensuring your Microservice system will meet its <strong>non-functional requirements</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The three together make a powerful combhined approach. How to start?</p>
+</div>
+<div class="paragraph">
+<p>This is where I was several years ago, how can you go about building something that meets the above list?</p>
+</div>
+<div class="paragraph">
+<p>After researching, prototyping, learning from deployed systems, gathering feedback and rebuilding I have what I believe to be a good solution and approach to building Microservice style systems that meet the above.</p>
+</div>
+<div class="sect1">
+<h2 id="the-road-to-muon">The road to Muon</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I have written and spoken about my group of projects, Muon at length before. What I&#8217;d like to do in this article is to dig into the programming model that the projects are implementing, explain the rationale for that and then show the fairly extensive benefits that gives you.</p>
+</div>
+<div class="paragraph">
+<p>My vision from the start of the project has been giving the ability to decompose and recompose systems as needed, move pieces around, replace and repurpose code as needed. All without compromising the richness of interaction you have within a monolithic system. WHen you have a monolith, you have a huge variety of options for interaction models, why should we compromise for Microservices?   I&#8217;ve always been highly dubious of the rush to http that has happened (unless you sell API tooling, eh?). The main reason is that, while it is a commonish API format, it is semantically crippled compared to the system you are decomposing.</p>
+</div>
+<div class="paragraph">
+<p>The focus on <strong>the API</strong> though, that is certainly very real. It is the enabler of a good microservices approach, by giving an impermeable barrier that allows you to vary the implementation of on either side without being overley concerned with the other.  So, for Muon, I wanted to be able to provide APIs that weren&#8217;t simply HTTP/ RPCish (pipe down REST zealots!).</p>
+</div>
+<div class="paragraph">
+<p>We experimented a lot, almost totally with differing forms of messaging. We tried workflow patterns, SEDA, we wrote our own message broker, other fun things. In all we went through 7 major iterations of the ideas, refining them to bring tus to what we now have, the thing I refer to as the Muon Model.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-muon-model">The Muon Model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The focus of Muon is on the communication space. The gap between services where you need to integrate them togther in order to be valuable. In that space I want to provide the ability to bring the services together with arbitrarily complex interactions, with the base communication being mediated by messaging.</p>
+</div>
+<div class="paragraph">
+<p>This core concept of defining the interactions, the classes of APIs of services we refer to as a <strong><em>Protocol Stack</em></strong>. There are a variety of them, covering RPC, Reactive Streams, Events, Broadcast, SEDA, to name the major ones currently implemented.</p>
+</div>
+<div class="paragraph">
+<p>The second motivation, beyond richness of the API is to enable you to change your non functional behaviour based on the technologies you want to adopt. For example, you want to improve transactional processing in the JVM, you will often bring in a data grid, such as Hazelcast or Geode. The downside is that you need to rebuild your application to make use of that. Imagine if, for the most part, you didn&#8217;t have to?  By using the Muon API stacks, you don&#8217;t need to, as I&#8217;ll describe in detail below.</p>
+</div>
+<div class="paragraph">
+<p>The Reactive Manifesto was written by a set of intelligent individuals. You will note that a few of them have had a lot of involvement in Actor based systems (Akka etc). This is not by chance, The Actor model is, at its core, message based. The main focus of Actors is on managing state effectively and making it easier to understand by giving support to the developer on managing highly concurrent systems. it does this by, for the most part, turning it in a set of problems that can be dealt with in code in serial, not in parallel. That&#8217;s a very useful technique and model.   This isn&#8217;t Muon.</p>
+</div>
+<div class="paragraph">
+<p>A model somewhat related to Actors in Communicating Sequential Processes (CSP). This model is related in that it is also focused on messages, and sending messages between components. The big difference between the two is on where you send messages to. In Actors, you send messages to an <em>actor</em>, in CSP, you send messages to the <em>channel</em>.   This is, crudely, the way Muon works.   It implements a restricted subset of CSP.</p>
+</div>
+<div class="paragraph">
+<p>If you dig into any of the protocol stacks, you will quickly see code requesting channels to remote services, adding transform channels, channels to manage failure.  It is a system to enable you to build channels between services.</p>
+</div>
+<div class="paragraph">
+<p>On top of those channels, you put the messaging protocols that implement the APIs. This could be very simple (eg RPC, 3 message types), to more involved (Reactive Streams, ~10 message types) to the very complex (FIPA protocols, several dozen message types). Since the protocol is addressing a channel, the actual location of the service is fully transparent. So long as a channel exists that can move messages back and forth, the service can be anywhere at all.</p>
+</div>
+<div class="paragraph">
+<p>This is the core of the Muon approach. Each stack provides useful APIs that, underneath, give you a messaging interface you can use.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to use this is to fire up a Muon service in its default config, if you follow the examples you will end up with a service connected to an AMQP broker with a few APIs you can interact with. Adding new classes of API is as easy as adding a new stack, and can be done in a few minutes.</p>
+</div>
+<div class="paragraph">
+<p>The real win though is what relying on these APIs will do to you system and its future evolution. I will use the Event stack (as the most popular stack) as an example of what will happen if you use it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="a-message-api-persisted-event-streams">A message API: Persisted Event Streams</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can, as many have told me, build an event based system using arbitrary message brokers. This is certainly true. You will likely though be either building a SEDA system (and so have compromised visibility of failure) or be using ephemeral events (and so have a system that has the consistency property of "hopeful").  I wrote the event stack to give form to what I consider to tbe the best event architecture, persisted streams of events.   To learn more about the topic, <a href="http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html">read here</a></p>
+</div>
+<div class="paragraph">
+<p>Persisted event streams have a lot of benefits, which I won&#8217;t dwell on here. The Event Stack in Muon defines an API that allows your application to move up a level from simple message brokers and cold event stores and gain access to the following operations</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Emit an event. This will be persisted into the given stream</p>
+</li>
+<li>
+<p>Cold replay a stream. This will take all the events persisted into the stream and replay them back to you in order</p>
+</li>
+<li>
+<p>Cold replay a stream from X. Same, but from a given known point in the stream.</p>
+</li>
+<li>
+<p>Cold/Hot replay (+ from X). Same as cold, then stay subscribed to any new events that come in after you started replaying</p>
+</li>
+<li>
+<p>Hot only. Ignore the history, play only new events.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For me, this is an event store worthy of the name. If it can&#8217;t do all of these things, its incomplete. The important thing to understand here is that I&#8217;m describing the point of view of the <strong>client</strong>, the API that your application will talk to. I haven&#8217;t mentioned an event store <em>server</em>. The reason is that I don&#8217;t really care much about what the implementation is, that is into the realm of non-functional upgrades, so long as the API above can be met.</p>
+</div>
+<div class="paragraph">
+<p>Now, you could implement the above on top of Kafka, or GetEventStore, or some other store+message bus. What if you wanted to store your transactional streams (eg, DDD style event sourced aggregate roots) in a data grid, and some of your streams in Kafka (aggregated streams for stream processing)?  You&#8217;d need to put logic in to manage that.</p>
+</div>
+<div class="paragraph">
+<p>This is all possible for you, but I&#8217;d like you to consider that what you&#8217;ve just done is to build a version of the Muon event stack, while remaining tied to your underlying implementing technology.</p>
+</div>
+<div class="paragraph">
+<p>The heavy focus in Muon on API and communication, you can implement an event store on any technology that you care to, and know that your applicaiton will continue to run.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="transports-and-location">Transports and location</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An interesting thing happened when we implemented this model and needed to test various things. We have a strong transport abstraction, one that is easy to replace with an in memory implementation. Perfect for testing.  The serendipitous thing though is that Muon libraries support more than one transport at a time, and so can be easily attached to remote and local instances, while maintaing the same APIs.</p>
+</div>
+<div class="paragraph">
+<p>The result of this is that you could implement the Event Store api above and have it run standalone, accessible over say, RabbitMQ (like Photonlite and PhotonClojure are) or gRPC and that would work well. You could also implement the event store API on top of Kafka and have it run in process.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-building-an-event-architecture-then-scaling-it-over-time">Example: Building an event architecture, then scaling it over time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Continuing with the Event stack as our example. It is straightforward to take the <a href="http://github.com/muoncore/muon-starter">Muon Starter</a> project, follow the instructions and come up with a simple event based system within a few minutes. If you are using Java/ Spring, your could use the Newton app framework to make a more complex system quickly following DDD patterns, and have it based on that same event stack.</p>
+</div>
+<div class="paragraph">
+<p>The technology used there is</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AMQP for network transport and discovery</p>
+</li>
+<li>
+<p>Photonlite implementing the eventstore API, persisting to H2 or MongoDB.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This will scale up a reasonable amount, and is a good and easy environment for development. What happens when you get popular and start getting lots of traffic in your system?  You scale it up!</p>
+</div>
+<div class="paragraph">
+<p>The main scaling problems you will find in a system like this will be</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cost of event sourcing for aggregate roots. This is a cold replay of a stream. Often the stream can include many events, and loading them all to roll up into the current state can be expensive.</p>
+</li>
+<li>
+<p>HA and latency of your messaging infrastructure.</p>
+</li>
+<li>
+<p>Persistent space</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>An obvious technology to adopt now is Kafka. However you actually can use Kafka for two different things in a Muon system. Firstly, its a message broker, so you can use it as a Muon transport. Secondly, it has the interesting property of persisting its queues, and not really having the concept of "keep your queues empty" like RabbitMQ does. This means that you can build an event store on top of Kafka.  You don&#8217;t though, want to have this accessible remotely, you need to access the API in process. To make this work, we include the Muon Kafka extension that uses Kafka as a transport, and also registers a Kafka implemention of the event store API that runs in process as a second Muon instance, only accessible in memory.  Your application code can&#8217;t see any difference between the implementations, all the message communication is the same, just over a memory transport instead of AMQP.</p>
+</div>
+<div class="paragraph">
+<p>Your HA, throughput, latency and ability to scale your runtime processes goes way up by doing this.</p>
+</div>
+<div class="paragraph">
+<p>Your system gets more load, and you need to speed up your transactional processing. Now your decision to use Event Sourcing seems &#8230;&#8203; unfortunate. Loading a hundred events each time for a single object is becoming a performance bottleneck, and you need a solution. This is the point at which many development teams will begin to investigate data grids. These allow transactional processing to happen purely in memory, if done right, it is local memory too.</p>
+</div>
+<div class="paragraph">
+<p>There are two things Muon can offer here. Firstly, the Newton app framework has snapshot support, and so you can load snapshots of the current state of an entity from the grid, rather than do a full event stream replay. Secondly, you can allocate certain streams to be loaded and saved from the grid instead of Kafka. The key here is that data written to the grid should also be pushed into Kafka. THe nature of the streams is important, as they are used very differently than deep aggregated streams.
+ By using the data grid for transactional streams, background loading into Kafka, and then Kafka directly for deep streams, you can get a huge performance increase again in your transactional processing.</p>
+</div>
+<div class="paragraph">
+<p>Your system scales again, everything holds up, but you start to see that your system is going to need an event store with different patterns of data access. Kafka is great for certain access patterns, where you know the location, but if you need to query for that position, it becomes sub optimal when compared to database technologies. If you wanted to selectively replay different portions of the stream, start to implement correlation between streams (inferred causality between This will need a dedicated data store that can hold lots of data. There are a variety out there, but I have been requested Cassandra most often, and so that is what we will choose to use. You want it to be available. To properly integrate this into a data architecture based on event streams, you have to take advantage of one of the primary properties of the data structure, which is that it has a <em>direction of travel</em>.  This means that it will</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Event Causality</div>
+<div class="paragraph">
+<p>An interesting aspect of event architectures is <em>causality</em>. That is, an event was <code>caused-by</code> another. The Muon Event stack has had this concept implemented from the start, with the expectation that you could analyse event streams and re-construct the relationships between the constituent events after the fact.</p>
+</div>
+<div class="paragraph">
+<p>This technique gives you</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A powerful debug tool, you can take events and track</p>
+</li>
+<li>
+<p>An interesting approach to enhacing "classical" (ie, data oriented) TDD for event based code. Test some event oriented code, run your test, check the event store for relationships.</p>
+</li>
+<li>
+<p>The ability to check workflows. Business logic is interesting in that it in invariably a form of state machine, mostly commonly poorly specified. Event orientation is an excellent technique for implementing state machines. What you can see in a event causality analysis is a particular business process moving through its constituent states. By taking the events that cause that, you can check to see that workflows are completing correctly, how often error classes appear etc.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="honourable-mention-newton">Honourable Mention: Newton</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Communication, in the way Muon models and implements it, can only so far. Eventually you need to manage internal state of your services. DDD gives a nice approach for doing that, and you&#8217;ll find that many have noticed the similarity in concepts between DDD and Actors. There&#8217;s even a well known book by Vaugh Vernon on implementing DDD using Akka.</p>
+</div>
+<div class="paragraph">
+<p>You could hook up Muon communication mechanisms to Actor systems and have good success. My clients though tend to be in the mainstream, which in the Java world currently means Spring, and more specifically Spring Boot. For that reason I was funded to develop an applicaition framework on top of Muon (JVM) that takes the event stack and deeply integrates it into a Spring Boot application. This framework is called Newton, I&#8217;ll be publishing an introductory blog post for it within the next week or so.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="the-road-ahead">The road ahead</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Some of what I mention here is not in the current open source release of the Muon projects. Some will land within the next few months (such as Newton snapshotting), others are being defined and in beta with clients and will form commercial additions to the Muon projects. In all cases though, all Muon functionality is intended to be available in the open source release, the only commercial aspects we are planning are non functional in nature.</p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+
+                <a href="/blog/tags#muon">muon</a>,
+                
+
+                <a href="/blog/tags#reactive">reactive</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of event architecture</a></li>
+    
+    
+    <li><a href="/blog/2017/05/06/build-reactive-polyglot-muon.html">Building reactive microservices using muon and scaling them using kafka, cassandra and friends</a></li>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic dao in spring with parameterized types</a></li>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on aws- experiments with rancher and kubernetes</a></li>
+    
+    
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon developer diary</a></li>
+    
+    
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing muon</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2017">July 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of Event Architecture</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">May 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/05/06/build-reactive-polyglot-muon.html">Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">April 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic DAO in Spring with Parameterized Types</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">February 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</a></li>
+    
+  
+  
+  
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon Developer Diary</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY&#58; Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY&#58; Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>

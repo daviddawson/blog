@@ -5,8 +5,8 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Jul 2017 18:10:14 +0100</pubDate>
-    <lastBuildDate>Wed, 19 Jul 2017 18:10:14 +0100</lastBuildDate>
+    <pubDate>Sun, 13 Aug 2017 18:43:54 +0100</pubDate>
+    <lastBuildDate>Sun, 13 Aug 2017 18:43:54 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -386,6 +386,268 @@ We just pulled some stuff together and now it all works great
         <category>continuousdelivery</category>
         
         <category>microservices</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;&lt;strong&gt;TL/DR&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Muon gives you very portable, polyglot message based APIs, across infrastructures&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It allows you to adopt many non functional technologies later on, such as Kafka, Hazelcast and Cassandra, without impact on your codebase.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I have been a big fan of the Reactive approach to build software for as long as its been around. My view on the world of Microservices today is that there are several strands you need to weave together to make your software thrive.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Microservices itself - By saying &quot;we want to build Microservices&quot;, most people I&amp;#8217;ve talked to are actually saying &quot;we want to be able to adapt more quickly, and use cloud resources well&quot;. Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handl distribution. This is where you will design and build your &lt;strong&gt;functional requirements&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.reactivemanifesto.org/&quot;&gt;Reactive Systems&lt;/a&gt; are a set of architectural principles that will inform how you implement your functionality, but won&amp;#8217;t help in actually delivering it. The core principles of Responsive, Resilient, Elastic and Message Driven give you no approaches for functional design that you can usefully apply. Instead, Reactive gives you a set of approaches for ensuring your Microservice system will meet its &lt;strong&gt;non-functional requirements&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The three together make a powerful combhined approach. How to start?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is where I was several years ago, how can you go about building something that meets the above list?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;After researching, prototyping, learning from deployed systems, gathering feedback and rebuilding I have what I believe to be a good solution and approach to building Microservice style systems that meet the above.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-road-to-muon&quot;&gt;The road to Muon&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I have written and spoken about my group of projects, Muon at length before. What I&amp;#8217;d like to do in this article is to dig into the programming model that the projects are implementing, explain the rationale for that and then show the fairly extensive benefits that gives you.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;My vision from the start of the project has been giving the ability to decompose and recompose systems as needed, move pieces around, replace and repurpose code as needed. All without compromising the richness of interaction you have within a monolithic system. WHen you have a monolith, you have a huge variety of options for interaction models, why should we compromise for Microservices?   I&amp;#8217;ve always been highly dubious of the rush to http that has happened (unless you sell API tooling, eh?). The main reason is that, while it is a commonish API format, it is semantically crippled compared to the system you are decomposing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The focus on &lt;strong&gt;the API&lt;/strong&gt; though, that is certainly very real. It is the enabler of a good microservices approach, by giving an impermeable barrier that allows you to vary the implementation of on either side without being overley concerned with the other.  So, for Muon, I wanted to be able to provide APIs that weren&amp;#8217;t simply HTTP/ RPCish (pipe down REST zealots!).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;We experimented a lot, almost totally with differing forms of messaging. We tried workflow patterns, SEDA, we wrote our own message broker, other fun things. In all we went through 7 major iterations of the ideas, refining them to bring tus to what we now have, the thing I refer to as the Muon Model.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-muon-model&quot;&gt;The Muon Model&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The focus of Muon is on the communication space. The gap between services where you need to integrate them togther in order to be valuable. In that space I want to provide the ability to bring the services together with arbitrarily complex interactions, with the base communication being mediated by messaging.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This core concept of defining the interactions, the classes of APIs of services we refer to as a &lt;strong&gt;&lt;em&gt;Protocol Stack&lt;/em&gt;&lt;/strong&gt;. There are a variety of them, covering RPC, Reactive Streams, Events, Broadcast, SEDA, to name the major ones currently implemented.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The second motivation, beyond richness of the API is to enable you to change your non functional behaviour based on the technologies you want to adopt. For example, you want to improve transactional processing in the JVM, you will often bring in a data grid, such as Hazelcast or Geode. The downside is that you need to rebuild your application to make use of that. Imagine if, for the most part, you didn&amp;#8217;t have to?  By using the Muon API stacks, you don&amp;#8217;t need to, as I&amp;#8217;ll describe in detail below.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The Reactive Manifesto was written by a set of intelligent individuals. You will note that a few of them have had a lot of involvement in Actor based systems (Akka etc). This is not by chance, The Actor model is, at its core, message based. The main focus of Actors is on managing state effectively and making it easier to understand by giving support to the developer on managing highly concurrent systems. it does this by, for the most part, turning it in a set of problems that can be dealt with in code in serial, not in parallel. That&amp;#8217;s a very useful technique and model.   This isn&amp;#8217;t Muon.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;A model somewhat related to Actors in Communicating Sequential Processes (CSP). This model is related in that it is also focused on messages, and sending messages between components. The big difference between the two is on where you send messages to. In Actors, you send messages to an &lt;em&gt;actor&lt;/em&gt;, in CSP, you send messages to the &lt;em&gt;channel&lt;/em&gt;.   This is, crudely, the way Muon works.   It implements a restricted subset of CSP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;If you dig into any of the protocol stacks, you will quickly see code requesting channels to remote services, adding transform channels, channels to manage failure.  It is a system to enable you to build channels between services.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;On top of those channels, you put the messaging protocols that implement the APIs. This could be very simple (eg RPC, 3 message types), to more involved (Reactive Streams, ~10 message types) to the very complex (FIPA protocols, several dozen message types). Since the protocol is addressing a channel, the actual location of the service is fully transparent. So long as a channel exists that can move messages back and forth, the service can be anywhere at all.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is the core of the Muon approach. Each stack provides useful APIs that, underneath, give you a messaging interface you can use.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The simplest way to use this is to fire up a Muon service in its default config, if you follow the examples you will end up with a service connected to an AMQP broker with a few APIs you can interact with. Adding new classes of API is as easy as adding a new stack, and can be done in a few minutes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The real win though is what relying on these APIs will do to you system and its future evolution. I will use the Event stack (as the most popular stack) as an example of what will happen if you use it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;a-message-api-persisted-event-streams&quot;&gt;A message API: Persisted Event Streams&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You can, as many have told me, build an event based system using arbitrary message brokers. This is certainly true. You will likely though be either building a SEDA system (and so have compromised visibility of failure) or be using ephemeral events (and so have a system that has the consistency property of &quot;hopeful&quot;).  I wrote the event stack to give form to what I consider to tbe the best event architecture, persisted streams of events.   To learn more about the topic, &lt;a href=&quot;http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html&quot;&gt;read here&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Persisted event streams have a lot of benefits, which I won&amp;#8217;t dwell on here. The Event Stack in Muon defines an API that allows your application to move up a level from simple message brokers and cold event stores and gain access to the following operations&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Emit an event. This will be persisted into the given stream&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cold replay a stream. This will take all the events persisted into the stream and replay them back to you in order&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cold replay a stream from X. Same, but from a given known point in the stream.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cold/Hot replay (+ from X). Same as cold, then stay subscribed to any new events that come in after you started replaying&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Hot only. Ignore the history, play only new events.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;For me, this is an event store worthy of the name. If it can&amp;#8217;t do all of these things, its incomplete. The important thing to understand here is that I&amp;#8217;m describing the point of view of the &lt;strong&gt;client&lt;/strong&gt;, the API that your application will talk to. I haven&amp;#8217;t mentioned an event store &lt;em&gt;server&lt;/em&gt;. The reason is that I don&amp;#8217;t really care much about what the implementation is, that is into the realm of non-functional upgrades, so long as the API above can be met.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now, you could implement the above on top of Kafka, or GetEventStore, or some other store+message bus. What if you wanted to store your transactional streams (eg, DDD style event sourced aggregate roots) in a data grid, and some of your streams in Kafka (aggregated streams for stream processing)?  You&amp;#8217;d need to put logic in to manage that.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is all possible for you, but I&amp;#8217;d like you to consider that what you&amp;#8217;ve just done is to build a version of the Muon event stack, while remaining tied to your underlying implementing technology.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The heavy focus in Muon on API and communication, you can implement an event store on any technology that you care to, and know that your applicaiton will continue to run.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;transports-and-location&quot;&gt;Transports and location&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An interesting thing happened when we implemented this model and needed to test various things. We have a strong transport abstraction, one that is easy to replace with an in memory implementation. Perfect for testing.  The serendipitous thing though is that Muon libraries support more than one transport at a time, and so can be easily attached to remote and local instances, while maintaing the same APIs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The result of this is that you could implement the Event Store api above and have it run standalone, accessible over say, RabbitMQ (like Photonlite and PhotonClojure are) or gRPC and that would work well. You could also implement the event store API on top of Kafka and have it run in process.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;example-building-an-event-architecture-then-scaling-it-over-time&quot;&gt;Example: Building an event architecture, then scaling it over time&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Continuing with the Event stack as our example. It is straightforward to take the &lt;a href=&quot;http://github.com/muoncore/muon-starter&quot;&gt;Muon Starter&lt;/a&gt; project, follow the instructions and come up with a simple event based system within a few minutes. If you are using Java/ Spring, your could use the Newton app framework to make a more complex system quickly following DDD patterns, and have it based on that same event stack.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The technology used there is&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;AMQP for network transport and discovery&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Photonlite implementing the eventstore API, persisting to H2 or MongoDB.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This will scale up a reasonable amount, and is a good and easy environment for development. What happens when you get popular and start getting lots of traffic in your system?  You scale it up!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The main scaling problems you will find in a system like this will be&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Cost of event sourcing for aggregate roots. This is a cold replay of a stream. Often the stream can include many events, and loading them all to roll up into the current state can be expensive.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HA and latency of your messaging infrastructure.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Persistent space&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An obvious technology to adopt now is Kafka. However you actually can use Kafka for two different things in a Muon system. Firstly, its a message broker, so you can use it as a Muon transport. Secondly, it has the interesting property of persisting its queues, and not really having the concept of &quot;keep your queues empty&quot; like RabbitMQ does. This means that you can build an event store on top of Kafka.  You don&amp;#8217;t though, want to have this accessible remotely, you need to access the API in process. To make this work, we include the Muon Kafka extension that uses Kafka as a transport, and also registers a Kafka implemention of the event store API that runs in process as a second Muon instance, only accessible in memory.  Your application code can&amp;#8217;t see any difference between the implementations, all the message communication is the same, just over a memory transport instead of AMQP.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Your HA, throughput, latency and ability to scale your runtime processes goes way up by doing this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Your system gets more load, and you need to speed up your transactional processing. Now your decision to use Event Sourcing seems &amp;#8230;&amp;#8203; unfortunate. Loading a hundred events each time for a single object is becoming a performance bottleneck, and you need a solution. This is the point at which many development teams will begin to investigate data grids. These allow transactional processing to happen purely in memory, if done right, it is local memory too.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;There are two things Muon can offer here. Firstly, the Newton app framework has snapshot support, and so you can load snapshots of the current state of an entity from the grid, rather than do a full event stream replay. Secondly, you can allocate certain streams to be loaded and saved from the grid instead of Kafka. The key here is that data written to the grid should also be pushed into Kafka. THe nature of the streams is important, as they are used very differently than deep aggregated streams.
+ By using the data grid for transactional streams, background loading into Kafka, and then Kafka directly for deep streams, you can get a huge performance increase again in your transactional processing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Your system scales again, everything holds up, but you start to see that your system is going to need an event store with different patterns of data access. Kafka is great for certain access patterns, where you know the location, but if you need to query for that position, it becomes sub optimal when compared to database technologies. If you wanted to selectively replay different portions of the stream, start to implement correlation between streams (inferred causality between This will need a dedicated data store that can hold lots of data. There are a variety out there, but I have been requested Cassandra most often, and so that is what we will choose to use. You want it to be available. To properly integrate this into a data architecture based on event streams, you have to take advantage of one of the primary properties of the data structure, which is that it has a &lt;em&gt;direction of travel&lt;/em&gt;.  This means that it will&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sidebarblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;div class=&quot;title&quot;&gt;Event Causality&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;An interesting aspect of event architectures is &lt;em&gt;causality&lt;/em&gt;. That is, an event was &lt;code&gt;caused-by&lt;/code&gt; another. The Muon Event stack has had this concept implemented from the start, with the expectation that you could analyse event streams and re-construct the relationships between the constituent events after the fact.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This technique gives you&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A powerful debug tool, you can take events and track&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;An interesting approach to enhacing &quot;classical&quot; (ie, data oriented) TDD for event based code. Test some event oriented code, run your test, check the event store for relationships.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The ability to check workflows. Business logic is interesting in that it in invariably a form of state machine, mostly commonly poorly specified. Event orientation is an excellent technique for implementing state machines. What you can see in a event causality analysis is a particular business process moving through its constituent states. By taking the events that cause that, you can check to see that workflows are completing correctly, how often error classes appear etc.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;honourable-mention-newton&quot;&gt;Honourable Mention: Newton&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Communication, in the way Muon models and implements it, can only so far. Eventually you need to manage internal state of your services. DDD gives a nice approach for doing that, and you&amp;#8217;ll find that many have noticed the similarity in concepts between DDD and Actors. There&amp;#8217;s even a well known book by Vaugh Vernon on implementing DDD using Akka.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;You could hook up Muon communication mechanisms to Actor systems and have good success. My clients though tend to be in the mainstream, which in the Java world currently means Spring, and more specifically Spring Boot. For that reason I was funded to develop an applicaition framework on top of Muon (JVM) that takes the event stack and deeply integrates it into a Spring Boot application. This framework is called Newton, I&amp;#8217;ll be publishing an introductory blog post for it within the next week or so.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-road-ahead&quot;&gt;The road ahead&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Some of what I mention here is not in the current open source release of the Muon projects. Some will land within the next few months (such as Newton snapshotting), others are being defined and in beta with clients and will form commercial additions to the Muon projects. In all cases though, all Muon functionality is intended to be available in the open source release, the only commercial aspects we are planning are non functional in nature.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Sat, 06 May 2017 12:18:00 +0100</pubDate>
+        <link>http://daviddawson.me/blog/2017/05/06/build-reactive-polyglot-muon.html</link>
+        <guid isPermaLink="true">http://daviddawson.me/blog/2017/05/06/build-reactive-polyglot-muon.html</guid>
+        
+        <category>microservices</category>
+        
+        <category>muon</category>
+        
+        <category>reactive</category>
         
         
         <category>blog</category>
@@ -2248,193 +2510,6 @@ deployed at some point.&lt;/p&gt;
         
         
         <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Defining The Microservice Architecture</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Recently (June 2015), I gave a &amp;lt;a title=&quot;Microservices Done RIght&quot; href=&quot;https://skillsmatter.com/skillscasts/6274-david-dawson&quot; target=&quot;_blank&quot;&amp;gt;talk&amp;lt;/a&amp;gt; at the DDD Exchange at Skills Matter in London.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This was a little last minute! Our CTO, Russ Miles, was originally scheduled to deliver at the conference, but he had to be out of the country visiting one of our partners and so I was drafted in to deliver.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is a talk I&amp;#8217;ve wanted to give for a long time, so while it was a little rough around the edges, the message is something we&amp;#8217;ve been working with for a while.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It cuts to the heart of what we&amp;#8217;re doing, and why we&amp;#8217;re doing it.  It asks the question, &quot;What is Microservice Architecture?&quot;, leading to &quot;What is a Microservice?&quot;. Is this becoming debased, or can we pick out something useful?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For the last few years, Simplicity Itself has been on something of a mission to change the way that we approach building software. We have positioned ourselves very much in the space of 'architecture'. By that I certainly do &lt;em&gt;*not*&lt;/em&gt; mean software design.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The difference is obvious when you think about it, there are as many designs are there are designers, infinite in potential. Architectures however &amp;#8230;&amp;#8203; that simply &lt;em&gt;feels&lt;/em&gt; different, and putting your finger on the reason why is informative. We know that there are actually fairly few distinct architectures. Event architecture, 3 tier and so on. You can look at a piece of software and derive the architecture that it is implementing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This simple cardinality check means that design cannot be, and is not, the same as architecture.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We approach architecture as the set of principles that guide you, the mental model that you apply, the process that you go through to analyse and engage with the world. It&amp;#8217;s not the solution, that is your design, it&amp;#8217;s what you use to guide you towards that solution.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Everything I&amp;#8217;ve described there as architecture, I know well by another name.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Software Architecture is &lt;strong&gt;&lt;em&gt;philosophy&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This re-frames the entire debate around Microservices Architecture. Technology details slip away, specific techniques become implementation only. Instead we attempt to derive the guiding principles, the philosophy that is drawing the industry along with it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Instead, we can ask the question, what are the defining characteristics of a Microservices approach. This is a good question, one that we&amp;#8217;ve spent the past year researching with our clients, asking at the &amp;lt;a href=&quot;http://www.meetup.com/London-Microservices-User-Group/&quot; target=&quot;_blank&quot;&amp;gt;Microservices user group&amp;lt;/a&amp;gt; we run and analysing the systems we come in contact with.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It&amp;#8217;s not HTTP, JSON does not feature. Docker is not the answer, and neither is devops.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The only commonality is* &lt;em&gt;Isolation&lt;/em&gt;*&lt;em&gt;* between components*,&lt;/em&gt; enforced using a network boundary.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Nothing else is agreed upon.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Upon this one element, all of the &lt;em&gt;*benefits*&lt;/em&gt; of a Microservices approach can be ultimately derived.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Upon this one element, all of the &lt;em&gt;*costs*&lt;/em&gt; of a Microservices approach can be ultimately derived too.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is the root.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Apart from this though, something else showed up in our research. A deep seated &lt;em&gt;*aspirational*&lt;/em&gt; quality. The belief that a better way of software could be created, built upon this principle of isolation. This aspiration was most commonly expressed as '&lt;em&gt;*keeping up with change*&lt;/em&gt;' or some derivative thereof.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Those two items, &lt;em&gt;isolation _and _aspiration&lt;/em&gt;. Those are the defining qualities of Microservices today.&lt;/strong&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For us, this is hugely useful, as it very directly converts into a philosophical approach to building software, it forms the guiding principles that lead you towards many (although not all) of the techniques, technologies and processes that are currently being deployed in Microservices projects across the globe.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This does though leave Microservices as an architecture, not a method of adequate design. This is where we see projects going very wrong and not gaining the benefits that they expected to.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We have seen this often enough that we&amp;#8217;ve come to term this the '&amp;lt;a href=&quot;/premium/Microservices-Adoption-Hump&quot; target=&quot;&lt;em&gt;blank&quot;&amp;gt;*_Microservices Adoption Hump&lt;/em&gt;*&amp;lt;/a&amp;gt;' (article by Russ Miles), getting all the pain of Microservices, without gaining the benefits.
-## Enter &lt;em&gt;Design&lt;/em&gt;
-Fundamentally, Microservices is not a design, it cannot be, since it&amp;#8217;s an architecture. This has led to many teams applying their existing design skills to the new architecture and deployment style and wondering why things get hard.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So, we see many HTTP/ JSON based systems. Numerous attempts at large scale REST based systems.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is because the team will have built HTTP based systems before, they are well understood, HTTP is widely implemented, and it seems the way to go.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The issue though is that HTTP/ JSON/ REST is &lt;strong&gt;&lt;em&gt;not a design methodology&lt;/em&gt;&lt;/strong&gt; either_. _It is an integration style. In the same category as messaging or RPC.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You still need to understand how to model a system, how to pull it apart into decently understood components, map out your flows of data, tie them back to business needs. The whole thing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is design.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Instead, what we see now are debates occurring in the Microservices space on what integration style is best. This is misguided, it&amp;#8217;s the wrong way round. You choose your integration style as an implementation, not as a guiding principle.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Discussion on how to effectively how to model an application when it is split out as Microservices are only just beginning to become public, and many of the arguments we see both publicly and privately are mimicking the object design wars of 10 years ago.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This makes me sad, as it&amp;#8217;s a blinkered, wasteful thing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Domain Driven Design&lt;/em&gt;&lt;/strong&gt; is, as the name implies, a design discipline. Proponents and researchers in the subject have spent the last 10+ years understanding how to model problems and build solutions using well known, well understood techniques.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;It is as good a place as any, and better than most, in order to learn how to effectively model an application, whether you take advantage of the deep isolation that a Microservices architecture avails you of or not.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Watch the talk above for some specific examples of how this plays out. Buy Eric&amp;#8217;s book for some more information (read the second half first is my advice), find your local meetup and other web resources and connect into learning how to &lt;em&gt;design&lt;/em&gt; software. We run a 3 day course on &amp;lt;a title=&quot;Antifragile Software: Building Adaptable Software with Microservices&quot; href=&quot;/learning/building-microservices-course/&quot; target=&quot;&lt;em&gt;blank&quot;&amp;gt;Building Microservices&amp;lt;/a&amp;gt;. This is effectively a course on how to design software using events that cross network boundaries all the time, which describes a microservices system handily.
-## The Microservices Community
-Dan North tells a good story around the concepts of a &lt;strong&gt;_bounded&lt;/em&gt;&lt;/strong&gt; and a &lt;strong&gt;&lt;em&gt;centred&lt;/em&gt;&lt;/strong&gt; community. A bounded community enforces membership via a set of constraints, rules of membership. Scrum is a good example of this.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Whatever the original intentions of the founders of scrum, what we see now is many forms of scrum, with a distinct feeling of &lt;em&gt;other&lt;/em&gt; when you stray outside the prescribed practices. These act as a constraint on what is accepted as Scrum, and what it not.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;A &lt;em&gt;centred community&lt;/em&gt;, on the other hand, has no real constraints on behaviour, no real prescriptions on what it means to be part of it. Instead, there are some &lt;em&gt;*guiding principles*&lt;/em&gt; that form the centre of the community ethos. Members will self identify to a large extent, and be accepted for the reason that they share the core principles. Behaviour Driven Design is held up as a good example of this style, as it has no real definition of itself, yet it certainly exists.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Today, based on our definition of the Microservices Architecture as fundamentally aspirational and the community that has formed around it, &lt;strong&gt;Microservices is a &amp;lt;i&amp;gt;centred&amp;lt;/i&amp;gt; community&lt;/strong&gt;. There is no strong definition of what it is, and yet it evidently exists and is having a tremendous impact.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This has many advantages! The technology stacks we can investigate are rich and varied. The processes are open to question and change. The integrations, models and designs are able to be researched and improved as needed.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;My fear is that, due to the desire of many to try to pin down exactly what a &lt;em&gt;Microservice Design&lt;/em&gt; is, they will, without understanding what they are doing, &lt;em&gt;turn it into a bounded community&lt;/em&gt;, fixated on rules and stiffled with specifications.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Ultimately, this is what I see happened with SOA, WS-* was added in ever greater detail, and is a large reason why standards based SOA failed to gain wider adoption than it ultimately did.
-## Welcome to the new world, looks like the old world&amp;#8230;&amp;#8203;
-Microservices is undergoing a hype cycle, this is certainly true, yet that does not mean that it describes something that has no value. When coupled with the tremendous innovation happening in the infrastructure space, we are entering a special time.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The key is to realise that we need to take what we have already learned, the battle tested software design wisdom from the past decades and apply it once again in the context of a new philosophy based on ever stronger isolation mechanisms.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Only then will we be able to reap the benefits and live up to the aspirations we are harbouring that site at the core of the Microservices architecture.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&amp;lt;hr /&amp;gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself are researching better ways of building Microservices. By applying DDD, Event Sourcing and other techniques, we are building platforms that are naturally multi cloud and infrastructure agnostic and give a great User eXperience for Microservices, whether you are a developer, manager or operations.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We will be releasing this technology platform as open source within the next few months. If you would like more information or to be part of the beta programme &amp;lt;a href=&quot;/contact&quot; target=&quot;_blank&quot;&amp;gt;contact us&amp;lt;/a&amp;gt;&lt;/p&gt;
-&lt;/div&gt;</description>
-        <pubDate>Wed, 17 Jun 2015 00:55:00 +0100</pubDate>
-        <link>http://daviddawson.me/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</link>
-        <guid isPermaLink="true">http://daviddawson.me/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html</guid>
-        
-        
-        <category>Microservices and Reactive</category>
         
       </item>
     
