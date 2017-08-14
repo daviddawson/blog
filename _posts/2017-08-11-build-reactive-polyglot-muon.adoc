@@ -13,15 +13,19 @@ tags:
  - reactive
 ---
 
+---
 *TL/DR*
 
-* Muon gives you very portable, polyglot message based APIs, across infrastructures
-* It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state.
-* It allows you to adopt many non functional technologies later on, such as Kafka, Hazelcast and Cassandra, without impact on your codebase.
+* Muon gives you very portable, polyglot message based APIs, across infrastructures. This lets you focus on the functionality you need for your business, rather than adopting a vendor best practice and becoming locked in.
+* It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state. This lets you build highly distributed systems without falling into the traps of
+* This approach is implemented as Muon "protocols", message based apis and defined interactions between services that implement well known communication and data architecture patterns. This lets you explicitly use particular architectures, such as event sourcing or SEDA, and know that it is correct, works well and is portable across languages, runtimes, frameworks and communication technologies (gRPC, Kafka, AMQP etc)
+* It allows you to adopt advanced technologies as a tactical decision later on in your project, without impact on your codebase. This includes tech such as Kafka, Hazelcast and Cassandra, knowing that as you need to scale your system, you can.
+
+---
 
 I have been a big fan of the Reactive approach to build software for as long as its been around. My view on the world of Microservices today is that there are several strands you need to weave together to make your software thrive.
 
-* Microservices itself - By saying "we want to build Microservices", most people I've talked to are actually saying "we want to be able to adapt more quickly, and use cloud resources well". Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.
+* "Microservices" itself - By saying "we want to build Microservices", most people I've talked to are actually saying "we want to be able to adapt more quickly, and use cloud resources well". Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.
 * Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handle distribution. This is where you will design and build your *functional requirements*.
 * link:http://www.reactivemanifesto.org/[Reactive Systems] are a set of architectural principles that will inform how you implement your functionality, but won't help in actually delivering it. The core principles of Responsive, Resilient, Elastic and Message Driven give you no approaches for functional design that you can usefully apply. Instead, Reactive gives you a set of approaches for ensuring your Microservice system will meet its *non-functional requirements*.
 
