@@ -5,35 +5,40 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 Aug 2017 12:25:08 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Aug 2017 12:25:08 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Aug 2017 13:04:02 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Aug 2017 13:04:02 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
         <title>Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</title>
-        <description>&lt;div class=&quot;paragraph&quot;&gt;
+        <description>&lt;hr&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;&lt;strong&gt;TL/DR&lt;/strong&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Muon gives you very portable, polyglot message based APIs, across infrastructures&lt;/p&gt;
+&lt;p&gt;Muon gives you very portable, polyglot message based APIs, across infrastructures. This lets you focus on the functionality you need for your business, rather than adopting a vendor best practice and becoming locked in.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state.&lt;/p&gt;
+&lt;p&gt;It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state. This lets you build highly distributed systems without falling into the traps of&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;It allows you to adopt many non functional technologies later on, such as Kafka, Hazelcast and Cassandra, without impact on your codebase.&lt;/p&gt;
+&lt;p&gt;This approach is implemented as Muon &quot;protocols&quot;, message based apis and defined interactions between services that implement well known communication and data architecture patterns. This lets you explicitly use particular architectures, such as event sourcing or SEDA, and know that it is correct, works well and is portable across languages, runtimes, frameworks and communication technologies (gRPC, Kafka, AMQP etc)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It allows you to adopt advanced technologies as a tactical decision later on in your project, without impact on your codebase. This includes tech such as Kafka, Hazelcast and Cassandra, knowing that as you need to scale your system, you can.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
+&lt;hr&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;I have been a big fan of the Reactive approach to build software for as long as its been around. My view on the world of Microservices today is that there are several strands you need to weave together to make your software thrive.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;ulist&quot;&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Microservices itself - By saying &quot;we want to build Microservices&quot;, most people I&amp;#8217;ve talked to are actually saying &quot;we want to be able to adapt more quickly, and use cloud resources well&quot;. Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.&lt;/p&gt;
+&lt;p&gt;&quot;Microservices&quot; itself - By saying &quot;we want to build Microservices&quot;, most people I&amp;#8217;ve talked to are actually saying &quot;we want to be able to adapt more quickly, and use cloud resources well&quot;. Given that Microservices is more of a philosophical position than anything else, its a set of motivations (tied into the idea of distributed systems) rather than the design approach you will use.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Domain Driven Design. DDD is a design style, one that lets you build complex transactional systems that can handle distribution. This is where you will design and build your &lt;strong&gt;functional requirements&lt;/strong&gt;.&lt;/p&gt;
