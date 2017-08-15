@@ -16,6 +16,7 @@ tags:
 ---
 *TL/DR*
 
+* Microservices == distributed systems. RPC is well known for creating fragility in systems, Muon offers a way of building others kinds of APIs, based on Reactive principles while keeping your existing internal frameworks, languages and runtimes.
 * Muon gives you very portable, polyglot message based APIs, across infrastructures. This lets you focus on the functionality you need for your business, rather than adopting a vendor best practice and becoming locked in.
 * It is based on CSP, and is focused squarely on communication as a way of expressing interaction about state. This lets you build highly distributed systems without falling into the traps of
 * This approach is implemented as Muon "protocols", message based apis and defined interactions between services that implement well known communication and data architecture patterns. This lets you explicitly use particular architectures, such as event sourcing or SEDA, and know that it is correct, works well and is portable across languages, runtimes, frameworks and communication technologies (gRPC, Kafka, AMQP etc)
