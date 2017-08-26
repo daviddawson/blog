@@ -1,0 +1,41 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+repositories {
+    mavenLocal()
+    jcenter()
+    maven { url 'https://simplicityitself.artifactoryonline.com/simplicityitself/muon' }
+    maven { url 'https://simplicityitself.artifactoryonline.com/simplicityitself/muon-snapshot' }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    compile "io.muoncore:muon-core:7.3.4"
+    compile "io.muoncore.protocol:stack-event:0.0.2-SNAPSHOT"
+    compile "io.muoncore.protocol:stack-rpc:0.0.2-SNAPSHOT"
+    compile 'io.muoncore.newton:newton-spring-starter:0.0.11-SNAPSHOT'
+
+    runtime "io.muoncore.transport:muon-amqp:0.0.8"
+
+    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
+
+    testCompile "io.muoncore:test-event-store:0.0.10-SNAPSHOT", {
+        exclude module:"slf4j-simple"
+    }
+}

@@ -1,0 +1,364 @@
+---
+excerpt: Apply DDD patterns including Event Sourcing and CQRS natively in a Spring Boot application using Newton, a new project from Muon.
+title: Distributed DDD in Spring Boot using Newton
+layout: post
+author: David Dawson
+date: 2017-08-13 12:18
+image: images/muonfulllogo.jpg
+categories:
+ - blog
+tags:
+ - microservices
+ - muon
+ - reactive
+ - spring
+---
+
+---
+*TL/DR*
+
+* Newton is a project that lets you implement distributed Microservice & DDD patterns in Spring Boot.
+* It is based on Muon, a polyglot framework for building Reactive, Message based APIs.
+* It makes use of persisted event streams extensively.
+* Event Sourcing and Stream Processing are implemented for CQRS support, Aggregate Roots and Views.
+* Event based long running Process Managers are available, also known as "Sagas"
+
+Newton was sponsored by a client of mine, link:http://cibecs.com/[Cibecs], who provided funding and very valuable expertise, ideas and contributions from their development organisation. They kindly agreed to open source it under the overall Muon project.
+
+---
+
+Applying DDD patterns in Microservices systems has become a very popular topic of conversation and the basis of many a conference talk (mine included!).
+
+I don't want to dwell on the reasons for this, if these concepts are new to you, I recommend you read some articles on the topic to get a feel for the problems that Newton is solving.
+
+Diving in, with a distributed DDD system, the big technical patterns you want to implement are :-
+
+* Aggregate Roots - the transactional part of the system, used to model your business logic
+* Event Sourcing - store and retrieve Aggregate Roots based upon their history.
+* Commands - Encapsulate interactions
+* Views - The Q side of CQRS. Create and maintain data structures optimised for particular query patterns
+* Domain Services - Provide functionality for a domain that isn't naturally part of a single Aggregate Root. This could be validation, integration with external systems and the like.
+* Process Managers - often called "Sagas". Long running event driven business processes.
+
+Newton implements all of these patterns, and makes them easily and idiomatically accessible in Spring Boot applications. I won't go into the detail of the various parts in this article, rather review the pieces and then break out subsequent articles detailed each piece and some patterns for usage.
+
+.Muon for Communication, Polyglot and Portable
+****
+Newton is built on top of the Muon Event Protocol. This defines a message based API for building systems that create and use persisted event streams. The API does not define the implementation, only the communication necessary to use them. Given that Muon lets you communicate both and out of process transparently, the implementation can be anywhere reachable by your service. For this article, run up the link:https://github.com/muoncore/muon-starter[Muon Starter environment], which will run an AMQP broker for transport and the Photonlite event store. Other implementations of the event protocol appear fairly regularly, and we are internally building backing services based on Hazelcast, Kafka and others.
+
+The big benefit of this is that any language that is supported in that stack can create and consume the event streams easily. All of your Newton events (see below) can easily be consumed in a Node application say, or the browser. Your Newton services can react to events put onto streasms by other components. This gives you great flexibility and the ability to, at some point in the future, simply remove Newton and replace with something else is you so choose that uses the event stack directly.
+****
+
+## First Step: @EnableNewton
+
+To get started, you need to set up a spring boot application and include the Newton dependencies
+
+.build.gradle
+[source,groovy]
+----
+include::../projects/newton-example/build.gradle[lines=1..75]
+----
+
+Next, update your application class with @EnableNewton
+
+.src/main/java/newton/Application
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/Application.java[lines=9..17]
+}
+----
+
+## An HTTP API to implement: A Shopping Cart
+
+In this article, we'll create a simple Shopping Cart, with an HTTP API. We will implement it exclusively using the DDD patterns available in Newton.
+
+This is the HTTP API we'll be implementing. It is a simple Spring web `@RestController`
+
+.src/main/java/newton/CartController
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/CartController.java[lines=14..75]
+----
+
+It has 3 endpoints, 1 to get a cart by ID (creating it if it doesn't exist), 1 to add an arbitrary product id to the cart and the final one will display an aggregated view of data across the shopping carts.
+
+## Event Sourced Aggregate Roots
+
+Before we start implementing the API, we need to think a little about the system we're building. In a more complex system, you would go through the modelling process of DDD to decide what your domains, sub-domains, consistent language and finally your transactional entities, known as "Aggregate Roots" (AR).
+
+You load an AR from a repository. In Newton, all AR repositories are event based, and will Event Source the AR from its constituent events when you request it. This means that only the events are stored, in a persistent event stream dedicated for that AR.  One upshot of this is that you have to know in advance that the AR is there, by ID, and you can't perform complex queries against the transactional data store. You can only load and save AR entities, and variations on those operations.  If you need to query, use a View you have made available for that purpose (see below).
+
+Creating an AR is straightforward.  Firstly create a new POJO in your application, extending the base class `io.muoncore.newton.AggregateRoot`
+
+.newton/cart/ShoppingCart.java
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/ShoppingCart.java[lines=15..15]
+----
+
+This gives you an event sourced AR that you can begin to use.  To load/ save it, you use an `EventSourcedRepository<X>`. For each AR you create as above, a dedicated `EventSourcedRepository` is generated in the application context by Newton, so you can happily `@Autowire` it wherever you want. Good practice is to do that within your Commands for modelling purposes, but you _can_ do it anywhere.
+
+The key concept in using an aggregate root in Newton is that you invoke business methods on them, which can perform all types of validation, but do not mutate the state of the AR. Instead, they raise an event. This event is persisted into the event stream dedicated for that AR. For every event type that you raise within an AR, you have a matching handler method that takes that event and mutates the AR state to match.
+
+An event implements the interface `NewtonEvent` and are all value types (ie, they contain no behaviour). If you use Kotlin, this maps to the Data Class concept. I personally like to keep the events for a particular AR in a single wrapping class.
+
+Here are the events we will use for the ShoppingCart AR. It will be created, and have product counts updated. There is a default deleted event available for all AR types that can be overridden if more information is needed.
+
+.newton/cart/Events.java
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/Events.java[]
+----
+
+The aggregate root will then contain 4 methods. 1 each to raise and then to process the events above. The full aggregate root for the Shopping Cart looks like this.
+
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/ShoppingCart.java[lines=13..50]
+----
+
+Its worth noting that this is intended to give you a place to put your transactional logic. The objects can be complex, and form a web (since this is an aggregate *root*). When you load the AR, it will be created using the zero args constructor and then the @`EventHandler` methods will be invoked in turn as the events are streamed out of persistence. Once the AR is recontstructed, the AR will be available for you to use and persist back. The key concept is that, without any snapshot behaviour, only the Events will be persisted, not any data in the AR itself.
+
+With this in place, you can then start to interact with it in your system and do some event sourcing!
+
+Newton stores its data into event streams, which are defined using the link:https://github.com/muoncore/stack-event[Muon event api]. Where they are actually persisted doesn't matter particularly so long as that API is available somewhere in the system (which could be remotely, or within the same process).
+
+The key concept in this API is the stream, which Aggregate Roots emit events onto. They put events onto two streams, one of which is local for the particular AR instance and has the form /aggregate/<type>/<id>.  The examples below will create a stream named `/aggregate/ShoppingCart/my-basket`, which you can interact with using the Muon CLI (see the example below).
+
+Newton also puts events from aggregate roots onto a second stream that combines events from all of the instances of a particular AR. It is named after the "sub domain" and the aggregate root type. The subdomain name defaults to the application name (and can be override via an annotation), and will be `newton-shoppingexample/ShoppingCart`. This is the stream that all of the views, sagas and domain services read from.
+
+Ordinarily, you will interact with Aggregate Roots via `Commands`
+
+## Commands
+
+A command in Newton gives you a way to model the type of "business logic" that is ordinarily found as the thread of control in a web of service calls (link:http://daviddawson.me/blog/2013/03/28/stateless-services-are-evil.html[which I have a distaste for]). In the style of system where you have active command objects, you will find that they tend to give a nice place to focus the "my system does X/Y/Z. You controllers become far thinner and your service layers become dedicated to particular classes of problem, normally some form of external integration.
+
+This is the expectation of Newton Commands. They are created as Spring Prototype beans, and are constructed when requested. Here, we want to encapsulate the process of adding a a product to the given cart. This is a simple operation, but you can begin to see how this separates out the thread of control from your controller.
+
+.src/main/java/newton/cart/AddProductCommand.java
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/AddProductCommand.java[lines=12..50]
+----
+
+In the current version of Newton, this is dispatched and processed in the same process, in future versions, this will have the option to emit and process the `CommandIntent` remotely.
+
+## Views
+
+A key consideration when creating distributed DDD systems is applying CQRS. Newton implements this via a set of services that act as event subscribers. They subscribe to some number of streams, most commonly created by your aggregate roots, and then use those to process the events into some data structure. This is a form of stream processing. Newton views are a decent approach to easily and quickly making views of this type that fit within the model (persisted, fully replayable, event streams), if you have larger data requirements or your data isn't in this model, use Spark or one of its friends.
+
+There are 2 of these. Which you will pick depending on where you are going to store the data.
+
+* SharedDatastoreView - will process a set of event streams into a data store shared across a group of instances. Tracks where work has gotten up to in the streams and continues from that point on restart. Use if you are going to store the data in a DB shared between instances, such as Mongo.
+* RebuildingDatastoreView - On application start, will _fully_ replay the event streams that it has been told to play through. This is intended to consistently generate in memory data structures, such as hot caches, and maintain them in an eventually consistent manner across the instances of this service. Use for creating and maintaining in memory data.
+
+Here is the `PopularProductsView`. This is a purely in memory view onto the shopping cart data.
+
+.src/main/java/newton/cart/AddProductCommand.java
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/PopularProductsView.java[lines=13..50]
+----
+
+Note `aggregateRoots()`. This method informs Newton what streams it should be looking at for this view. All events that are generated by that aggregate root will be presented to this view for processing via a `@EventHandler`. If you don't have a handler for that event, it will be ignored for this view.
+
+This works well if you have views in the same process, or have access to the classes for some reason (which is probably not a good idea!). An alternate approach to telling Newton the streams is to
+
+## Domain Services
+
+The domain service in DDD provides access to external systems (forms of integration), and host logic that doesn't fit inside a single aggregate root.
+
+For Newton, being heavily event oriented, support is available for creating event driven domain services. These are very similar to views in the way they operate (tracking through several event streams),
+
+## Process Managers - Sagas and long running transactions
+
+A great advantage of using event systems is that your components are more decoupled from each other, they are more open for extension after the fact without fundamental redesign.
+
+One aspect of this is separating entity specific complex processing, which is in the Aggregate Root, from broader business processes that can span multiple aggregates and potentially run for a significant amount of time. In the DDD world, this has come to be known as a "Process Manager", or someimes referred to as a "Saga". In Newton, for historical reasons, this concept is called a Saga.
+
+You create one by, currently, extending the `StatefulSaga`. Here, we create a simple process around the ShoppingCart that runs for the lifetime of the cart and drops another product into it if you add one named "cool-product"
+
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/ShoppingCartPromotionProcess.java[lines=15..54]
+----
+<1> The state of the process. This _is_ persisted. Currently, Sagas are not event sourced, although they are optionally planned to be in an upcoming release.
+<2> Each Saga will be started by an event seen on one of the given streams. If this event appears, no matter its content, a new process will be started and the `@StartSagaWith` method will be invoked
+<3> You need to register patterns for notification. Whenever an event appears that matches the given pattern (event type, key, value), the saga will be notified.
+<4> Subsequent events that match the `notifyOn` calls will be passed into the appropriate event handlers.
+<5> It is good practice to end your sagas. They do take up some space in the notify matcher DB, although it is fairly minimal, this cleans those resources up.
+<6> Optionally, you can be notifed via an event handler of when a command you have raised failed in its execution (it threw an unhandled exception)
+
+This can then respond to events as they appear on the streams. The saga instance has no runtime overhead, it is loaded and persisted in between handling each event.
+
+The streams that a Saga listens on can be associated with an aggregate root, or be any other stream.  The common stream being created by all of the shopping carts is called `newton-shoppingcart/ShoppingCart` in this application, which you can verify by installing the Muon CLI and running `muon replay newton-shoppingcart/ShoppingCart`.  Similarly, you can have the saga process any other stream you wish it to by changing the annotation.
+
+For example, to listen to the `requests` stream in addition to the local ShoppingCart aggregate, as created by the HTTP Adaptor nodejs service link:https://github.com/muoncore/muon-workshop/blob/master/4-first-newton-streaming/http-adaptor/http-adaptor.js[here], you would do this
+
+----
+@SagaStreamConfig(aggregateRoots = {ShoppingCart.class}, streams = {"requests"})
+
+...
+
+@EventHandler
+public void on(RequestReceived ev) {
+    ... do something with the request event ...
+}
+----
+
+This would require that you have a NewtonEvent class called `RequestReceived` on the local classpath to process the incoming event.
+
+This allows your Sagas to manage any kind of the event in the system, not just the ones created by your Aggregate Roots. They give a nice place to put cross logic that starts spanning domain boundaries.
+
+## Running the service
+
+To see this working, run up the application and you can then do some `curl` to see it working.
+
+I recommend you install the Muon cli as well so you can see the data moving around.
+
+In one terminal, run
+
+ muon replay newton-shoppingcart/ShoppingCart
+
+This will show you the event data being created live.
+
+In another, run
+
+ > curl http://localhost:8080/my-basket
+ > {"deleted":false,"version":1,"newOperations":[],"id":"my-basket","lines":[]}
+
+You will see a `CartCreated` event appear in your cli terminal
+
+  { 'event-type': 'CartCreated',
+  'stream-name': 'newton-shoppingcart/ShoppingCart',
+  'service-id': 'newton-shoppingcart',
+  'order-id': 2007451,
+  'event-time': 1503751211110,
+  payload: { id: 'my-basket' } }
+
+Next, add a product to the basket
+
+ > curl http://localhost:8080/my-basket/add/myproduct?quantity=20
+ > {"deleted":false,"version":2,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0}]}
+
+You will see the appropriate event appear
+
+ { 'event-type': 'ProductQuantityUpdated',
+  'stream-name': 'newton-shoppingcart/ShoppingCart',
+  'service-id': 'newton-shoppingcart',
+  'order-id': 2007453,
+  'event-time': 1503751303155,
+  payload:
+   { id: 'my-basket',
+     productId: 'myproduct',
+     price: 2.5,
+     quantityAdded: 20 } }
+
+Try to add the "special" product mentioned in `ShoppingCartPromotionProcess`
+
+ > curl http://localhost:8080/my-basket/add/cool-product?quantity=190
+ > {"deleted":false,"version":3,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0},{"quantity":380,"productId":"cool-product","price":2.5,"subtotal":950.0}]}
+
+You will see the two `ProductQuantityAdded` events appear in the stream
+
+ {
+   'event-type': 'ProductQuantityUpdated',
+   'stream-name': 'newton-shoppingcart/ShoppingCart',
+   'service-id': 'newton-shoppingcart',
+   'order-id': 2007473,
+   'event-time': 1503752375688,
+   payload:
+    { id: 'my-basket',
+      productId: 'cool-product',
+      price: 2.5,
+      quantityAdded: 190 } }
+  {
+    'event-type': 'ProductQuantityUpdated',
+    'stream-name': 'newton-shoppingcart/ShoppingCart',
+    'service-id': 'newton-shoppingcart',
+    'order-id': 2007473,
+    'event-time': 1503752375692,
+    payload:
+     { id: 'my-basket',
+       productId: 'new-cool-product',
+       price: 2.5,
+       quantityAdded: 1000 } }
+
+A quick curl to get the state of the basket shows that the product was added into the basket fine.
+
+ > curl http://localhost:8080/my-basket
+   {"deleted":false,"version":11,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0},{"quantity":950,"productId":"cool-product","price":2.5,"subtotal":2375.0},{"quantity":6000,"productId":"new-cool-product","price":2.5,"subtotal":15000.0}]}
+
+You can also query the view that has been processing away in the background which will contain the a representation of some aggregated data across all of your baskets
+
+ > curl http://localhost:8080/popular
+{"awesome":10,"my-cool-product":-120,"myproduct":150,"cool-product":1690,"new-cool-product":8000,"awesometoool":9000}
+
+Congratulations! You have, using Spring Boot, constructed a DDD style event based application using event sourcing, eventually consistent views, commands and long running processes.
+
+## Decomposing the app
+
+This is though, plainly, a little monolith. What you should be able to see is that if we so chose, moving the individual components away from each other into their own microservices will be straightforward. There is a question on the Event classes, how to manage them etc. This is where you get into the realm of managing data schemas across multiple systems, which can be an involved topic.
+
+What you can happily do though is to copy them to their new location, or share them via a shared artifact if you must. Either way, the actual underlying data is not the class. The data is persisted into the event stream and fully accessible via any other process, as you can see by accessing it via the muon cli, which is actually a node application.
+
+By adopting Newton and its design ethos, you will start to think in terms of event streams, creating and consuming them. This leads to some interesting and powerful concepts, such as taking the view (which is in memory, and so very very fast to read, and scaling it independently of the aggregate root, in its own process. This can be done easily, as the event streams will keep them all eventually consistent with each other, in the order of a few ms. Whether this consistency guarantee is appropriate for you is the question, but if it is (and for much data, it really is) then this model gives a very quick way to get it up and running at the application tier.
+
+## A little extra: Adding a streaming Muon API
+
+We have an HTTP API to access the Cart. Thats pretty standard in systems today, but what if it weren't the only option?
+
+I haven't dwelt on the Muon side of this particularly, but since we're here and we've built a shopping cart for use, we can do something cool with it. This highlights the underlying data architecture we've chosen, and gives some idea of the power of using it.
+
+Your shopping cart data is stored in a persisted event stream using its component events. Since this is being interacted with by Newton using the Muon Event protocol, there are a set of API operations we can use beyond what you've currently seen. Newton uses a "cold replay", it loads all of the events, then disconnects from the stream. The event API also supports "hot-cold replay", which is where you load all of the cold events, then stay subscribed and receive a push notification whenever something new appears.
+
+This allows you to load all of the events for a ShoppingCart, and then stay connected and receive push events whenever it is updated.
+
+*_The Muon model underlying Newton lets you build message based APIs_*. This is what Newton is using, a message based API that lets you communicate about event streams, both creating and replaying them. It is talking to Photonlite, but it could equally talk to any other event store that implements that API. There is another API type we can use, which is based on the link:http://www.reactive-streams.org/[Reactive Streams specification], because of that, we refer to it as the link:http://github.com/muoncore/stack-reactive-streams[reactive stream protocol]
+
+We don't have Spring auto configuration for it implemented yet (link:https://github.com/orgs/muoncore/projects[want to help?]), you can create the server side of the api by adding a new bean definition in a configuration class somewhere
+
+[source,java]
+----
+@Bean
+public ReactiveStreamServer rxServer(Muon muon) {
+  return new ReactiveStreamServer(muon);
+}
+----
+
+This adds in a new type of API, streaming. You can add endpoints to it, which are then accessible by Muon reactive stream clients.
+
+Next, create a spring component that initialises it and gives the API you want. In this case there is a `Publisher` (a Reactive Streams type) on the `EventSourceRepository` that will, whenever an update is made to a given AR, send a notification to any attached `Subscriber`. The Muon reactive stream api networks that relationship, allowing Subscribers to be remote from the Publisher, and transferring all of the appropriate signals across the network. By converting the RS signals into messages, we can support this API in any language Muon is implemented for fairly easily.
+
+Since the `EventSourceRepository` has a method exposing a Publisher, we can simply expose that directly in our API. Streaming communication will then happily be managed, with back pressure signals going all the way from the client, through our service and back to the underlying event store.
+
+In this case, the API looks like this
+
+[source,java]
+----
+include::../projects/newton-example/src/main/java/newton/cart/RxApi.java[lines=1..54]
+----
+
+You can test this via the Muon CLI
+
+ > muon stream stream://newton-shoppingcart/basket '{"id":"my-basket"}'
+
+Then, in another terminal, interact with this basket to see the updates come through
+
+ curl http://localhost:8080/my-basket/add/myproduct?quantity=20
+
+This is especially nice when used with Muon.js, an adapter which gives access to all Muon apis in a browser context. You can hook this up to a React state container, for example, and gain push updates very easily.
+
+This is currently an experimental API, but one that I've found very useful when building rich web clients, especially when combined with RxJava (or other FRP lib) transformations within the API.
+
+## Wrap up
+
+Newton is a young project that sits on the shoulders of Muon message based APIs. There are many, many things that I would like to extend, improve and deepen. Some of these are specific to Newton itself, others will transparently improve the Newton experience and scalability when implemented in the underlying Muon projects (such as Kafka, Hazelcast and extended language support). There are a set of open tickets for improving upgrades, APIs and other areas.
+
+Currently, I'm working with a set of consulting organisations so that they are available to provide commercial support. This is answering the most immediate feedback I've had of "is this supported". The answer to that is now yes.
+
+For the project I am very interested in listening to community feedback on where to take things next in terms of product development.
+
+If you have particular features you would like to see, particular technologies you would like supported then please get in touch. I'm actively accepting sponsored work on all the Muon projects, including Newton. If you need some more substantial work using the projects, then I can arrange the appropriate introductions to our consulting partners.
+
+If you like the idea of Newton and reactive, message APIs in general, and you want to get involved, its all available on link:http://github.com/muoncore/newton[github]. Have a look at the link:https://github.com/orgs/muoncore/projects["help wanted"] project. Also, link:https://muon-slack-invite.herokuapp.com/[jump on slack]
