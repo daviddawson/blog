@@ -102,6 +102,18 @@ code span {
   border: 1px solid #ccc
 }
 
+div.documentation h2 {
+  font-size:1.5em
+}
+
+div.documentation code, div.documentation .sidebarblock .content {
+  font-size: 1.0625rem;
+}
+
+.sect1 .sectionbody .content {
+  padding:0;
+}
+
 @media only screen and (min-width: 300px) {
 .modBlogPost.big {
   width:100%;

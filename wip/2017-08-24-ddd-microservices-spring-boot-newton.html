@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Distributed DDD in Spring Boot using Newton</title>
+  <meta name="description" content="Apply DDD patterns including Event Sourcing and CQRS natively in a Spring Boot application using Newton, a new project from Muon.">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="canonical" href="http://daviddawson.me/wip/2017-08-24-ddd-microservices-spring-boot-newton.html">
+    <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/asciidoc.css">
+  <link rel="stylesheet" href="/css/producttable.css">
+  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+    body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+    code {
+      background:none;
+      border:0;
+    }
+
+    code span { border: 0; width:100% }
+  .listingblock {
+      background: #eee;
+      border-radius:5px;
+      border:1px solid #ccc
+    }
+  }
+
+  div.documentation a.btn {
+    margin-top:20px;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }
+
+  div.documentation a.btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/sidebar2.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="http://daviddawson.me/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              <a href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/me.html">About Me | What I Do</a>
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="/training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="/training/microservices-free.html">Free Microservice Healthcheck</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/microservices.html">3 Reactive Microservices Workshop</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/groovy.html">Groovy</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/hireme.html">Hire Me</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://github.com/daviddawson">Github</a>
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:100%">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="http://daviddawson.me/images/muonfulllogo.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+
+
+            <span>August 13, 2017</span>
+          </p>
+          <h3><a href="/wip/2017-08-24-ddd-microservices-spring-boot-newton.html">Distributed DDD in Spring Boot using Newton</a></h3>
+          <hr>
+<div class="paragraph">
+<p><strong>TL/DR</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Newton is a project that lets you implement distributed Microservice &amp; DDD patterns in Spring Boot.</p>
+</li>
+<li>
+<p>It is based on Muon, a polyglot framework for building Reactive, Message based APIs.</p>
+</li>
+<li>
+<p>It makes use of persisted event streams extensively.</p>
+</li>
+<li>
+<p>Event Sourcing and Stream Processing are implemented for CQRS support, Aggregate Roots and Views.</p>
+</li>
+<li>
+<p>Event based long running Process Managers are available, also known as "Sagas"</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Newton was sponsored by a client of mine, <a href="http://cibecs.com/">Cibecs</a>, who provided funding and very valuable expertise, ideas and contributions from their development organisation. They kindly agreed to open source it under the overall Muon project.</p>
+</div>
+<hr>
+<div class="paragraph">
+<p>Applying DDD patterns in Microservices systems has become a very popular topic of conversation and the basis of many a conference talk (mine included!).</p>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t want to dwell on the reasons for this, if these concepts are new to you, I recommend you read some articles on the topic to get a feel for the problems that Newton is solving.</p>
+</div>
+<div class="paragraph">
+<p>Diving in, with a distributed DDD system, the big technical patterns you want to implement are :-</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Aggregate Roots - the transactional part of the system, used to model your business logic</p>
+</li>
+<li>
+<p>Event Sourcing - store and retrieve Aggregate Roots based upon their history.</p>
+</li>
+<li>
+<p>Commands - Encapsulate interactions</p>
+</li>
+<li>
+<p>Views - The Q side of CQRS. Create and maintain data structures optimised for particular query patterns</p>
+</li>
+<li>
+<p>Domain Services - Provide functionality for a domain that isn&#8217;t naturally part of a single Aggregate Root. This could be validation, integration with external systems and the like.</p>
+</li>
+<li>
+<p>Process Managers - often called "Sagas". Long running event driven business processes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Newton implements all of these patterns, and makes them easily and idiomatically accessible in Spring Boot applications. I won&#8217;t go into the detail of the various parts in this article, rather review the pieces and then break out subsequent articles detailed each piece and some patterns for usage.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Muon for Communication, Polyglot and Portable</div>
+<div class="paragraph">
+<p>Newton is built on top of the Muon Event Protocol. This defines a message based API for building systems that create and use persisted event streams. The API does not define the implementation, only the communication necessary to use them. Given that Muon lets you communicate both and out of process transparently, the implementation can be anywhere reachable by your service. For this article, run up the <a href="https://github.com/muoncore/muon-starter">Muon Starter environment</a>, which will run an AMQP broker for transport and the Photonlite event store. Other implementations of the event protocol appear fairly regularly, and we are internally building backing services based on Hazelcast, Kafka and others.</p>
+</div>
+<div class="paragraph">
+<p>The big benefit of this is that any language that is supported in that stack can create and consume the event streams easily. All of your Newton events (see below) can easily be consumed in a Node application say, or the browser. Your Newton services can react to events put onto streasms by other components. This gives you great flexibility and the ability to, at some point in the future, simply remove Newton and replace with something else is you so choose that uses the event stack directly.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="first-step-enablenewton">First Step: @EnableNewton</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To get started, you need to set up a spring boot application and include the Newton dependencies</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="groovy">buildscript <span style="color: #666666">{</span>
+    ext <span style="color: #666666">{</span>
+        springBootVersion <span style="color: #666666">=</span> <span style="color: #BA2121">&#39;1.5.2.RELEASE&#39;</span>
+    <span style="color: #666666">}</span>
+    repositories <span style="color: #666666">{</span>
+        mavenCentral<span style="color: #666666">()</span>
+    <span style="color: #666666">}</span>
+    dependencies <span style="color: #666666">{</span>
+        classpath<span style="color: #666666">(</span><span style="color: #BA2121">&quot;org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}&quot;</span><span style="color: #666666">)</span>
+    <span style="color: #666666">}</span>
+<span style="color: #666666">}</span>
+
+apply <span style="color: #A0A000">plugin:</span> <span style="color: #BA2121">&#39;org.springframework.boot&#39;</span>
+
+sourceCompatibility <span style="color: #666666">=</span> <span style="color: #666666">1.8</span>
+version <span style="color: #666666">=</span> <span style="color: #BA2121">&#39;1.0&#39;</span>
+
+repositories <span style="color: #666666">{</span>
+    mavenLocal<span style="color: #666666">()</span>
+    jcenter<span style="color: #666666">()</span>
+    maven <span style="color: #666666">{</span> url <span style="color: #BA2121">&#39;https://simplicityitself.artifactoryonline.com/simplicityitself/muon&#39;</span> <span style="color: #666666">}</span>
+    maven <span style="color: #666666">{</span> url <span style="color: #BA2121">&#39;https://simplicityitself.artifactoryonline.com/simplicityitself/muon-snapshot&#39;</span> <span style="color: #666666">}</span>
+<span style="color: #666666">}</span>
+
+dependencies <span style="color: #666666">{</span>
+    compile<span style="color: #666666">(</span><span style="color: #BA2121">&#39;org.springframework.boot:spring-boot-starter-web&#39;</span><span style="color: #666666">)</span>
+    testCompile<span style="color: #666666">(</span><span style="color: #BA2121">&#39;org.springframework.boot:spring-boot-starter-test&#39;</span><span style="color: #666666">)</span>
+
+    compile <span style="color: #BA2121">&quot;io.muoncore:muon-core:7.3.4&quot;</span>
+    compile <span style="color: #BA2121">&quot;io.muoncore.protocol:stack-event:0.0.2-SNAPSHOT&quot;</span>
+    compile <span style="color: #BA2121">&quot;io.muoncore.protocol:stack-rpc:0.0.2-SNAPSHOT&quot;</span>
+    compile <span style="color: #BA2121">&#39;io.muoncore.newton:newton-spring-starter:0.0.11-SNAPSHOT&#39;</span>
+
+    runtime <span style="color: #BA2121">&quot;io.muoncore.transport:muon-amqp:0.0.8&quot;</span>
+
+    compile <span style="color: #BA2121">&#39;io.reactivex.rxjava2:rxjava:2.1.2&#39;</span>
+
+    testCompile <span style="color: #BA2121">&quot;io.muoncore:test-event-store:0.0.10-SNAPSHOT&quot;</span><span style="color: #666666">,</span> <span style="color: #666666">{</span>
+        exclude <span style="color: #A0A000">module:</span><span style="color: #BA2121">&quot;slf4j-simple&quot;</span>
+    <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, update your application class with @EnableNewton</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/newton/Application</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@SpringBootApplication</span>
+<span style="color: #AA22FF">@EnableNewton</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Application</span> <span style="color: #666666">{</span>
+
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">static</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">main</span><span style="color: #666666">(</span>String<span style="color: #666666">[]</span> args<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    SpringApplication<span style="color: #666666">.</span><span style="color: #7D9029">run</span><span style="color: #666666">(</span>Application<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="an-http-api-to-implement-a-shopping-cart">An HTTP API to implement: A Shopping Cart</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this article, we&#8217;ll create a simple Shopping Cart, with an HTTP API. We will implement it exclusively using the DDD patterns available in Newton.</p>
+</div>
+<div class="paragraph">
+<p>This is the HTTP API we&#8217;ll be implementing. It is a simple Spring web <code>@RestController</code></p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/newton/CartController</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">java.util.Map</span><span style="color: #666666">;</span>
+
+<span style="color: #AA22FF">@RestController</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">CartController</span> <span style="color: #666666">{</span>
+
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> CommandBus bus<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> CartService cart<span style="color: #666666">;</span>
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> PopularProductsView popularProductsView<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@RequestMapping</span><span style="color: #666666">(</span>value <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;/{cartId}&quot;</span><span style="color: #666666">,</span> method <span style="color: #666666">=</span> RequestMethod<span style="color: #666666">.</span><span style="color: #7D9029">GET</span><span style="color: #666666">)</span>
+  <span style="color: #008000; font-weight: bold">public</span> ShoppingCart <span style="color: #0000FF">getCart</span><span style="color: #666666">(</span><span style="color: #AA22FF">@PathVariable</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;cartId&quot;</span><span style="color: #666666">)</span> String cartId<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">return</span> cart<span style="color: #666666">.</span><span style="color: #7D9029">getCart</span><span style="color: #666666">(</span>cartId<span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@RequestMapping</span><span style="color: #666666">(</span>value <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;/{cartId}/add/{productId}&quot;</span><span style="color: #666666">,</span> method <span style="color: #666666">=</span> RequestMethod<span style="color: #666666">.</span><span style="color: #7D9029">GET</span><span style="color: #666666">)</span>
+  <span style="color: #008000; font-weight: bold">public</span> ShoppingCart <span style="color: #0000FF">addProduct</span><span style="color: #666666">(</span>AddProductRequest request<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    bus<span style="color: #666666">.</span><span style="color: #7D9029">dispatch</span><span style="color: #666666">(</span>CommandIntent<span style="color: #666666">.</span><span style="color: #7D9029">builder</span><span style="color: #666666">(</span>AddProductCommand<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">.</span><span style="color: #7D9029">getCanonicalName</span><span style="color: #666666">())</span>
+      <span style="color: #666666">.</span><span style="color: #7D9029">request</span><span style="color: #666666">(</span>request<span style="color: #666666">)</span>
+      <span style="color: #666666">.</span><span style="color: #7D9029">build</span><span style="color: #666666">());</span>
+    <span style="color: #008000; font-weight: bold">return</span> cart<span style="color: #666666">.</span><span style="color: #7D9029">getCart</span><span style="color: #666666">(</span>request<span style="color: #666666">.</span><span style="color: #7D9029">cartId</span><span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@RequestMapping</span><span style="color: #666666">(</span>value <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;/popular&quot;</span><span style="color: #666666">,</span> method <span style="color: #666666">=</span> RequestMethod<span style="color: #666666">.</span><span style="color: #7D9029">GET</span><span style="color: #666666">)</span>
+  <span style="color: #008000; font-weight: bold">public</span> Map<span style="color: #666666">&lt;</span>String<span style="color: #666666">,</span> Integer<span style="color: #666666">&gt;</span> <span style="color: #0000FF">getPopularProducts</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">return</span> popularProductsView<span style="color: #666666">.</span><span style="color: #7D9029">getPopularProducts</span><span style="color: #666666">();</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@NoArgsConstructor</span>
+  <span style="color: #AA22FF">@AllArgsConstructor</span>
+  <span style="color: #AA22FF">@Data</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">AddProductRequest</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">private</span> String cartId<span style="color: #666666">;</span>
+    <span style="color: #008000; font-weight: bold">private</span> String productId<span style="color: #666666">;</span>
+    <span style="color: #008000; font-weight: bold">private</span> <span style="color: #B00040">int</span> quantity<span style="color: #666666">;</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It has 3 endpoints, 1 to get a cart by ID (creating it if it doesn&#8217;t exist), 1 to add an arbitrary product id to the cart and the final one will display an aggregated view of data across the shopping carts.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="event-sourced-aggregate-roots">Event Sourced Aggregate Roots</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before we start implementing the API, we need to think a little about the system we&#8217;re building. In a more complex system, you would go through the modelling process of DDD to decide what your domains, sub-domains, consistent language and finally your transactional entities, known as "Aggregate Roots" (AR).</p>
+</div>
+<div class="paragraph">
+<p>You load an AR from a repository. In Newton, all AR repositories are event based, and will Event Source the AR from its constituent events when you request it. This means that only the events are stored, in a persistent event stream dedicated for that AR.  One upshot of this is that you have to know in advance that the AR is there, by ID, and you can&#8217;t perform complex queries against the transactional data store. You can only load and save AR entities, and variations on those operations.  If you need to query, use a View you have made available for that purpose (see below).</p>
+</div>
+<div class="paragraph">
+<p>Creating an AR is straightforward.  Firstly create a new POJO in your application, extending the base class <code>io.muoncore.newton.AggregateRoot</code></p>
+</div>
+<div class="listingblock">
+<div class="title">newton/cart/ShoppingCart.java</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">ShoppingCart</span> <span style="color: #008000; font-weight: bold">extends</span> AggregateRoot<span style="color: #666666">&lt;</span>String<span style="color: #666666">&gt;</span> <span style="color: #666666">{</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This gives you an event sourced AR that you can begin to use.  To load/ save it, you use an <code>EventSourcedRepository&lt;X&gt;</code>. For each AR you create as above, a dedicated <code>EventSourcedRepository</code> is generated in the application context by Newton, so you can happily <code>@Autowire</code> it wherever you want. Good practice is to do that within your Commands for modelling purposes, but you <em>can</em> do it anywhere.</p>
+</div>
+<div class="paragraph">
+<p>The key concept in using an aggregate root in Newton is that you invoke business methods on them, which can perform all types of validation, but do not mutate the state of the AR. Instead, they raise an event. This event is persisted into the event stream dedicated for that AR. For every event type that you raise within an AR, you have a matching handler method that takes that event and mutates the AR state to match.</p>
+</div>
+<div class="paragraph">
+<p>An event implements the interface <code>NewtonEvent</code> and are all value types (ie, they contain no behaviour). If you use Kotlin, this maps to the Data Class concept. I personally like to keep the events for a particular AR in a single wrapping class.</p>
+</div>
+<div class="paragraph">
+<p>Here are the events we will use for the ShoppingCart AR. It will be created, and have product counts updated. There is a default deleted event available for all AR types that can be overridden if more information is needed.</p>
+</div>
+<div class="listingblock">
+<div class="title">newton/cart/Events.java</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #008000; font-weight: bold">package</span> newton<span style="color: #666666">.</span><span style="color: #7D9029">cart</span><span style="color: #666666">;</span>
+
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io.muoncore.newton.NewtonEvent</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">lombok.AllArgsConstructor</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">lombok.Getter</span><span style="color: #666666">;</span>
+
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">java.math.BigDecimal</span><span style="color: #666666">;</span>
+
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Events</span> <span style="color: #666666">{</span>
+
+  <span style="color: #AA22FF">@Getter</span>
+  <span style="color: #AA22FF">@AllArgsConstructor</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">CartCreated</span> <span style="color: #008000; font-weight: bold">implements</span> NewtonEvent<span style="color: #666666">&lt;</span>String<span style="color: #666666">&gt;</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">private</span> String id<span style="color: #666666">;</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@Getter</span>
+  <span style="color: #AA22FF">@AllArgsConstructor</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">static</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">ProductQuantityUpdated</span> <span style="color: #008000; font-weight: bold">implements</span> NewtonEvent<span style="color: #666666">&lt;</span>String<span style="color: #666666">&gt;</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">private</span> String id<span style="color: #666666">;</span>
+    <span style="color: #008000; font-weight: bold">private</span> String productId<span style="color: #666666">;</span>
+    <span style="color: #008000; font-weight: bold">private</span> BigDecimal price<span style="color: #666666">;</span>
+    <span style="color: #008000; font-weight: bold">private</span> <span style="color: #B00040">int</span> quantityAdded<span style="color: #666666">;</span>
+  <span style="color: #666666">}</span>
+
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The aggregate root will then contain 4 methods. 1 each to raise and then to process the events above. The full aggregate root for the Shopping Cart looks like this.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Getter</span>
+<span style="color: #AA22FF">@NoArgsConstructor</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">ShoppingCart</span> <span style="color: #008000; font-weight: bold">extends</span> AggregateRoot<span style="color: #666666">&lt;</span>String<span style="color: #666666">&gt;</span> <span style="color: #666666">{</span>
+  <span style="color: #008000; font-weight: bold">private</span> String id<span style="color: #666666">;</span>
+  <span style="color: #008000; font-weight: bold">private</span> List<span style="color: #666666">&lt;</span>CartLine<span style="color: #666666">&gt;</span> lines <span style="color: #666666">=</span> <span style="color: #008000; font-weight: bold">new</span> ArrayList<span style="color: #666666">&lt;&gt;();</span>
+
+  <span style="color: #408080; font-style: italic">// transactional methods. invoked by commands, generates events</span>
+  <span style="color: #408080; font-style: italic">// can validate and interact with external services, but should mutate no internal state</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #0000FF">ShoppingCart</span><span style="color: #666666">(</span>String id<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    raiseEvent<span style="color: #666666">(</span><span style="color: #008000; font-weight: bold">new</span> Events<span style="color: #666666">.</span><span style="color: #7D9029">CartCreated</span><span style="color: #666666">(</span>id<span style="color: #666666">));</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">addProduct</span><span style="color: #666666">(</span>String productId<span style="color: #666666">,</span> <span style="color: #B00040">int</span> quantity<span style="color: #666666">,</span> BigDecimal price<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    raiseEvent<span style="color: #666666">(</span><span style="color: #008000; font-weight: bold">new</span> Events<span style="color: #666666">.</span><span style="color: #7D9029">ProductQuantityUpdated</span><span style="color: #666666">(</span><span style="color: #008000; font-weight: bold">this</span><span style="color: #666666">.</span><span style="color: #7D9029">id</span><span style="color: #666666">,</span> productId<span style="color: #666666">,</span> price<span style="color: #666666">,</span> quantity<span style="color: #666666">));</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #408080; font-style: italic">// handle the event sourcing</span>
+  <span style="color: #408080; font-style: italic">// these should be idempotent, and so shouldn&#39;t interact with external services.</span>
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">CartCreated</span> ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">this</span><span style="color: #666666">.</span><span style="color: #7D9029">id</span> <span style="color: #666666">=</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getId</span><span style="color: #666666">();</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">ProductQuantityUpdated</span> ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    Optional<span style="color: #666666">&lt;</span>CartLine<span style="color: #666666">&gt;</span> first <span style="color: #666666">=</span> lines<span style="color: #666666">.</span><span style="color: #7D9029">stream</span><span style="color: #666666">().</span><span style="color: #7D9029">filter</span><span style="color: #666666">(</span>cartLine <span style="color: #666666">-&gt;</span> cartLine<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">().</span><span style="color: #7D9029">equals</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">())).</span><span style="color: #7D9029">findFirst</span><span style="color: #666666">();</span>
+
+    CartLine cartLine <span style="color: #666666">=</span> first<span style="color: #666666">.</span><span style="color: #7D9029">orElseGet</span><span style="color: #666666">(()</span> <span style="color: #666666">-&gt;</span> <span style="color: #666666">{</span>
+      CartLine line <span style="color: #666666">=</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #0000FF">CartLine</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getQuantityAdded</span><span style="color: #666666">(),</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">(),</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getPrice</span><span style="color: #666666">());</span>
+      lines<span style="color: #666666">.</span><span style="color: #7D9029">add</span><span style="color: #666666">(</span>line<span style="color: #666666">);</span>
+      <span style="color: #008000; font-weight: bold">return</span> line<span style="color: #666666">;</span>
+    <span style="color: #666666">});</span>
+
+    cartLine<span style="color: #666666">.</span><span style="color: #7D9029">addQuantity</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getQuantityAdded</span><span style="color: #666666">());</span>
+
+    lines<span style="color: #666666">.</span><span style="color: #7D9029">removeIf</span><span style="color: #666666">(</span>line <span style="color: #666666">-&gt;</span> line<span style="color: #666666">.</span><span style="color: #7D9029">getQuantity</span><span style="color: #666666">()</span> <span style="color: #666666">==</span> <span style="color: #666666">0);</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Its worth noting that this is intended to give you a place to put your transactional logic. The objects can be complex, and form a web (since this is an aggregate <strong>root</strong>). When you load the AR, it will be created using the zero args constructor and then the @<code>EventHandler</code> methods will be invoked in turn as the events are streamed out of persistence. Once the AR is recontstructed, the AR will be available for you to use and persist back. The key concept is that, without any snapshot behaviour, only the Events will be persisted, not any data in the AR itself.</p>
+</div>
+<div class="paragraph">
+<p>With this in place, you can then start to interact with it in your system and do some event sourcing!</p>
+</div>
+<div class="paragraph">
+<p>Newton stores its data into event streams, which are defined using the <a href="https://github.com/muoncore/stack-event">Muon event api</a>. Where they are actually persisted doesn&#8217;t matter particularly so long as that API is available somewhere in the system (which could be remotely, or within the same process).</p>
+</div>
+<div class="paragraph">
+<p>The key concept in this API is the stream, which Aggregate Roots emit events onto. They put events onto two streams, one of which is local for the particular AR instance and has the form /aggregate/&lt;type&gt;/&lt;id&gt;.  The examples below will create a stream named <code>/aggregate/ShoppingCart/my-basket</code>, which you can interact with using the Muon CLI (see the example below).</p>
+</div>
+<div class="paragraph">
+<p>Newton also puts events from aggregate roots onto a second stream that combines events from all of the instances of a particular AR. It is named after the "sub domain" and the aggregate root type. The subdomain name defaults to the application name (and can be override via an annotation), and will be <code>newton-shoppingexample/ShoppingCart</code>. This is the stream that all of the views, sagas and domain services read from.</p>
+</div>
+<div class="paragraph">
+<p>Ordinarily, you will interact with Aggregate Roots via <code>Commands</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="commands">Commands</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A command in Newton gives you a way to model the type of "business logic" that is ordinarily found as the thread of control in a web of service calls (<a href="http://daviddawson.me/blog/2013/03/28/stateless-services-are-evil.html">which I have a distaste for</a>). In the style of system where you have active command objects, you will find that they tend to give a nice place to focus the "my system does X/Y/Z. You controllers become far thinner and your service layers become dedicated to particular classes of problem, normally some form of external integration.</p>
+</div>
+<div class="paragraph">
+<p>This is the expectation of Newton Commands. They are created as Spring Prototype beans, and are constructed when requested. Here, we want to encapsulate the process of adding a a product to the given cart. This is a simple operation, but you can begin to see how this separates out the thread of control from your controller.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/newton/cart/AddProductCommand.java</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Component</span>
+<span style="color: #AA22FF">@Scope</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;prototype&quot;</span><span style="color: #666666">)</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">AddProductCommand</span> <span style="color: #008000; font-weight: bold">implements</span> Command <span style="color: #666666">{</span>
+
+  <span style="color: #AA22FF">@Setter</span>
+  <span style="color: #008000; font-weight: bold">private</span> String cartId<span style="color: #666666">;</span>
+  <span style="color: #AA22FF">@Setter</span>
+  <span style="color: #008000; font-weight: bold">private</span> String productId<span style="color: #666666">;</span>
+  <span style="color: #AA22FF">@Setter</span>
+  <span style="color: #008000; font-weight: bold">private</span> <span style="color: #B00040">int</span> quantity<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> EventSourceRepository<span style="color: #666666">&lt;</span>ShoppingCart<span style="color: #666666">&gt;</span> cartRepository<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@Override</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">execute</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+    ShoppingCart cart <span style="color: #666666">=</span> cartRepository<span style="color: #666666">.</span><span style="color: #7D9029">load</span><span style="color: #666666">(</span>cartId<span style="color: #666666">);</span>
+    cart<span style="color: #666666">.</span><span style="color: #7D9029">addProduct</span><span style="color: #666666">(</span>productId<span style="color: #666666">,</span> quantity<span style="color: #666666">,</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #0000FF">BigDecimal</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;2.5&quot;</span><span style="color: #666666">));</span> <span style="color: #408080; font-style: italic">//need to look up the actual quantity from some product service!</span>
+    cartRepository<span style="color: #666666">.</span><span style="color: #7D9029">save</span><span style="color: #666666">(</span>cart<span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the current version of Newton, this is dispatched and processed in the same process, in future versions, this will have the option to emit and process the <code>CommandIntent</code> remotely.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="views">Views</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A key consideration when creating distributed DDD systems is applying CQRS. Newton implements this via a set of services that act as event subscribers. They subscribe to some number of streams, most commonly created by your aggregate roots, and then use those to process the events into some data structure. This is a form of stream processing. Newton views are a decent approach to easily and quickly making views of this type that fit within the model (persisted, fully replayable, event streams), if you have larger data requirements or your data isn&#8217;t in this model, use Spark or one of its friends.</p>
+</div>
+<div class="paragraph">
+<p>There are 2 of these. Which you will pick depending on where you are going to store the data.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SharedDatastoreView - will process a set of event streams into a data store shared across a group of instances. Tracks where work has gotten up to in the streams and continues from that point on restart. Use if you are going to store the data in a DB shared between instances, such as Mongo.</p>
+</li>
+<li>
+<p>RebuildingDatastoreView - On application start, will <em>fully</em> replay the event streams that it has been told to play through. This is intended to consistently generate in memory data structures, such as hot caches, and maintain them in an eventually consistent manner across the instances of this service. Use for creating and maintaining in memory data.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Here is the <code>PopularProductsView</code>. This is a purely in memory view onto the shopping cart data.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/newton/cart/AddProductCommand.java</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Component</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">PopularProductsView</span> <span style="color: #008000; font-weight: bold">extends</span> RebuildingDatastoreView <span style="color: #666666">{</span>
+
+  <span style="color: #008000; font-weight: bold">private</span> Map<span style="color: #666666">&lt;</span>String<span style="color: #666666">,</span> Integer<span style="color: #666666">&gt;</span> products <span style="color: #666666">=</span> <span style="color: #008000; font-weight: bold">new</span> HashMap<span style="color: #666666">&lt;&gt;();</span>
+
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #0000FF">PopularProductsView</span><span style="color: #666666">(</span>StreamSubscriptionManager streamSubscriptionManager<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">super</span><span style="color: #666666">(</span>streamSubscriptionManager<span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #008000; font-weight: bold">public</span> Map<span style="color: #666666">&lt;</span>String<span style="color: #666666">,</span> Integer<span style="color: #666666">&gt;</span> <span style="color: #0000FF">getPopularProducts</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">return</span> Collections<span style="color: #666666">.</span><span style="color: #7D9029">unmodifiableMap</span><span style="color: #666666">(</span>products<span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@Override</span>
+  <span style="color: #008000; font-weight: bold">protected</span> Collection<span style="color: #666666">&lt;</span>Class<span style="color: #666666">&lt;?</span> <span style="color: #008000; font-weight: bold">extends</span> AggregateRoot<span style="color: #666666">&gt;&gt;</span> <span style="color: #0000FF">aggregateRoots</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+    <span style="color: #008000; font-weight: bold">return</span> Collections<span style="color: #666666">.</span><span style="color: #7D9029">singletonList</span><span style="color: #666666">(</span>ShoppingCart<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">);</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">ProductQuantityUpdated</span> ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    <span style="color: #B00040">int</span> current <span style="color: #666666">=</span> products<span style="color: #666666">.</span><span style="color: #7D9029">getOrDefault</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">(),</span> <span style="color: #666666">0);</span>
+    products<span style="color: #666666">.</span><span style="color: #7D9029">put</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">(),</span> current <span style="color: #666666">+</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getQuantityAdded</span><span style="color: #666666">());</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note <code>aggregateRoots()</code>. This method informs Newton what streams it should be looking at for this view. All events that are generated by that aggregate root will be presented to this view for processing via a <code>@EventHandler</code>. If you don&#8217;t have a handler for that event, it will be ignored for this view.</p>
+</div>
+<div class="paragraph">
+<p>This works well if you have views in the same process, or have access to the classes for some reason (which is probably not a good idea!). An alternate approach to telling Newton the streams is to</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="domain-services">Domain Services</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The domain service in DDD provides access to external systems (forms of integration), and host logic that doesn&#8217;t fit inside a single aggregate root.</p>
+</div>
+<div class="paragraph">
+<p>For Newton, being heavily event oriented, support is available for creating event driven domain services. These are very similar to views in the way they operate (tracking through several event streams),</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="process-managers-sagas-and-long-running-transactions">Process Managers - Sagas and long running transactions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A great advantage of using event systems is that your components are more decoupled from each other, they are more open for extension after the fact without fundamental redesign.</p>
+</div>
+<div class="paragraph">
+<p>One aspect of this is separating entity specific complex processing, which is in the Aggregate Root, from broader business processes that can span multiple aggregates and potentially run for a significant amount of time. In the DDD world, this has come to be known as a "Process Manager", or someimes referred to as a "Saga". In Newton, for historical reasons, this concept is called a Saga.</p>
+</div>
+<div class="paragraph">
+<p>You create one by, currently, extending the <code>StatefulSaga</code>. Here, we create a simple process around the ShoppingCart that runs for the lifetime of the cart and drops another product into it if you add one named "cool-product"</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #408080; font-style: italic">/**</span>
+<span style="color: #408080; font-style: italic"> * Process to manage upselling around carts</span>
+<span style="color: #408080; font-style: italic"> */</span>
+<span style="color: #AA22FF">@Scope</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;prototype&quot;</span><span style="color: #666666">)</span>
+<span style="color: #AA22FF">@Component</span>
+<span style="color: #AA22FF">@SagaStreamConfig</span><span style="color: #666666">(</span>aggregateRoots <span style="color: #666666">=</span> <span style="color: #666666">{</span>ShoppingCart<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">},</span> streams <span style="color: #666666">=</span> <span style="color: #666666">{</span><span style="color: #BA2121">&quot;requests&quot;</span><span style="color: #666666">})</span>
+<span style="color: #AA22FF">@Slf4j</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">ShoppingCartPromotionProcess</span> <span style="color: #008000; font-weight: bold">extends</span> StatefulSaga <span style="color: #666666">{</span>
+
+  <span style="color: #008000; font-weight: bold">private</span> String cartId<span style="color: #666666">;</span>                                                  <i class="conum" data-value="1"></i><b>(1)</b>
+
+  <span style="color: #AA22FF">@StartSagaWith</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">CartCreated</span> ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>                                 <i class="conum" data-value="2"></i><b>(2)</b>
+    log<span style="color: #666666">.</span><span style="color: #7D9029">info</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;Cart has been created&quot;</span><span style="color: #666666">);</span>
+    <span style="color: #008000; font-weight: bold">this</span><span style="color: #666666">.</span><span style="color: #7D9029">cartId</span> <span style="color: #666666">=</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getId</span><span style="color: #666666">();</span>
+    notifyOn<span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">ProductQuantityUpdated</span><span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">,</span> <span style="color: #BA2121">&quot;id&quot;</span><span style="color: #666666">,</span> cartId<span style="color: #666666">);</span>      <i class="conum" data-value="3"></i><b>(3)</b>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>Events<span style="color: #666666">.</span><span style="color: #7D9029">ProductQuantityUpdated</span> ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>                      <i class="conum" data-value="4"></i><b>(4)</b>
+    <span style="color: #408080; font-style: italic">//when a user adds a particular product, add something else to their basket!</span>
+    <span style="color: #408080; font-style: italic">//in real life, you would probably want to not do this.</span>
+    <span style="color: #008000; font-weight: bold">if</span> <span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getProductId</span><span style="color: #666666">().</span><span style="color: #7D9029">equals</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;cool-product&quot;</span><span style="color: #666666">))</span> <span style="color: #666666">{</span>
+      log<span style="color: #666666">.</span><span style="color: #7D9029">info</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;User added the magic product!  Adding \&quot;new-cool-product\&quot; to their cart for them&quot;</span><span style="color: #666666">);</span>
+      raiseCommand<span style="color: #666666">(</span>CommandIntent<span style="color: #666666">.</span><span style="color: #7D9029">builder</span><span style="color: #666666">(</span>AddProductCommand<span style="color: #666666">.</span><span style="color: #7D9029">class</span><span style="color: #666666">.</span><span style="color: #7D9029">getCanonicalName</span><span style="color: #666666">())</span>
+        <span style="color: #666666">.</span><span style="color: #7D9029">request</span><span style="color: #666666">(</span><span style="color: #008000; font-weight: bold">new</span> CartController<span style="color: #666666">.</span><span style="color: #7D9029">AddProductRequest</span><span style="color: #666666">(</span>ev<span style="color: #666666">.</span><span style="color: #7D9029">getId</span><span style="color: #666666">(),</span> <span style="color: #BA2121">&quot;new-cool-product&quot;</span><span style="color: #666666">,</span> <span style="color: #666666">1000))</span>
+        <span style="color: #666666">.</span><span style="color: #7D9029">build</span><span style="color: #666666">());</span>
+    <span style="color: #666666">}</span>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>AggregateDeletedEvent ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+    end<span style="color: #666666">();</span>                                                               <i class="conum" data-value="5"></i><b>(5)</b>
+  <span style="color: #666666">}</span>
+
+  <span style="color: #AA22FF">@EventHandler</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">on</span><span style="color: #666666">(</span>CommandFailedEvent ev<span style="color: #666666">)</span> <span style="color: #666666">{</span>                                <i class="conum" data-value="6"></i><b>(6)</b>
+    log<span style="color: #666666">.</span><span style="color: #7D9029">error</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;Command failed &quot;</span><span style="color: #666666">,</span> ev<span style="color: #666666">.</span><span style="color: #7D9029">getFailureMessage</span><span style="color: #666666">());</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The state of the process. This <em>is</em> persisted. Currently, Sagas are not event sourced, although they are optionally planned to be in an upcoming release.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Each Saga will be started by an event seen on one of the given streams. If this event appears, no matter its content, a new process will be started and the <code>@StartSagaWith</code> method will be invoked</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>You need to register patterns for notification. Whenever an event appears that matches the given pattern (event type, key, value), the saga will be notified.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Subsequent events that match the <code>notifyOn</code> calls will be passed into the appropriate event handlers.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>It is good practice to end your sagas. They do take up some space in the notify matcher DB, although it is fairly minimal, this cleans those resources up.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Optionally, you can be notifed via an event handler of when a command you have raised failed in its execution (it threw an unhandled exception)</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This can then respond to events as they appear on the streams. The saga instance has no runtime overhead, it is loaded and persisted in between handling each event.</p>
+</div>
+<div class="paragraph">
+<p>The streams that a Saga listens on can be associated with an aggregate root, or be any other stream.  The common stream being created by all of the shopping carts is called <code>newton-shoppingcart/ShoppingCart</code> in this application, which you can verify by installing the Muon CLI and running <code>muon replay newton-shoppingcart/ShoppingCart</code>.  Similarly, you can have the saga process any other stream you wish it to by changing the annotation.</p>
+</div>
+<div class="paragraph">
+<p>For example, to listen to the <code>requests</code> stream in addition to the local ShoppingCart aggregate, as created by the HTTP Adaptor nodejs service <a href="https://github.com/muoncore/muon-workshop/blob/master/4-first-newton-streaming/http-adaptor/http-adaptor.js">here</a>, you would do this</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>@SagaStreamConfig(aggregateRoots = {ShoppingCart.class}, streams = {"requests"})
+
+...
+
+@EventHandler
+public void on(RequestReceived ev) {
+    ... do something with the request event ...
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would require that you have a NewtonEvent class called <code>RequestReceived</code> on the local classpath to process the incoming event.</p>
+</div>
+<div class="paragraph">
+<p>This allows your Sagas to manage any kind of the event in the system, not just the ones created by your Aggregate Roots. They give a nice place to put cross logic that starts spanning domain boundaries.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="running-the-service">Running the service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To see this working, run up the application and you can then do some <code>curl</code> to see it working.</p>
+</div>
+<div class="paragraph">
+<p>I recommend you install the Muon cli as well so you can see the data moving around.</p>
+</div>
+<div class="paragraph">
+<p>In one terminal, run</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>muon replay newton-shoppingcart/ShoppingCart</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will show you the event data being created live.</p>
+</div>
+<div class="paragraph">
+<p>In another, run</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&gt; curl http://localhost:8080/my-basket
+&gt; {"deleted":false,"version":1,"newOperations":[],"id":"my-basket","lines":[]}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see a <code>CartCreated</code> event appear in your cli terminal</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{ 'event-type': 'CartCreated',
+'stream-name': 'newton-shoppingcart/ShoppingCart',
+'service-id': 'newton-shoppingcart',
+'order-id': 2007451,
+'event-time': 1503751211110,
+payload: { id: 'my-basket' } }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, add a product to the basket</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&gt; curl http://localhost:8080/my-basket/add/myproduct?quantity=20
+&gt; {"deleted":false,"version":2,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0}]}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see the appropriate event appear</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{ 'event-type': 'ProductQuantityUpdated',
+ 'stream-name': 'newton-shoppingcart/ShoppingCart',
+ 'service-id': 'newton-shoppingcart',
+ 'order-id': 2007453,
+ 'event-time': 1503751303155,
+ payload:
+  { id: 'my-basket',
+    productId: 'myproduct',
+    price: 2.5,
+    quantityAdded: 20 } }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Try to add the "special" product mentioned in <code>ShoppingCartPromotionProcess</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&gt; curl http://localhost:8080/my-basket/add/cool-product?quantity=190
+&gt; {"deleted":false,"version":3,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0},{"quantity":380,"productId":"cool-product","price":2.5,"subtotal":950.0}]}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will see the two <code>ProductQuantityAdded</code> events appear in the stream</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  'event-type': 'ProductQuantityUpdated',
+  'stream-name': 'newton-shoppingcart/ShoppingCart',
+  'service-id': 'newton-shoppingcart',
+  'order-id': 2007473,
+  'event-time': 1503752375688,
+  payload:
+   { id: 'my-basket',
+     productId: 'cool-product',
+     price: 2.5,
+     quantityAdded: 190 } }
+ {
+   'event-type': 'ProductQuantityUpdated',
+   'stream-name': 'newton-shoppingcart/ShoppingCart',
+   'service-id': 'newton-shoppingcart',
+   'order-id': 2007473,
+   'event-time': 1503752375692,
+   payload:
+    { id: 'my-basket',
+      productId: 'new-cool-product',
+      price: 2.5,
+      quantityAdded: 1000 } }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A quick curl to get the state of the basket shows that the product was added into the basket fine.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&gt; curl http://localhost:8080/my-basket
+  {"deleted":false,"version":11,"newOperations":[],"id":"my-basket","lines":[{"quantity":40,"productId":"myproduct","price":2.5,"subtotal":100.0},{"quantity":950,"productId":"cool-product","price":2.5,"subtotal":2375.0},{"quantity":6000,"productId":"new-cool-product","price":2.5,"subtotal":15000.0}]}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also query the view that has been processing away in the background which will contain the a representation of some aggregated data across all of your baskets</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre> &gt; curl http://localhost:8080/popular
+{"awesome":10,"my-cool-product":-120,"myproduct":150,"cool-product":1690,"new-cool-product":8000,"awesometoool":9000}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Congratulations! You have, using Spring Boot, constructed a DDD style event based application using event sourcing, eventually consistent views, commands and long running processes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="decomposing-the-app">Decomposing the app</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is though, plainly, a little monolith. What you should be able to see is that if we so chose, moving the individual components away from each other into their own microservices will be straightforward. There is a question on the Event classes, how to manage them etc. This is where you get into the realm of managing data schemas across multiple systems, which can be an involved topic.</p>
+</div>
+<div class="paragraph">
+<p>What you can happily do though is to copy them to their new location, or share them via a shared artifact if you must. Either way, the actual underlying data is not the class. The data is persisted into the event stream and fully accessible via any other process, as you can see by accessing it via the muon cli, which is actually a node application.</p>
+</div>
+<div class="paragraph">
+<p>By adopting Newton and its design ethos, you will start to think in terms of event streams, creating and consuming them. This leads to some interesting and powerful concepts, such as taking the view (which is in memory, and so very very fast to read, and scaling it independently of the aggregate root, in its own process. This can be done easily, as the event streams will keep them all eventually consistent with each other, in the order of a few ms. Whether this consistency guarantee is appropriate for you is the question, but if it is (and for much data, it really is) then this model gives a very quick way to get it up and running at the application tier.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="a-little-extra-adding-a-streaming-muon-api">A little extra: Adding a streaming Muon API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We have an HTTP API to access the Cart. Thats pretty standard in systems today, but what if it weren&#8217;t the only option?</p>
+</div>
+<div class="paragraph">
+<p>I haven&#8217;t dwelt on the Muon side of this particularly, but since we&#8217;re here and we&#8217;ve built a shopping cart for use, we can do something cool with it. This highlights the underlying data architecture we&#8217;ve chosen, and gives some idea of the power of using it.</p>
+</div>
+<div class="paragraph">
+<p>Your shopping cart data is stored in a persisted event stream using its component events. Since this is being interacted with by Newton using the Muon Event protocol, there are a set of API operations we can use beyond what you&#8217;ve currently seen. Newton uses a "cold replay", it loads all of the events, then disconnects from the stream. The event API also supports "hot-cold replay", which is where you load all of the cold events, then stay subscribed and receive a push notification whenever something new appears.</p>
+</div>
+<div class="paragraph">
+<p>This allows you to load all of the events for a ShoppingCart, and then stay connected and receive push events whenever it is updated.</p>
+</div>
+<div class="paragraph">
+<p><strong><em>The Muon model underlying Newton lets you build message based APIs</em></strong>. This is what Newton is using, a message based API that lets you communicate about event streams, both creating and replaying them. It is talking to Photonlite, but it could equally talk to any other event store that implements that API. There is another API type we can use, which is based on the <a href="http://www.reactive-streams.org/">Reactive Streams specification</a>, because of that, we refer to it as the <a href="http://github.com/muoncore/stack-reactive-streams">reactive stream protocol</a></p>
+</div>
+<div class="paragraph">
+<p>We don&#8217;t have Spring auto configuration for it implemented yet (<a href="https://github.com/orgs/muoncore/projects">want to help?</a>), you can create the server side of the api by adding a new bean definition in a configuration class somewhere</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #AA22FF">@Bean</span>
+<span style="color: #008000; font-weight: bold">public</span> ReactiveStreamServer <span style="color: #0000FF">rxServer</span><span style="color: #666666">(</span>Muon muon<span style="color: #666666">)</span> <span style="color: #666666">{</span>
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #0000FF">ReactiveStreamServer</span><span style="color: #666666">(</span>muon<span style="color: #666666">);</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This adds in a new type of API, streaming. You can add endpoints to it, which are then accessible by Muon reactive stream clients.</p>
+</div>
+<div class="paragraph">
+<p>Next, create a spring component that initialises it and gives the API you want. In this case there is a <code>Publisher</code> (a Reactive Streams type) on the <code>EventSourceRepository</code> that will, whenever an update is made to a given AR, send a notification to any attached <code>Subscriber</code>. The Muon reactive stream api networks that relationship, allowing Subscribers to be remote from the Publisher, and transferring all of the appropriate signals across the network. By converting the RS signals into messages, we can support this API in any language Muon is implemented for fairly easily.</p>
+</div>
+<div class="paragraph">
+<p>Since the <code>EventSourceRepository</code> has a method exposing a Publisher, we can simply expose that directly in our API. Streaming communication will then happily be managed, with back pressure signals going all the way from the client, through our service and back to the underlying event store.</p>
+</div>
+<div class="paragraph">
+<p>In this case, the API looks like this</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span style="color: #008000; font-weight: bold">package</span> newton<span style="color: #666666">.</span><span style="color: #7D9029">cart</span><span style="color: #666666">;</span>
+
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io.muoncore.newton.eventsource.EventSourceRepository</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io.muoncore.protocol.reactivestream.server.PublisherLookup</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io.muoncore.protocol.reactivestream.server.ReactiveStreamServer</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">lombok.extern.slf4j.Slf4j</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">org.springframework.beans.factory.annotation.Autowired</span><span style="color: #666666">;</span>
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">org.springframework.stereotype.Component</span><span style="color: #666666">;</span>
+
+<span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">javax.annotation.PostConstruct</span><span style="color: #666666">;</span>
+
+<span style="color: #AA22FF">@Slf4j</span>
+<span style="color: #AA22FF">@Component</span>
+<span style="color: #008000; font-weight: bold">public</span> <span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">RxApi</span> <span style="color: #666666">{</span>
+
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> ReactiveStreamServer rxServer<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@Autowired</span>
+  <span style="color: #008000; font-weight: bold">private</span> EventSourceRepository<span style="color: #666666">&lt;</span>ShoppingCart<span style="color: #666666">&gt;</span> repo<span style="color: #666666">;</span>
+
+  <span style="color: #AA22FF">@PostConstruct</span>
+  <span style="color: #008000; font-weight: bold">public</span> <span style="color: #B00040">void</span> <span style="color: #0000FF">after</span><span style="color: #666666">()</span> <span style="color: #666666">{</span>
+    rxServer<span style="color: #666666">.</span><span style="color: #7D9029">publishGeneratedSource</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;basket&quot;</span><span style="color: #666666">,</span> PublisherLookup<span style="color: #666666">.</span><span style="color: #7D9029">PublisherType</span><span style="color: #666666">.</span><span style="color: #7D9029">HOT</span><span style="color: #666666">,</span> reactiveStreamSubscriptionRequest <span style="color: #666666">-&gt;</span> <span style="color: #666666">{</span>
+      log<span style="color: #666666">.</span><span style="color: #7D9029">info</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;Subscribing to cart updates for {}&quot;</span><span style="color: #666666">,</span> reactiveStreamSubscriptionRequest<span style="color: #666666">.</span><span style="color: #7D9029">getArgs</span><span style="color: #666666">());</span>
+      <span style="color: #008000; font-weight: bold">return</span> repo<span style="color: #666666">.</span><span style="color: #7D9029">susbcribeAggregateUpdates</span><span style="color: #666666">(</span>reactiveStreamSubscriptionRequest<span style="color: #666666">.</span><span style="color: #7D9029">getArgs</span><span style="color: #666666">().</span><span style="color: #7D9029">get</span><span style="color: #666666">(</span><span style="color: #BA2121">&quot;id&quot;</span><span style="color: #666666">));</span>
+    <span style="color: #666666">});</span>
+  <span style="color: #666666">}</span>
+<span style="color: #666666">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can test this via the Muon CLI</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&gt; muon stream stream://newton-shoppingcart/basket '{"id":"my-basket"}'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, in another terminal, interact with this basket to see the updates come through</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>curl http://localhost:8080/my-basket/add/myproduct?quantity=20</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is especially nice when used with Muon.js, an adapter which gives access to all Muon apis in a browser context. You can hook this up to a React state container, for example, and gain push updates very easily.</p>
+</div>
+<div class="paragraph">
+<p>This is currently an experimental API, but one that I&#8217;ve found very useful when building rich web clients, especially when combined with RxJava (or other FRP lib) transformations within the API.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="wrap-up">Wrap up</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Newton is a young project that sits on the shoulders of Muon message based APIs. There are many, many things that I would like to extend, improve and deepen. Some of these are specific to Newton itself, others will transparently improve the Newton experience and scalability when implemented in the underlying Muon projects (such as Kafka, Hazelcast and extended language support). There are a set of open tickets for improving upgrades, APIs and other areas.</p>
+</div>
+<div class="paragraph">
+<p>Currently, I&#8217;m working with a set of consulting organisations so that they are available to provide commercial support. This is answering the most immediate feedback I&#8217;ve had of "is this supported". The answer to that is now yes.</p>
+</div>
+<div class="paragraph">
+<p>For the project I am very interested in listening to community feedback on where to take things next in terms of product development.</p>
+</div>
+<div class="paragraph">
+<p>If you have particular features you would like to see, particular technologies you would like supported then please get in touch. I&#8217;m actively accepting sponsored work on all the Muon projects, including Newton. If you need some more substantial work using the projects, then I can arrange the appropriate introductions to our consulting partners.</p>
+</div>
+<div class="paragraph">
+<p>If you like the idea of Newton and reactive, message APIs in general, and you want to get involved, its all available on <a href="http://github.com/muoncore/newton">github</a>. Have a look at the <a href="https://github.com/orgs/muoncore/projects">help wanted</a> project. Also, <a href="https://muon-slack-invite.herokuapp.com/">jump on slack</a></p>
+</div>
+</div>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+
+                <a href="/blog/tags#muon">muon</a>,
+                
+
+                <a href="/blog/tags#reactive">reactive</a>,
+                
+
+                <a href="/blog/tags#spring">spring</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/08/13/build-reactive-polyglot-muon.html">Building reactive microservices using muon and scaling them using kafka, cassandra and friends</a></li>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of event architecture</a></li>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic dao in spring with parameterized types</a></li>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on aws- experiments with rancher and kubernetes</a></li>
+    
+    
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon developer diary</a></li>
+    
+    
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing muon</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2017">August 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/08/13/build-reactive-polyglot-muon.html">Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">July 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of Event Architecture</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">April 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic DAO in Spring with Parameterized Types</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">February 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</a></li>
+    
+  
+  
+  
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon Developer Diary</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY&#58; Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY&#58; Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>
