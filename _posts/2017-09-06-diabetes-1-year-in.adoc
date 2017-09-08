@@ -3,7 +3,7 @@ excerpt: I got diabetes in 2015 at the age of 35. This is my write up, personal 
 title: Diabetes at 35, 1 year in.
 layout: post
 author: David Dawson
-date: 2017-05-06 12:18
+date: 2017-09-06 12:18
 image: images/vis/knowledge.jpg
 categories:
  - blog
