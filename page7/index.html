@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Simplicity in Grails Design – All Hail the Command Object</title>
-  <meta name="description" content="This article was originally posted at simplicityitself.com.Simplicity Itself has now closed, and so I have moved my articles here.If you would like to read u...">
+  <title>David Dawson</title>
+  <meta name="description" content="">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -43,7 +43,7 @@
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
   <link href="/css/style.css" rel="stylesheet"/>
-    <link rel="canonical" href="http://daviddawson.me/blog/2013/04/21/all-hail-command.html">
+    <link rel="canonical" href="http://daviddawson.me/page7/">
     <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/asciidoc.css">
@@ -212,19 +212,41 @@
       <div class='large-12 columns'>
         <div class='mod modBlogPost big'>
           <div id='main' role='main' class='content' style="font-size:1.2rem ">
-            <div class='full documentation'>
+            <div class='full'>
+  <!--<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+  <!--&lt;!&ndash; top &ndash;&gt;-->
+  <!--<ins class="adsbygoogle"-->
+       <!--style="display:inline-block;width:728px;height:90px"-->
+       <!--data-ad-client="ca-pub-6919980001759109"-->
+       <!--data-ad-slot="9297201478"></ins>-->
+  <!--<script>-->
+    <!--(adsbygoogle = window.adsbygoogle || []).push({});-->
+  <!--</script>-->
+
+  <h2>Welcome to the online home of David Dawson</h2>
+
+  <div style="float:right; width:200px;"><img src="/images/me.jpg"/></div>
+  <p>I am a freelance systems architect and software engineer specialising in Microservices, high performance systems and IoT.</p>
+  <p>I founded the London Microservices User Group (2.5k members)</p>
+  <p>I created the <a href="http://muoncore.io">Muon</a> open source Microservice platform</p>
+  <p>I am <a href="/hireme.html">available to hire</a></p>
+
+  <h2>Recent Articles and Talks</h2>
+
   <div class='row'>
-        <div class='images'>
-          
-        </div>
-        <div class='content'>
-          <p class='info'>
 
-
-            <span>April 21, 2013</span>
-          </p>
-          <h3><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></h3>
-          <div class="admonitionblock note">
+    
+    <div class='content'>
+      <!---->
+      <!--<div style="height:200px; float:right">-->
+        <!--<img alt="" src="http://daviddawson.me/images/vis/clouds1.jpg" />-->
+      <!--</div>-->
+      <!---->
+      <p class='info' style="color:black">
+        <span>March 28, 2013</span>
+      </p>
+      <h3><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></h3>
+      <p><div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
@@ -252,233 +274,35 @@
 </td>
 </tr>
 </table>
-</div>
-<h1 id="all-hail-the-command-object" class="sect0">All Hail the Command Object</h1>
-<div class="paragraph">
-<p>This is a follow on to <a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></p>
-</div>
-<div class="paragraph">
-<p>In that article, I gave my opinion on the Stateless Service programming model, and why I think it has been overused and touched on some of the issues it has caused.</p>
-</div>
-<div class="paragraph">
-<p>It developed out of my unhappiness with the way I see code layed out in many Spring and Grails applications. The Service layer becomes stuffed with all the important logic, kept away from the domain and without much in the way of support to be had from the excellent Object Oriented language that Groovy is.</p>
-</div>
-<div class="sect1">
-<h2 id="standard-grails-architecture">'Standard' Grails Architecture</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The standard Grails architecture features that I&#8217;m discussing were, for the most part, inherited from Spring MVC. We have Controllers (prototype scoped), Services, Domains, Command Objects and Views as the core artifacts.</p>
-</div>
-<div class="paragraph">
-<p>This has been implemented countless times across the years, and has been successfully applied by many teams.</p>
-</div>
-<div class="paragraph">
-<p>Controllers are where HTTP interactions are managed. Views are for rendering, Domains handle mapping to the database and Services&#8230;&#8203; well, they do everything else, pretty much.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="what-s-the-problem">What&#8217;s the problem?</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Good question!</p>
-</div>
-<div class="paragraph">
-<p>This is an architecture that many, many people will recognise, and have successfully built applications with. Yet, I have seen issues with this architecture, sometimes subtle, sometimes much more obvious.</p>
-</div>
-<div class="paragraph">
-<p>The most obvious one to my mind is the application of the Stateless Service model itself, which has bugged me for ages. It seems quite wrong that we have an exteremely powerful language like Groovy and rip out its object model to effectively pretend that its a Functional language, but with an awkward namespacing mechanism (I elaborate on this semi-rant &lt;a href="/article/stateless-services-are-evil"&gt;here&lt;/a&gt; ). I am not content with this state of affairs, but I have let it lie for a long time as the industry was behind it in a big way, and I who am I to argue..?!</p>
-</div>
-<div class="paragraph">
-<p>The more subtle problems come from what amounts to an incomplete seperation of concerns between the Domain, Controller and Service. To my mind, there is just something missing.</p>
-</div>
-<div class="paragraph">
-<p>Domains in Grails manage database mapping and interaction. Controllers manage HTTP interaction, Views manage rendering, Services manage 'business logic'.</p>
-</div>
-<div class="paragraph">
-<p>Yep, this sounds like a complete system, right?</p>
-</div>
-<div class="paragraph">
-<p>Well &#8230;&#8203; not really, no.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="object-oriented-programming-the-once-and-future-king">Object Oriented Programming: the Once and Future King</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The piece I see missing is the concept of the request, the flow of control, or overall representation of the state and the data. You see this kind of logic pop up all over the system, throughout Controllers and Services, yet with no real home of its own.</p>
-</div>
-<div class="paragraph">
-<p>The question I asked in the talk on this subject was 'where is the king'; If we are modelling something in an object oriented way, then the thing we are modelling should have a distinct and explicit identity in the system.</p>
-</div>
-<div class="paragraph">
-<p>Looking in a normal Grails application, you do not see HTTP requests have any meaningful identity. They are effectively treated as function calls with some data payload.</p>
-</div>
-<div class="paragraph">
-<p>The root causes for this also revolve around that stateless model we have adopted for controllers and services. By denying ourselves the ability to hold state and logic together as a component, we remove our ability to fully model the system in an Object Oriented way.</p>
-</div>
-<div class="paragraph">
-<p>The most glaring problems that flow from this is that controllers (whose job is HTTP mediation) will be managing errors coming out of services, managing data transformations and performing other application logic; similarly, Services will begin to have a blend of application and utility logic. Codepaths around the service layer will become twisted and hard to follow, entry points into the service layer will be difficult to identify, service spaghettit will ensue.</p>
-</div>
-<div class="paragraph">
-<p>A simple example of the simplest useful grails controller is informative, it will look something like this :-</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>class UserController {
-  def userService
+</div></p>
+      <div class='spacing'></div>
+      <a class="button small" href="/blog/2013/03/28/stateless-services-are-evil.html">Read more</a>
+    </div>
+    
+  </div>
 
-  def getUser() {                          <i class="conum" data-value="3"></i><b>(3)</b>
-    def userId = params.userId             <i class="conum" data-value="1"></i><b>(1)</b>
-    def user = userService.getUser(userId) <i class="conum" data-value="2"></i><b>(2)</b>
-    return user
-  }
-}</pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>We see some state being passed into the action : <code>params.userId</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Some behaviour being executed : <code>userService.getUser(userId)</code></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Some implicit identity of the request : <code>class UserController.getUser()</code></td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>This, my dear readers, is an Object in all but name. Those three things if bound up together could become an object that encapsulates the entirety of the request.</p>
-</div>
-<div class="paragraph">
-<p>We would have our king back, and OO will be back on the throne.</p>
-</div>
-<div class="paragraph">
-<p>How to do this for Grails?</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="enter-the-command-object">Enter the Command Object</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Well, as you may have guessed from the title, this article is really about Command Objects. A command object in Grails is a marvellous creation. It has all of the capabilities of the Domain class, validation, auto binding, auto magical dependency injection and so on, without the extra baggage of worrying about persistence as well.</p>
-</div>
-<div class="paragraph">
-<p>It is a very powerful little beast, and we can use it to model our request very effectively.</p>
-</div>
-<div class="paragraph">
-<p>Taking our example from above, we can convert it to use a command object.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>class UserController {
-
-  def getUser(FindUserCommand cmd) {
-    def user = cmd.user
-    return user
-  }
-}
-
-class FindUserCommand {
-  def userService
-  def userId
-
-  def getUser() {
-    userService.getUser(userId)
-  }
-}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This Command Object is now encapsulating the entirety of the request. It has an explicit identity, FindUserCommand, which is attached to a particular URL; it has the state that request is expected to contain; finally, it has the behaviour that should be executed for that request.</p>
-</div>
-<div class="paragraph">
-<p>This acts to seperate out all of these things from the mechanics of HTTP interaction and rendering.</p>
-</div>
-<div class="paragraph">
-<p>This leaves us with 4 major responsibilities in the app.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Persistence, managed by the Domain classes</p>
-</li>
-<li>
-<p>HTTP mediation, handled by the Controller,</p>
-</li>
-<li>
-<p>Transactional or utility logic, handled by Services</p>
-</li>
-<li>
-<p>Finally the responsibility to model the queries and commands into the system, which I have handled with Command Objects.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This last one is new, and is a responsibility that has been pulled out of the service spaghetti.</p>
-</div>
-<div class="paragraph">
-<p>We have been slowly moving towards enabling a Domain Driven Design approach through all this. The command object is very suitable to model a piece of the system domain for us, without other integration considerations such as HTTP or persistence.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="a-fuller-example">A fuller example</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="http://www.github.com/simplicityitself/all-hail-command">All Hail Command on github</a></p>
-</div>
-<div class="paragraph">
-<p>On the github link above is an example implementation that takes this a little further. It is not the example given in the talk (which is too large to sanitise for public release). This example project defines a single command encapsulating a search request. This request is then able to be rendered in multiple ways by the Controller.</p>
-</div>
-<div class="paragraph">
-<p>The controller is left to do its job of HTTP mediation. The Service layer can do transaction control and utility functions. The Command Object is very much in charge.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="summary">Summary</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If you app is beginning to resemble a bowl of spaghetti, consider that you have an incomplete application model. Your app exists in an HTTP environment, the requests coming in are part of your natural system structure, and they deserve to be treated as a first class part of your system model.</p>
-</div>
-<div class="paragraph">
-<p>Command Objects are a powerful and cheap way to obtain that fuller model, and give added benefits such as parameter validation, data binding, type conversion and dependency injection.</p>
-</div>
-<div class="paragraph">
-<p>In short, they are awesome.</p>
-</div>
-</div>
-</div>
-            <p id="post-meta">
+  
+  <div class="pager">
+    
+      <span class="older">
+        <i class='fa fa-angle-double-left'></i>
+        Older Entries
+      </span>
+    
+    
+      
+        <a href="/page6" class="newer">
+          Newer Entries
+          <i class='fa fa-angle-double-right'></i>
+        </a>
+      
+    
+  </div>
 
 
-                <i class="fa fa-tag"></i>
-                
-
-                <a href="/blog/tags#architecture">architecture</a>,
-                
-
-                <a href="/blog/tags#groovy">groovy</a>,
-                
-
-                <a href="/blog/tags#grails">grails</a>,
-                
-                <a href="/blog/tags"><em>Browse all tags</em></a>
-            </p>
-        </div>
-
-
-      <div class='four spacing'></div>
-    <div class='large-3 columns' id='toc'>
-      <div class='links'>
+  <div class='four spacing'></div>
+  <div class='large-3 columns' id='toc'>
+    <div class='links'>
   <h3>Recent Posts</h3>
   <ul>
     
@@ -711,7 +535,7 @@ class FindUserCommand {
 
 </div>
 
-    </div>
+    <div class='four spacing'></div>
   </div>
 </div>
 

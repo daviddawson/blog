@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</title>
-  <meta name="description" content="Rancher is an orchestrator of orchestration for containerised systems. I needed to upgrade my systems management to be more automated and robust, Rancher see...">
+  <title>Diabetes at 35, 1 year in.</title>
+  <meta name="description" content="I got diabetes in 2015 at the age of 35. This is my write up, personal catharsis and general dialogue on what it felt like, what I eat now, and a bit of Stoi...">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -43,7 +43,7 @@
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
   <link href="/css/style.css" rel="stylesheet"/>
-    <link rel="canonical" href="http://daviddawson.me/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">
+    <link rel="canonical" href="http://daviddawson.me/blog/2017/05/06/diabetes-1-year-in.html">
     <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/asciidoc.css">
@@ -223,248 +223,179 @@
           <p class='info'>
 
 
-            <span>February 28, 2017</span>
+            <span>May 06, 2017</span>
           </p>
-          <h3><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</a></h3>
+          <h3><a href="/blog/2017/05/06/diabetes-1-year-in.html">Diabetes at 35, 1 year in.</a></h3>
           <div class="paragraph">
-<p>Since <a href="/blog/2017/02/04/simplicity-itself-shutdown.html">coming back to freelancing</a>, I&#8217;ve (re)started a set of projects with clients, managing them end to end.
-This means that I need a deployment environment somewhere that I can throw stuff into. I have much experience with Cloud Foundry
- (I deliver training for Pivotal on it), but its a little heavy for my needs, and I want to have relatively small stateful containers that don&#8217;t take up a full box.</p>
+<p><em>This was written in early August of 2017 as a form of personal catharsis. I don&#8217;t know if I will publish it, if you&#8217;re reading then I obviously have done</em>. (06-sep, dd, I pulled the trigger, meh)</p>
 </div>
 <div class="paragraph">
-<p>I have been using Docker Machine for a while to host small projects on AWS. I like the workflow that it gives, letting you deploy images from a registry, or have a docker compose file build in place and deploy directly for testing purposes.</p>
+<p>To channel our good queen for a moment, 2016 is not a year I will remember with unrestrained joy.</p>
 </div>
 <div class="paragraph">
-<p>The big issues when trying to scale it though are <strong>visibility</strong> and <strong>multi node</strong>.</p>
+<p><strong><em>Mostly because I just don&#8217;t remember it</em></strong>, it was that much of a blur.</p>
 </div>
 <div class="paragraph">
-<p>Now that I have projects here that are moving into production, and without a larger company managed infrastructure anymore, I need to come up with a solution for these that don&#8217;t take lots of time and effort to install and manage.</p>
+<p>Coming to the end of 2015, from the outside Simplicity Itself was doing well for itself. We had a few long term contracts, more being arranged. We were hiring and expanding our areas of expertise. It seemed good.</p>
 </div>
 <div class="paragraph">
-<p>I had a good look around at a few options for managing infrastructure. I recently came across a project called Rancher again at a client, that was actually presented at LMUG a good while ago, so I went to see how it had developed over the past year.</p>
+<p><a href="http://daviddawson.me/blog/2017/02/04/simplicity-itself-shutdown.html">The weeks before Christmas was where things got interesting</a>. In the space of a few days 2 projects shut down unexpectedly, with no notice and no ability to renegotiate. Our people were just off site and no longer earning.   I had to ring around and make some people very unhappy just before Christmas.</p>
 </div>
 <div class="paragraph">
-<p>It has a good story to tell around making management of containerised infrastructure easy, and at first glance, appears to support docker compose which fits my existing workflow. So I thought I&#8217;d give it a try. I&#8217;m writing this as I go, so it&#8217;ll be a discovery for us all!</p>
-</div>
-<div class="sect1">
-<h2 id="installation">Installation.</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Installing the server is <strong>very easy</strong></p>
+<p>At the same time (ie a couple of weeks before Christmas), my company co-founder informed me that he was leaving. Crazy ensued as I attempted to stabilise what was left of the company and see if we could survive in the new year.   It never recovered, although I kept things going in a cut down form for another 9 months to attempt to give some sort of stability to our clients and staff where I could.</p>
 </div>
 <div class="paragraph">
-<p>Take an existing docker host (created say, via docker machine on AWS, like I did), and you can install it with a single command. This runs a docker container on the host, which then bootstraps a set of other containers that make up the Rancher server install.</p>
+<p>I was brought up in the cultural phenomenon that used to be known as "the protestant work ethic". Essentially that hard work is its own reward and that you can solve most problems by hitting them head on. So, I resolved at the time that I would spend the next year and get things fixed up and try to calmly shut things down when I had a handle on what to do next.  These things happen, I&#8217;m not particularly remorseful of actions taken or regretful of the path not trodden.</p>
 </div>
 <div class="paragraph">
-<p>Once you have a running server, you need to then pick an orchestration to use for Rancher to manage your applications.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="orchestration-options">Orchestration Options</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>This confused me.</strong></p>
+<p>What I hadn&#8217;t noticed was that in November, 2015, my weight had started to come down (after I had lost a bit of weight earlier in the year, don&#8217;t have street chai in Bangalore if you didn&#8217;t grow up there&#8230;&#8203;). This didn&#8217;t even cross my mind as an issue. I 1convinced myself that I was suppressing my appetite by drinking more liquids, I even boasted about it at the time, some of you may recall. Slowly at first, but accelerating as the months went on, it was inexorable.  I went from 16.5st in November to under 14st by June and eventually, a little under 12st at the end of 2016. Almost a quarter of my body weight without even trying.</p>
 </div>
 <div class="paragraph">
-<p>Rancher has half a dozen different options for container orchestration. It&#8217;s own built in "Cattle" management. This seems to be the one that attracted me to Rancher in their documentation, as it has a very similar workflow to docker compose.</p>
+<p>Through the haze of non stop work, I didn&#8217;t notice that my energy levels were dropping, food was no longer satisfying, sleep harder to come by, sensation in my fingers and toes becoming less.  Not nice things, but easy to explain away when you&#8217;re in a position where taking a day away from work causes immediate issues to a half dozen people.</p>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can use Kubernetes, Mesos, Swarm (aka 'Docker Native') and Windows. Kube is a big draw I think, it certainly caught my eye.</p>
+<p>It didn&#8217;t help that I actually felt fine in many ways. Apart from a compulsion to drink any and all liquid I went near (anything, the kids started complaining that I was finishing everything in the fridge), the amount of weight I&#8217;d lost meant that I moved more easily than before. I didn&#8217;t <em>feel</em> tired, I felt very bouncy, manic almost in hindsight. I even excused failing eyesight as "well, I&#8217;m 35 now, to be expected".</p>
 </div>
 <div class="paragraph">
-<p>These are partitioned into "Environments", of which Rancher can manage multiples thereof, and support different orchestration options at the same time.  I like this, it lets Rancher be the single management tool for orchestration.</p>
+<p>One day, my toe went numb and the feeling didn&#8217;t come back again. It spread the next day.</p>
 </div>
 <div class="paragraph">
-<p>What confused me, although perhaps it shouldn&#8217;t have done, is that the developer workflow for each orchestration is totally different. Rancher doesn&#8217;t wrap them particularly, it simply enables management of them in a single place. I installed Kubernetes, this was very quick and easy. I then
-very quickly realised that I didn&#8217;t remember how to use kube particularly well, and rapidly retreated. This doesn&#8217;t fit my requirement of "it has to be easy and low effort".</p>
+<p>That&#8217;s an odd experience, and one that was quickly accompanies with the most bizarre sensation of cold water running down the inside of my lower legs. A quick read up online will tell you that this is caused by chronic nerve damage. Most commonly caused by nerves dying due to blood glucose toxicity, a sign of well advanced diabetes.</p>
 </div>
 <div class="paragraph">
-<p>Instead I chose "Cattle" orchestration, built into Rancher. This seems to fit the workflow that I want.   I could probably have chosen Swarm to get a similar effect, although my experiments with it showed that it deployed a container per node for services. This seems remarkably crude as far as orcehstration goes (compare that to, say Mesos or Cloud Foundry Diego and their ability for very precise positioning). I can&#8217;t imagine this is really the case, but I didn&#8217;t go any deeper than a quick eval.</p>
+<p>Of course, the only sensible course of action at that point is "balls, to the doctor!".</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Balls, to the Doctor!</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Me<br>
+<cite>Just before I went to the doctor</cite>
+</div>
 </div>
 <div class="paragraph">
-<p>Cattle is easy and understandable. Low level enough without losing high level visibility and most importantly, it fits my current workflow, or so it appears.</p>
+<p>I was urgently referred by my GP to the local clinic, put straight onto insulin with a spot insulin reading of 24 and an HBA1c reading of 15 (so I found out later). This is <strong>very</strong> unhealthy. The big concern at the time was something known as diabetic ketosis. This is where your body stops processing glucose (as had happened with me) and so begins to process body fat instead. This is the same process you undergo when you exercise hard for a long time, say in a marathon. You use up all of your free glucose and start processing your fat instead, the infamous "wall". Imagine that, but all the time. For type 1 diabetics, this is the big boogie man, and if you don&#8217;t catch it early, it will kill you. I was at the point where my body fat was almost all gone, if things had gone on another month I would have started to deconstruct my internal organs instead, leading to bad bad places. This is ketosis, and its fatal pretty quickly when it sets in. Its most common in type 1 diabetes, so the initial suspicion, when paired with such a high blood glucose reading, was that that was what was happening to me.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Come in now, this can&#8217;t wait</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Nice nurse who totally didn't freak me out
+</div>
 </div>
 <div class="paragraph">
-<p>I think that the key thing is that you should pick the orchestrator that fits with your current operational and development workflow. Rancher seems
-to have good support for working with the major orchestrations and bringing them together in one place.</p>
+<p>As quickly as I could, after chatting to the diabetic practice nurse at the clinic ("you need to come in here now!" not something you ignore!) I read up on what would help and tried to do it all.  This covered food, exercise, supplements (eating a spoon of cider vinegar with a powdered cinnamon chaser is totally an experience you should try! Let me know how it goes)</p>
 </div>
 <div class="paragraph">
-<p>I&#8217;ve kept the Kube cluster up for some things and I am intending to spend some time with Mesos in the next month or so now that I know it&#8217;s easy to set up from a single management interface.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="dev-workflow">Dev workflow</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>I use docker compose a large amount, using it as the basis for continuous delivery workflows across all the platforms and runtimes I develop in. You can see this influence on the Muon project which promotes the tool for all of its "getting started" and other deployments.</p>
+<p>6 months later, I&#8217;m feeling like I&#8217;ve "recovered", for the most part. I don&#8217;t have any long term complications, my eyesight is fine (if I don&#8217;t recognise you and I met you a few months ago, its because you look different now!). I&#8217;ve got some on going nerve damage in my feet and lower legs, which is slowly recovering. Nerves growing back, where they do, is remarkably uncomfortable. Numb toes are actually quite comfy, apart from the risk of unknown injuries. Half healed nerves hurt like hell, I wear crocks/ slippers all the time now because stubbing my toes has become an object lesson in agony.</p>
 </div>
 <div class="paragraph">
-<p>I find that this also gives a good way to deploy sets of related projects locally and then into the remote system. This disconnect between local and remote is why i&#8217;ve shied away from using Kubernetes for production, as I don&#8217;t need th massive scale or complex orchestrations it provides.</p>
+<p>Diabetes can be a vicious disease, and is not something you want to get it. As it turns out, its fairly likely I don&#8217;t have Type 1. The diagnostic tests that seem to be available can confirm or exclude type 1, with the result if you are excluded being that you essentially have one of the grab bag of diseases known as Type 2 Diabetes. As I&#8217;ve learned, this is mostly a descriptive term of the symptoms, rather than describing a disease based upon its cause. Type 2 is in many ways more manageable than Type 1 is, which can get very hard to keep on a level.  I&#8217;m not sure why mine came on so vicious, it may have partly been my lifestyle as it came on.</p>
 </div>
 <div class="paragraph">
-<p>Once I made the decision to choose a Cattle deployment, deployment of the projects started. I updated TeamCity with a call to rancher-compose and
-<em>most</em> projects fired up. Rancher supports <code>docker-compose.yml</code> files, with an optional override in its own <code>rancher-compose.yml</code> file.What became clear is that Rancher support most of the docker compose format, when you are dealing with prebuilt services.
-When you are using containers built from the local disk (dev style <strong>build:</strong> commands), then it seems to break with the way I was using it. At least it did on all of the projects I had that used that style.</p>
+<p>As I have addressed in many a conference talk, I like to approach things in a fairly circumspect and philosophical way. I&#8217;m a great believer in a Stoic approach to life. That can be summarised as "minimise the bad, take advantage of the good". It is caricatured as being miserable, but I find actually it is a far healthier way to live and has led me to being able to take great joy in things that I otherwise might not have done.</p>
 </div>
 <div class="paragraph">
-<p>I quickly reworked those to build an image in a registry rather than pushing a locally built image using the <code>build</code> context in the docker-compose file.  All my projects then deployed, and in truth, this is a better model.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="rancher-extensions-to-docker-compose">Rancher Extensions to Docker Compose</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Rancher can accept straight docker compose files and run them. It also lets you define a <code>rancher-compose.yml</code> that contains extra information Rancher Cattle can use to manage and coddle your containers a bit more</p>
+<p>What I can see with the way things are is that I now <strong>have</strong> to eat healthily, and exercise. My decision making process is utterly changed by the perpetual state I now inhabit of <em>potentially</em> ill. If I want to have a normal lifespan, I have a very straightforward set of choices to make.</p>
 </div>
 <div class="paragraph">
-<p>This gets into active management of containers, which has been an issue on the basic docker machine environment I&#8217;ve used to host these projects before.</p>
+<p>I&#8217;m not sick, I don&#8217;t look sick and I don&#8217;t have any medical complaints beyond this (apart from occasionally gently weeping about a stubbed toe). Its been an interesting position to be in, and one that I have, if not enjoyed, then at the least I appreciate the sensation of being able to make a positive choice to take the good of the situation and in as many ways as I can to frame it as a positive experience. Looking as objectively as I can at the way I live life, I live it better now, and that&#8217;s got to be a good thing, <em>no matter the reason for that</em>.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Pancakes for the self respecting diabetic</div>
+<div class="paragraph">
+<p>Pancakes are bad for me. The flour is really not helpful, and must be avoided. When paired with syrup or honey, it becomes bad juju.</p>
 </div>
 <div class="paragraph">
-<p>I haven&#8217;t gone deep into what else Rancher Cattle can do in this regard, but I like its simplicity.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="ha-and-maintenance">HA and Maintenance</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>One of the main motiviations for me was to get the ability to have a proper HA containerised setup. Docker machine is fine and all, but it&#8217;s
-totally fragile! I want to get an HA setup thats easy, multi cloud and reliable. Now that I&#8217;m a freelancer, I&#8217;m going to do this by myself and run
-client projects on it, so it has to be production grade, yet very low maintenance.  So, dev workflow aside, this is a very important requirement.</p>
-</div>
-<div class="sect2">
-<h3 id="setting-up-ha">Setting up HA</h3>
-<div class="paragraph">
-<p>HA in Rancher requires an external database. Since I&#8217;m on AWS, I used RDS to give a hosted MySQL that I don&#8217;t need to care about.</p>
-</div>
-<div class="paragraph">
-<p>The hardest part about this was setting up networking in RDS!  Fiddling around with VPC vs DB VPC and network routing was lots of fun and all, but
-I&#8217;ve got better things to do. In the end, I got it sorted, Rancher connected and seemed to work fine. (FYI, Frankfurt is not near Dublin)</p>
-</div>
-<div class="paragraph">
-<p>This seems to be a decent setup, essentially delegating HA synchronisation to the DB cluster/ RDS</p>
-</div>
-<div class="paragraph">
-<p>I&#8217;ve hit it with a wrench a few times, destroying the odd node and the like, and it&#8217;s not gone down yet, so I&#8217;m reasonably confident it&#8217;ll survive for a while.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="ops-stuff">Ops stuff</h3>
-<div class="paragraph">
-<p>With my previous little setup, scaling was a purely vertical affair, which was disruptive to say the least. Proper ops tooling wasn&#8217;t feasible to add in,
-or really worth it for a hobby system like that.</p>
-</div>
-<div class="paragraph">
-<p>Now that it&#8217;s productionising, I need some monitoring, log management and alerting.</p>
-</div>
-<div class="paragraph">
-<p>Lucky for me, Rancher has this setup in the Cattle catalogue. I installed Prometheus and ElasticSearch/Logstash. This took about 30 mins to do.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="http-load-balancing">HTTP Load Balancing</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>I&#8217;m hosting a fair few projects on the same containerised infrastructure. I don&#8217;t want to run the front end containers on every host, or to have a single host that is the single entry point. Instead I&#8217;d like to run 2 of each container (unless under load), spread across the various hosts, and have http traffic route to them after hitting any of the hosts. A load balancer sitting in front and distributing traffic to the host cluster completes the mix.</p>
-</div>
-<div class="paragraph">
-<p>To make this work, this is what I did.</p>
+<p>As my good friend Matt Jackson the cyclist and occassional intensive care doctor said to me once, a pancake needs something to congeal under heat and a flavour. I found an interesting recipe that I have adapted.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Set up an AWS Elastic Load Balancer, directing traffic at all the Rancher hosts.</p>
+<p>2 eggs</p>
 </li>
 <li>
-<p>Installed an <a href="https://github.com/muoncore/muon-http-proxy">Event Sourced HTTP Proxy</a> from the Muon project.</p>
+<p>1 large banana</p>
 </li>
 <li>
-<p>In Rancher, create a new user stack <code>load-balancing</code> and then added a load balancer container.</p>
+<p>3 heaped tablespoons of almond flour (or ground almond, don&#8217;t tell anyone, <strong><em>its the same thing</em></strong>)</p>
+</li>
+<li>
+<p>a drop of vanilla essence</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The last entry is nice, Rancher lets you create a load balancer (which is HA proxy), run an instance on all hosts and have it direct HTTP traffic to a particular internal service. So I can direct all HTTP traffic to my 2 HTTP proxy nodes that then select the target from their event sourced routing table.</p>
+<p>Put all into a blender, if you put the almond in first, it doesn&#8217;t stick to the top/ blade of your mixer (depending on its orientation)</p>
 </div>
 <div class="paragraph">
-<p>Adding a new http vhost is now as easy as emitting the appropriate muon event and the proxies scale horizontally very easily.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="end-result">End result.</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>I managed to deploy a new Rancher server in 5 minutes, experiment with various orchestration options by deploying them to various AWS datacentres
-and settle on Cattle within an hour. Migration of projects took a simple rebuilt to deploy them onto the new Rancher environment as simple docker compose
-stacks.</p>
+<p>Then, in a frying pan, put some oil and gently heat. On a much lower heat than normal for pancakes.</p>
 </div>
 <div class="paragraph">
-<p>Rancher is an interesting tool with a lot to recommend it.  After my initial confusion on what its role actually was as distinct from the orchestrators it
-was using, I&#8217;ve come to appreciate the multi-orchestration idea. I don&#8217;t like being forced to make "strategic" decisions based on silly technical reasons,
-say Kube vs Mesos. Why not both? Rancher gives a decent answer to that, and I expect it to be my top level Ops tool of choice for the foreseeable future.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="faq">FAQ</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="em-why-didn-t-you-use-insert-cloud-provider-offering-here-em"><em>Why didn&#8217;t you use [insert cloud provider offering here].</em></h3>
-<div class="paragraph">
-<p>I want multi cloud.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="em-this-sounds-awesome-can-i-pay-you-to-do-some-work-for-me-em"><em>This sounds awesome, can I pay you to do some work for me?</em></h3>
-<div class="paragraph">
-<p>Why, <a href="/hireme.html">yes you can</a>. (ok, fair enough, this is an advert)</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="em-what-kind-of-projects-are-you-deploying-em"><em>What kind of projects are you deploying?</em></h3>
-<div class="paragraph">
-<p>A fair few.</p>
+<p>Pour smaller amounts of the batter into the pan, around the size of a small scotch pancake (for you americans, this would be about half the size of yours). This is because the egg is the binder, not flour. It cooks more slowly than flour does, and grips less, so you can&#8217;t make them as thin, nor as large as an english pancake would be, it just rips apart.</p>
 </div>
 <div class="paragraph">
-<p>On the new setup, I&#8217;m running</p>
+<p>Let them cook through slowly, then flip and lightly brown the other side.</p>
+</div>
+<div class="paragraph">
+<p>I eat with a litel drizzle of honey.  They have a pleasant texture, approximating the inside of of french toast with a flavour of banana. They don&#8217;t taste eggy at all.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Big changes in lifestyle that have made the biggest impact :-</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>A marketing experimental analytics system for a top tier broadcast media firm.</p>
+<p>Stop eating breakfast. Milk is full of sugar, cereals are pure starch. As I have discovered, your liver, being the main store of Glycogen which is the short term energy storage chemical, will dump a big whack of energy into your blood stream soon after you wake up normally. Having breakfast very soon after I wake up is unnecessary, so I don&#8217;t eat it. Instead, black coffee first thing and then eat between 11 to 1pm depending on my mood.</p>
 </li>
 <li>
-<p>2 startup applications to support funding and MVP building
-*</p>
+<p>Stop daily eating of bread, potato, pasta and the like. Its not poison, I eat it, but the less I eat on average, the better things are. The way it was expressed to me was that my body has now become intolerant of carbohydrates, and the less I have, the easier it is for my body to deal with whats left.</p>
+</li>
+<li>
+<p>Exercise, some aerobic, a bunch of weight and strength training. The former helps for immediate sugar control, the latter for longer term, so it appears for me.</p>
+</li>
+<li>
+<p>Sleep! Bad sleep causes issues.</p>
+</li>
+<li>
+<p>Work less. I&#8217;m working far less, taking weeks off from paid work (all of august I was off paid work). This keeps me more at home, which helps my diet a lot more.</p>
+</li>
+<li>
+<p>Booze, wine is better than most beers. A small glass causes my sugar to go up, subsequent glasses cause it to go down. Apparently alcohol interferes with the way your liver processes glycogen with the result that alcohol can cause blood sugar to go down. I can&#8217;t confirm this is generally applicable, but I can confirm that I&#8217;ve tested this a whole bunch of times and its true every time.</p>
+</li>
+<li>
+<p>Talking to people is a positive. Hiding things isn&#8217;t healthy and giving people the option of doing something to help me, and then being appreciative of that and avoiding frustration that its even necessary is something I learned as well as I can from my wife, who is a far stronger person than I am.</p>
 </li>
 </ul>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="paragraph">
-<p>These moving to production is the main impetus to getting someting production grade in place.</p>
+<p>All things taste better with one of bacon, melted cheese or cream. Combinations are allowed.</p>
 </div>
-<div class="paragraph">
-<p>Simple</p>
+</blockquote>
+<div class="attribution">
+&#8212; Me<br>
+<cite>as often as I can say it that people will listen</cite>
 </div>
-</div>
-<div class="sect2">
-<h3 id="em-are-you-deploying-stateful-containers-em"><em>Are you deploying stateful containers?</em></h3>
-<div class="paragraph">
-<p>Yes. Generally I use Cassandra to back <a href="http://muoncore.io/submodules/photon/docs/index.html">Photon</a>, an event store from the Muon project. Or run a single Photon
-with an data store embedded in its own container for small data sets/ non prod workloads. Both of these need stateful volume management.</p>
 </div>
 <div class="paragraph">
-<p>Apart from that as the data backbone, mysql and neo4j put in a good showing, although I currently have them as view data only. If they totally die, they will
-be recontstructed from the event store. For now I&#8217;m happy with that state of affairs. In the future, I may invest some time in making them HA, but I&#8217;m not
-that concerned given the ability to rebuild automatically is already there.</p>
+<p>I&#8217;ve managed to keep my love of dairy (cream is not milk and contains no sugar). Sugar free jelly+cream is my dessert of choice when I&#8217;m not in the mood to go for a run after eating it.</p>
 </div>
+<div class="paragraph">
+<p>So, overall, things are good. I&#8217;m happy with the way that 2017 is turning out. What a difference a year makes!</p>
 </div>
-</div>
+<div class="paragraph">
+<p>Next article will be on <strong>Reactive APIs</strong>, for you tech heads.</p>
 </div>
             <p id="post-meta">
 
@@ -472,16 +403,10 @@ that concerned given the ability to rebuild automatically is already there.</p>
                 <i class="fa fa-tag"></i>
                 
 
-                <a href="/blog/tags#containers">containers</a>,
+                <a href="/blog/tags#health">health</a>,
                 
 
-                <a href="/blog/tags#docker">docker</a>,
-                
-
-                <a href="/blog/tags#infrastructure">infrastructure</a>,
-                
-
-                <a href="/blog/tags#devops">devops</a>,
+                <a href="/blog/tags#diabetes">diabetes</a>,
                 
                 <a href="/blog/tags"><em>Browse all tags</em></a>
             </p>
