@@ -261,16 +261,21 @@
 <p>One of the principles of the Reactive Manifesto is to be message based. this is really the enabler of all of the other principles. The other principles are statements of intent and expectation when you build a message based system properly.</p>
 </div>
 <div class="paragraph">
-<p>HTTP is plainly not message based, and so can&#8217;t easily be the foundation of a reactive system.</p>
+<p>HTTP is plainly not message based, and so can&#8217;t easily be the foundation of a <strong><em>reactive system</em></strong>.</p>
 </div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">HTTP is not Reactive, it can&#8217;t be.</div>
+<div class="quoteblock">
+<blockquote>
 <div class="paragraph">
-<p>todo, make me a quote.</p>
+<p>HTTP is not Reactive, it can&#8217;t be.</p>
+</div>
+</blockquote>
+<div class="attribution">
+&#8212; Me<br>
+<cite>as often as I can say it that people will listen</cite>
+</div>
 </div>
 <div class="paragraph">
-<p>HTTP does though have a well defined interaction model and supporting client libraries that make it almosy trivially easy to use (open telnet, speak some HTTP, discover MIME types, give up. The fact that it is ubiquitious, and has well defined interactions makes it a good basis for delivering apis over a network. I would argue that REST semantics merely enhance this fundamental property of HTTP.</p>
+<p>HTTP does though have a well defined interaction model and supporting client libraries that make it almosy trivially easy to use (open telnet, speak some HTTP, discover MIME types, give up. The fact that it is ubiquitous, and has well defined interactions makes it a good basis for delivering apis over a network. I would argue that REST semantics merely enhance this fundamental property of HTTP.</p>
 </div>
 <div class="paragraph">
 <p>Messaging has no such properties. It is totally ad hoc. This makes it a supremely flexible approach, but means that it can&#8217;t really be described as an "api" in any meaningful sense. each service will interact very differently to every other. You will have to learn the particular <strong><em>domain specific message protocol</em></strong> to interact with the service even at all.</p>
@@ -279,10 +284,17 @@
 <p>If you were to build message based apis though, what might they look like?</p>
 </div>
 <div class="paragraph">
-<p>For a start, I wouldn&#8217;t want to be bound to a broker. Messaging doesn&#8217;t imply topics or queues (todo, quote this), it simply refers to async moving of some data over some transport between 2..N components.  If I wanted my shiny api to be accessed over the internet, I&#8217;d want to use something like TCP, or websockets (/http2) if I want to proxy or use http routing. in a controlled internal network with lots of moving pieces, a central message broker makes a lot of sense to enable policy control and monitoring.</p>
+<p>For a start, I wouldn&#8217;t want to be bound to a broker. Messaging doesn&#8217;t imply topics or queues, it simply refers to async moving of some data over some transport between 2..N components.  If I wanted my shiny api to be accessed over the internet, I&#8217;d want to use something like TCP, or websockets (/http2) if I want to proxy or use http routing. in a controlled internal network with lots of moving pieces, a central message broker makes a lot of sense to enable policy control and monitoring.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Messaging doesn&#8217;t imply topics or queues</p>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
-<p>I am no friend of HTTP systems, yet one thing ive learned well from the successful ones. What http got right was defining a technical level of functionality. Upon that you can then build your api with full domain specifics.  The technical implementation of http thoigh doesn&#8217;t care what your api means, inly how you interact with it. Conversely, the domain specific api doesn&#8217;t have its own special snowflake interaction model. Unless you do long polling, but sessions of webflow like tech, in which case you broke the model and deserve everything you got.</p>
+<p>I am no friend of HTTP systems, yet one thing ive learned well from the successful ones. What http got right was defining a technical level of functionality. Upon that you can then build your api with full domain specifics.  The technical implementation of http though doesn&#8217;t care what your api means, inly how you interact with it. Conversely, the domain specific api doesn&#8217;t have its own special snowflake interaction model. Unless you do long polling, but sessions of webflow like tech, in which case you broke the model and deserve everything you got.</p>
 </div>
 <div class="paragraph">
 <p>You can see the process of building an HTTP api as accepting that there is a split between defining the interaction model, then creating the actual concrete api within that class of apis. we have a class of apis that we refer to by adding the prefix "http". they all use the same, technically defined, interaction model and tech.</p>
@@ -297,58 +309,51 @@
 <p>Almost all messaging I see used is actually using a particular interaction model, by default. in that model every message is sent to a queue, which is then read from by a group of components. those messages all have some domain meaning, rather than purely technical.</p>
 </div>
 <div class="paragraph">
-<p>This is the concept I cureently see is missing. rather than having application components sending messages to each other that all have domain meaning, we can create and use messages that act purely for technical coordination, generating the interaction model I&#8217;ve been discussing Domain meaning is then held and transported around according to the particular message protocol of the API of all you are using.</p>
+<p>This is the concept I currently see is missing. rather than having application components sending messages to each other that all have domain meaning, we can create and use messages that act purely for technical coordination, generating the interaction model I&#8217;ve been discussing Domain meaning is then held and transported around according to the particular message protocol of the API of all you are using.</p>
 </div>
 <div class="paragraph">
 <p>Ultimately, I want apis that are better than http (todo, quote), while retaining the good things. I believe that Reactive Apis, or whatever we call them, can drive huge improvements in application, microservice and browser app designs.</p>
 </div>
+<div class="quoteblock">
+<blockquote>
 <div class="paragraph">
-<p>We must be firm though in deciding that these new types of api are purely technical in nature. I have seen what happens when you try to define domain specific message interactions. they become utterly non portable and ill  defined messes. http doesn&#8217;t understand your business, reactive apis shouldnt either.</p>
+<p>I want APIs that are better than HTTP!</p>
 </div>
-<div class="paragraph">
-<p>## example, building a stream based api</p>
-</div>
-<div class="paragraph">
-<p>The reactive streams initiative is one of the recent collaborative success stories in the jvm world. it defines a small set of java interfaces along with instructions on how they should be used by implementers.  it permits different streaming systems on the jvm to interoperate in various ways, including back pressure signals.</p>
+</blockquote>
 </div>
 <div class="paragraph">
-<p>This works great inside a jvm process, between processes?  how about to a non jvm process? I&#8217;d love to be able to talk transparently to a reactive streams endpoint from say, nodejs, or in a browser.</p>
+<p>We must be firm though in deciding that these new types of api are purely technical in nature. I have seen what happens when you try to define domain specific message interactions. they become utterly non portable and ill  defined messes. http doesn&#8217;t understand your business, classes of reactive api shouldn&#8217;t either.</p>
+</div>
+<div class="sect2">
+<h3 id="turtles-and-abstractions">Turtles and abstractions</h3>
+<div class="paragraph">
+<p>This is what Muon is built for, <strong>to enable you to design and build reactive apis</strong>. it does this by implementing a set of api types which use messaging, and exposing those to your application code using language idiomatic APIs.</p>
 </div>
 <div class="paragraph">
-<p>each method call on the interfaces maps to a technical signal between two compoments. in a message based world, they are all messages.</p>
+<p>The end result is that you gain the benefits of a networked api, with the added benefits of messaging.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>APIs, but better!</p>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
-<p>todo, list them</p>
+<p>This could of course all be implemented on top of the message broker du  jour. That is, for reasons I mentioned earlier, a loss. You also run the risk of becoming language locked and mixing your application concerns into the communication aspects too deeply, for that reason, I designed the core model of Muon to be somewhat agnostic in how it communicates.  This permits two things, you can switch transport tech for communicating with remote apis. Secondly, the api could be running in the same process as the client, fairly transparently. The model becomes based around aync messaging, precisely as a good Reactive system should be.</p>
 </div>
 <div class="paragraph">
-<p>The important thing to more is that none of these mean anything to your business. they are purely technical in nature, and are generating a new form of interaction model that you can use. the actual apis we could provide would be RS+some business functionality.  so if we were to implement this, we would actually be creating a new class of apis, reactive streaming across the network, defined as messaging. something with a very different feature set than RPCish, a la http.</p>
+<p>You can see this as a set of abstractions, a set of internal apis, creating an overall programming model that lets you say "connect to that service and get me data X, with back pressure!"</p>
 </div>
 <div class="paragraph">
-<p><mark>#</mark> turtles and abstractions</p>
-</div>
-<div class="paragraph">
-<p>This is what muon is built for, to enable you to design and build reactive apis. it does this by implementing a set of api types which use messaging, and exposing those to your application code using labguage idiomatic apis.</p>
-</div>
-<div class="paragraph">
-<p>The end result is that you gain the benefits of a networked api, with the added benefits of messaging. apis, but better!</p>
-</div>
-<div class="paragraph">
-<p>This could of course all be implemented on top of the message broker du  jour. that is, for reasons I mentioned earlier, a loss. you also run the risk of becoming language locked and mixing your application concerns into the communication aspects too deeply,  for that reason, I designed the core model of Muon to be somewhat agnostic in how it communicates.  thisbpernits two things, you can switch transport tech for communicating with remote apis. secondly, the api could be running in your process, transparent to your application.</p>
-</div>
-<div class="paragraph">
-<p>You can see this as a set of abstractions, a set of internal apis, creating an overall programming model that lets you say</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>connect to that service and get me some data, with back pressure!</pre>
+<p><em>How</em> it actually does that, well, your application code doesn&#8217;t need to know, nor care, that is the intent of an API after all, to abstract, to shield.  You as a developer and operator can peel back the layers to slot in nice technologies to improve performance here and there, with the abstractions enabling the application to keep on running.</p>
 </div>
 </div>
-<div class="paragraph">
-<p>how it actually does that, well, your application code doesn&#8217;t know, nor care.  you as a developer and operator can peel back the layers to slot in nice technologies to improve performance here and there, with the abstractions enabling the application to keep on running.</p>
 </div>
-<div class="paragraph">
-<p>## Similar projects</p>
 </div>
+<div class="sect1">
+<h2 id="similar-projects">Similar projects</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>some projects around have some similarities to Muon.</p>
 </div>
@@ -371,9 +376,11 @@
 <div class="paragraph">
 <p>I have a big soft spot for ZeroMQ. "Sockets, but better" was my inspiration when recently pinning down how to describe Muon. for my uses, it is both too opinionated, and not opinionated enough. it implements,  fairly low level, messaging patterns in its libraries, but couples those to its wire transport approach. I want to route over websockets, amqp, TCP, just to start with, so it doesnt quite work for me.</p>
 </div>
-<div class="paragraph">
-<p>## Where next?</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="where-next">Where next?</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Go and check muon out. there&#8217;s a few examples of the benefits of reactive apis as implemented by muon</p>
 </div>
@@ -398,8 +405,6 @@
 </div>
 <div class="paragraph">
 <p>So, if you build a microservices framework, distributed processing engine, data store or app framework, Muon is your friend, not competition.</p>
-</div>
-</div>
 </div>
 </div>
 </div>
