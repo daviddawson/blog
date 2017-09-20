@@ -1,6 +1,6 @@
 ---
 excerpt: APIs are a core concept in Microservices, but why do we only think of HTTP? I want better APIs than HTTP can provide, in this article, I propose a new term to describe them: Reactive APIs, like APIs, but better!
-title: Reactive APIs - Like APIs, but Better
+title: Reactive APIs. Like APIs, but Better
 layout: post
 author: David Dawson
 date: 2017-09-06 12:18
