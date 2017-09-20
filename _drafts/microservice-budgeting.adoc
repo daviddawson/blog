@@ -2,31 +2,34 @@ How do you fund your software projects?  Go and get a large budget from the boar
 
 If you are currently deciding how much capex to allocate to "going microservices". This article is for you!
 
-## capex for the uninitiated
+## Capex for the uninitiated
 
 Capital expenditure budgets are a peculiar beast. The process looks something like this.
 
 * we have something that we need doing.
-* lets scope outvthw work involved, and come up with a budget that should cover creating it.
+* lets scope out the work involved, and come up with a budget that should cover creating it.
 * we form a project, and a project team to deliver the thing we want,  using the budget.
-* the board expect regular updates telling them how things are going and whatbthe current risks are.
+* the board expect regular updates telling them how things are going and what the current risks are.
 *when the project budget ends, everything stops.
 
-The benefits to the organisation are in containing financial risk to the currently allocated budget, often tax benefits from 'investing'. The company filings don't include capex in the same manner as simple operational expenses, so the board can claim thay the company is spending less money than you would expect looking at the simple numbers.
+The benefits to the organisation are in containing financial risk to the currently allocated budget, often tax benefits from 'investing'. The company filings commonly don't include capex in the same manner as simple operational expenses, so the board can claim that the company is spending less money than you would expect looking at the simple numbers.
 
-Overall, it makes a lot of sense from a high level view to allocate capex to getvtjings done in a large company.  
+Overall, it makes a lot of sense from a high level view to allocate capex to getting things done in a large company.  
 
 So what's the problem?
 
-What are your motivationsfor adopting microservices?
+Well, what are your motivationsfor adopting microservices?
 
-Broadly, you are looking at adopting microservicrs because you want to change things. Either taking advantage of public cliud scaling, migrating from a legacy system, scaling your teams. The specifics are myriad,  yet the core prenise is the same. You want to change.
+Broadly, you are looking at adopting microservicrs because you want to change things. Either taking advantage of public cloud scaling, migrating from a legacy system, scaling your teams. The specifics are myriad,  yet the core premise is the same. You want to change.
 
-Capex funding will work against this agenda.
+*Capex funding will work against this agenda.*
 
-Capex funding has some significant effects that are a significant barrier to adoption.
+Capex funding has some significant effects that are a significant barrier to successful adoption of microservices such that they will give you the benefits.
 
+## Effect of teams
 Teams. Too mich reliance on contractors. Who naturally fit the capex model. They cak, aftwr all, be hiref and fired as needed without recourse.
+
+## Effect on software infrastructure
 Infrastructure. Cloud is an opex model.
 The essence of change is tjat you don't know up front how things will look at the end. So you can't effectively predict tje final costs.
 
@@ -46,4 +49,4 @@ This gives a direct answer!  If you have large areas of the system that won't ch
 
 Essentially, be selctive about what your microsevices are, based on how tou fund them. 
 
-You can fund a minolith via capex. The only model that works for microservices is long term commitment opex.
+You can fund a minolith via capex. The only model that effetively works for microservices is long term opex commitment.

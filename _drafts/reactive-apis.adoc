@@ -1,0 +1,117 @@
+# Reactive Apis - like apis, but better 
+
+I've been working on the Muon project for a while, exploring and implementing patterns I've found useful while using it in projects.  We've never come to a particularly pithy way of describing the concepts we have built. It's not really a microservices framework, it hasn't got enough frameworking for your internal application structure for that.  instead my attention has been strongly drawn to what I've been referring to asbthe "communication space", the gap between out islands of state where data consistency is lost and much hair pulling and gnashing of teeth occurs.
+
+I recently delivered a few talks on Muon, and I think I've come to a good concept which I'd like to introduce, *_Reactive Apis_*.
+
+I do, of course, run the risk of devaluing the term "reactive" further, yet I believe that I'm merely following in the footsteps of the existing use and making a small, and natural, extension in terminology. 
+
+The word Reactive though is currently used for two very different things.  
+
+One is *Reactive Programming*, also called Functional Reactive Programming. this is what the Rx projects, Spring Reactor and the myriad FRP libs in the javascript space all implement. it describes functional data flow operated on by composed functions. it is very much an implementation technique, ultimately drawn from the great body of software research from the 1970s (as most of software currently is).
+
+The other reactive is that one spoken about by the *Reactive Manifesto*. it describes architectural principles and the benefits of them. As am architecture, which I would use as a synonym for a *_software philosophy_*, It does not prescribe an implementation. not even Akka, honest!
+
+There is some crossover, for example the Akka Streams and Spring Data Flow projects can be described as both Reactive Programming implementations and following Reactive Architectural principles.
+
+*Fun, right?*
+
+In this article, where I say "reactive", I mean the Reactive Manifesto. If I want to discuss reactive programming, I'll say "FRP".
+
+## HTTP, the emperor has no clothes
+
+With Muon, we have been building in this "communication space". This is the realm of network comms, integration technologies and above all, APIs.
+
+I have looked at microservice systems in particular, but things jave transitioned very cleanly into the browser and IoT systems, vastly more distributed in nature than their server side kin. This has led me to stop referring to Muon specifically in terms of microservices and reach for another descriptive I could use.
+
+In microservices, we have broadly standardised on two forms of communication, one, well defined APIs implemented using HTTP (most commonly REST_ish_). The second form is ad hoc messaging, probably tied to a broker. 
+
+I've been fairly forthright over the past few years that I think HTTP has lots of issues when building systems, I won't dwell on those here beyond asking, *_why are all our Apis implicitly http based?_*
+
+## Reactive Apis
+
+One of the principles of the Reactive Manifesto is to be message based. this is really the enabler of all of the other principles. The other principles are statements of intent and expectation when you build a message based system properly.
+
+HTTP is plainly not message based, and so can't easily be the foundation of a reactive system.
+
+.HTTP is not Reactive, it can't be.
+****
+todo, make me a quote.
+
+
+HTTP does though have a well defined interaction model and supporting client libraries that make it almosy trivially easy to use (open telnet, speak some HTTP, discover MIME types, give up. The fact that it is ubiquitious, and has well defined interactions makes it a good basis for delivering apis over a network. I would argue that REST semantics merely enhance this fundamental property of HTTP.
+
+Messaging has no such properties. It is totally ad hoc. This makes it a supremely flexible approach, but means that it can't really be described as an "api" in any meaningful sense. each service will interact very differently to every other. You will have to learn the particular *_domain specific message protocol_* to interact with the service even at all.
+
+If you were to build message based apis though, what might they look like?
+
+For a start, I wouldn't want to be bound to a broker. Messaging doesn't imply topics or queues (todo, quote this), it simply refers to async moving of some data over some transport between 2..N components.  If I wanted my shiny api to be accessed over the internet, I'd want to use something like TCP, or websockets (/http2) if I want to proxy or use http routing. in a controlled internal network with lots of moving pieces, a central message broker makes a lot of sense to enable policy control and monitoring. 
+
+I am no friend of HTTP systems, yet one thing ive learned well from the successful ones. What http got right was defining a technical level of functionality. Upon that you can then build your api with full domain specifics.  The technical implementation of http thoigh doesn't care what your api means, inly how you interact with it. Conversely, the domain specific api doesn't have its own special snowflake interaction model. Unless you do long polling, but sessions of webflow like tech, in which case you broke the model and deserve everything you got.
+
+You can see the process of building an HTTP api as accepting that there is a split between defining the interaction model, then creating the actual concrete api within that class of apis. we have a class of apis that we refer to by adding the prefix "http". they all use the same, technically defined, interaction model and tech.
+
+In our shiny new message api system, we should do the same! first, we define a level of technical interactions, separated from the actual apis being built. Since we are using messaging, we can define multiple such technical interaction models. 
+
+Different classes of api. Each with its own technical functionality, with no domain specific concepts in them.
+
+Almost all messaging I see used is actually using a particular interaction model, by default. in that model every message is sent to a queue, which is then read from by a group of components. those messages all have some domain meaning, rather than purely technical. 
+
+This is the concept I cureently see is missing. rather than having application components sending messages to each other that all have domain meaning, we can create and use messages that act purely for technical coordination, generating the interaction model I've been discussing Domain meaning is then held and transported around according to the particular message protocol of the API of all you are using. 
+
+Ultimately, I want apis that are better than http (todo, quote), while retaining the good things. I believe that Reactive Apis, or whatever we call them, can drive huge improvements in application, microservice and browser app designs.
+
+We must be firm though in deciding that these new types of api are purely technical in nature. I have seen what happens when you try to define domain specific message interactions. they become utterly non portable and ill  defined messes. http doesn't understand your business, reactive apis shouldnt either.
+
+## example, building a stream based api
+
+The reactive streams initiative is one of the recent collaborative success stories in the jvm world. it defines a small set of java interfaces along with instructions on how they should be used by implementers.  it permits different streaming systems on the jvm to interoperate in various ways, including back pressure signals. 
+
+This works great inside a jvm process, between processes?  how about to a non jvm process? I'd love to be able to talk transparently to a reactive streams endpoint from say, nodejs, or in a browser. 
+
+each method call on the interfaces maps to a technical signal between two compoments. in a message based world, they are all messages.  
+
+todo, list them
+
+The important thing to more is that none of these mean anything to your business. they are purely technical in nature, and are generating a new form of interaction model that you can use. the actual apis we could provide would be RS+some business functionality.  so if we were to implement this, we would actually be creating a new class of apis, reactive streaming across the network, defined as messaging. something with a very different feature set than RPCish, a la http.
+
+### turtles and abstractions
+
+This is what muon is built for, to enable you to design and build reactive apis. it does this by implementing a set of api types which use messaging, and exposing those to your application code using labguage idiomatic apis. 
+
+The end result is that you gain the benefits of a networked api, with the added benefits of messaging. apis, but better!
+
+This could of course all be implemented on top of the message broker du  jour. that is, for reasons I mentioned earlier, a loss. you also run the risk of becoming language locked and mixing your application concerns into the communication aspects too deeply,  for that reason, I designed the core model of Muon to be somewhat agnostic in how it communicates.  thisbpernits two things, you can switch transport tech for communicating with remote apis. secondly, the api could be running in your process, transparent to your application. 
+
+You can see this as a set of abstractions, a set of internal apis, creating an overall programming model that lets you say
+
+ connect to that service and get me some data, with back pressure!
+ 
+how it actually does that, well, your application code doesn't know, nor care.  you as a developer and operator can peel back the layers to slot in nice technologies to improve performance here and there, with the abstractions enabling the application to keep on running.
+
+## Similar projects 
+
+some projects around have some similarities to Muon. 
+
+* NServiceBus
+* ZeroMQ
+* AsyncApi spec
+
+of these, async api is the closest in concept I _think_. I'm not a fan of its declarative approach, coupling to broker based messaging concepts nor the seemingly business focused nature of the examples. I don't know more than that, feel free to send me corrections,  I built the core approaches of Muon before it was released, so we've got parallel evolution going on, which is nice validation.
+
+I have a big soft spot for ZeroMQ. "Sockets, but better" was my inspiration when recently pinning down how to describe Muon. for my uses, it is both too opinionated, and not opinionated enough. it implements,  fairly low level, messaging patterns in its libraries, but couples those to its wire transport approach. I want to route over websockets, amqp, TCP, just to start with, so it doesnt quite work for me.
+
+## Where next?
+
+Go and check muon out. there's a few examples of the benefits of reactive apis as implemented by muon
+
+* todo, browser to server.
+* todo, Akka to node.
+* todo. Reactive apis on the IoT edge.
+
+I would love for Muon to be the definitive reactive api toolkit. currently we're pushing hard on language support. if you like the idea of reactive apis and are willing to put some resources into language support, give me a ping and I can guide/ help you along 
+
+I don't believe the way forward can be to create fragmentation, as we currently see in the language locked microservices frameworks. For Reactive APIs to be a real thing, to gain broad acceptance of the idea, they have to be common. 
+
+So, if you build a microservices framework, distributed processing engine, data store or app framework, Muon is your friend, not competition. 
+
