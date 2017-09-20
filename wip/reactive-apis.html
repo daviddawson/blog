@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reactive Apis - like apis, but better</title>
+  <meta name="description" content="">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="canonical" href="http://daviddawson.me/wip/reactive-apis.html">
+    <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/asciidoc.css">
+  <link rel="stylesheet" href="/css/producttable.css">
+  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+    body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+    code {
+      background:none;
+      border:0;
+    }
+
+    code span { border: 0; width:100% }
+  .listingblock {
+      background: #eee;
+      border-radius:5px;
+      border:1px solid #ccc
+    }
+  }
+
+  div.documentation a.btn {
+    margin-top:20px;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }
+
+  div.documentation a.btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+
+  div.documentation h2 {
+    font-size:1.5em
+  }
+
+  div.documentation code, div.documentation .sidebarblock .content {
+    font-size: 1.0625rem;
+  }
+
+  .sect1 .sectionbody .content {
+    padding:0;
+  }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/sidebar2.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="http://daviddawson.me/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              <a href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/me.html">About Me | What I Do</a>
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="/training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="/training/microservices-free.html">Free Microservice Healthcheck</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/microservices.html">3 Reactive Microservices Workshop</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/groovy.html">Groovy</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/hireme.html">Hire Me</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://github.com/daviddawson">Github</a>
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>I&#8217;ve been working on the Muon project for a while, exploring and implementing patterns I&#8217;ve found useful while using it in projects.  We&#8217;ve never come to a particularly pithy way of describing the concepts we have built. It&#8217;s not really a microservices framework, it hasn&#8217;t got enough frameworking for your internal application structure for that.  instead my attention has been strongly drawn to what I&#8217;ve been referring to asbthe "communication space", the gap between out islands of state where data consistency is lost and much hair pulling and gnashing of teeth occurs.</p>
+</div>
+<div class="paragraph">
+<p>I recently delivered a few talks on Muon, and I think I&#8217;ve come to a good concept which I&#8217;d like to introduce, <strong><em>Reactive Apis</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>I do, of course, run the risk of devaluing the term "reactive" further, yet I believe that I&#8217;m merely following in the footsteps of the existing use and making a small, and natural, extension in terminology.</p>
+</div>
+<div class="paragraph">
+<p>The word Reactive though is currently used for two very different things.</p>
+</div>
+<div class="paragraph">
+<p>One is <strong>Reactive Programming</strong>, also called Functional Reactive Programming. this is what the Rx projects, Spring Reactor and the myriad FRP libs in the javascript space all implement. it describes functional data flow operated on by composed functions. it is very much an implementation technique, ultimately drawn from the great body of software research from the 1970s (as most of software currently is).</p>
+</div>
+<div class="paragraph">
+<p>The other reactive is that one spoken about by the <strong>Reactive Manifesto</strong>. it describes architectural principles and the benefits of them. As am architecture, which I would use as a synonym for a <strong><em>software philosophy</em></strong>, It does not prescribe an implementation. not even Akka, honest!</p>
+</div>
+<div class="paragraph">
+<p>There is some crossover, for example the Akka Streams and Spring Data Flow projects can be described as both Reactive Programming implementations and following Reactive Architectural principles.</p>
+</div>
+<div class="paragraph">
+<p><strong>Fun, right?</strong></p>
+</div>
+<div class="paragraph">
+<p>In this article, where I say "reactive", I mean the Reactive Manifesto. If I want to discuss reactive programming, I&#8217;ll say "FRP".</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="http-the-emperor-has-no-clothes">HTTP, the emperor has no clothes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With Muon, we have been building in this "communication space". This is the realm of network comms, integration technologies and above all, APIs.</p>
+</div>
+<div class="paragraph">
+<p>I have looked at microservice systems in particular, but things jave transitioned very cleanly into the browser and IoT systems, vastly more distributed in nature than their server side kin. This has led me to stop referring to Muon specifically in terms of microservices and reach for another descriptive I could use.</p>
+</div>
+<div class="paragraph">
+<p>In microservices, we have broadly standardised on two forms of communication, one, well defined APIs implemented using HTTP (most commonly REST_ish_). The second form is ad hoc messaging, probably tied to a broker.</p>
+</div>
+<div class="paragraph">
+<p>I&#8217;ve been fairly forthright over the past few years that I think HTTP has lots of issues when building systems, I won&#8217;t dwell on those here beyond asking, <strong><em>why are all our Apis implicitly http based?</em></strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="reactive-apis">Reactive Apis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the principles of the Reactive Manifesto is to be message based. this is really the enabler of all of the other principles. The other principles are statements of intent and expectation when you build a message based system properly.</p>
+</div>
+<div class="paragraph">
+<p>HTTP is plainly not message based, and so can&#8217;t easily be the foundation of a reactive system.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">HTTP is not Reactive, it can&#8217;t be.</div>
+<div class="paragraph">
+<p>todo, make me a quote.</p>
+</div>
+<div class="paragraph">
+<p>HTTP does though have a well defined interaction model and supporting client libraries that make it almosy trivially easy to use (open telnet, speak some HTTP, discover MIME types, give up. The fact that it is ubiquitious, and has well defined interactions makes it a good basis for delivering apis over a network. I would argue that REST semantics merely enhance this fundamental property of HTTP.</p>
+</div>
+<div class="paragraph">
+<p>Messaging has no such properties. It is totally ad hoc. This makes it a supremely flexible approach, but means that it can&#8217;t really be described as an "api" in any meaningful sense. each service will interact very differently to every other. You will have to learn the particular <strong><em>domain specific message protocol</em></strong> to interact with the service even at all.</p>
+</div>
+<div class="paragraph">
+<p>If you were to build message based apis though, what might they look like?</p>
+</div>
+<div class="paragraph">
+<p>For a start, I wouldn&#8217;t want to be bound to a broker. Messaging doesn&#8217;t imply topics or queues (todo, quote this), it simply refers to async moving of some data over some transport between 2..N components.  If I wanted my shiny api to be accessed over the internet, I&#8217;d want to use something like TCP, or websockets (/http2) if I want to proxy or use http routing. in a controlled internal network with lots of moving pieces, a central message broker makes a lot of sense to enable policy control and monitoring.</p>
+</div>
+<div class="paragraph">
+<p>I am no friend of HTTP systems, yet one thing ive learned well from the successful ones. What http got right was defining a technical level of functionality. Upon that you can then build your api with full domain specifics.  The technical implementation of http thoigh doesn&#8217;t care what your api means, inly how you interact with it. Conversely, the domain specific api doesn&#8217;t have its own special snowflake interaction model. Unless you do long polling, but sessions of webflow like tech, in which case you broke the model and deserve everything you got.</p>
+</div>
+<div class="paragraph">
+<p>You can see the process of building an HTTP api as accepting that there is a split between defining the interaction model, then creating the actual concrete api within that class of apis. we have a class of apis that we refer to by adding the prefix "http". they all use the same, technically defined, interaction model and tech.</p>
+</div>
+<div class="paragraph">
+<p>In our shiny new message api system, we should do the same! first, we define a level of technical interactions, separated from the actual apis being built. Since we are using messaging, we can define multiple such technical interaction models.</p>
+</div>
+<div class="paragraph">
+<p>Different classes of api. Each with its own technical functionality, with no domain specific concepts in them.</p>
+</div>
+<div class="paragraph">
+<p>Almost all messaging I see used is actually using a particular interaction model, by default. in that model every message is sent to a queue, which is then read from by a group of components. those messages all have some domain meaning, rather than purely technical.</p>
+</div>
+<div class="paragraph">
+<p>This is the concept I cureently see is missing. rather than having application components sending messages to each other that all have domain meaning, we can create and use messages that act purely for technical coordination, generating the interaction model I&#8217;ve been discussing Domain meaning is then held and transported around according to the particular message protocol of the API of all you are using.</p>
+</div>
+<div class="paragraph">
+<p>Ultimately, I want apis that are better than http (todo, quote), while retaining the good things. I believe that Reactive Apis, or whatever we call them, can drive huge improvements in application, microservice and browser app designs.</p>
+</div>
+<div class="paragraph">
+<p>We must be firm though in deciding that these new types of api are purely technical in nature. I have seen what happens when you try to define domain specific message interactions. they become utterly non portable and ill  defined messes. http doesn&#8217;t understand your business, reactive apis shouldnt either.</p>
+</div>
+<div class="paragraph">
+<p>## example, building a stream based api</p>
+</div>
+<div class="paragraph">
+<p>The reactive streams initiative is one of the recent collaborative success stories in the jvm world. it defines a small set of java interfaces along with instructions on how they should be used by implementers.  it permits different streaming systems on the jvm to interoperate in various ways, including back pressure signals.</p>
+</div>
+<div class="paragraph">
+<p>This works great inside a jvm process, between processes?  how about to a non jvm process? I&#8217;d love to be able to talk transparently to a reactive streams endpoint from say, nodejs, or in a browser.</p>
+</div>
+<div class="paragraph">
+<p>each method call on the interfaces maps to a technical signal between two compoments. in a message based world, they are all messages.</p>
+</div>
+<div class="paragraph">
+<p>todo, list them</p>
+</div>
+<div class="paragraph">
+<p>The important thing to more is that none of these mean anything to your business. they are purely technical in nature, and are generating a new form of interaction model that you can use. the actual apis we could provide would be RS+some business functionality.  so if we were to implement this, we would actually be creating a new class of apis, reactive streaming across the network, defined as messaging. something with a very different feature set than RPCish, a la http.</p>
+</div>
+<div class="paragraph">
+<p><mark>#</mark> turtles and abstractions</p>
+</div>
+<div class="paragraph">
+<p>This is what muon is built for, to enable you to design and build reactive apis. it does this by implementing a set of api types which use messaging, and exposing those to your application code using labguage idiomatic apis.</p>
+</div>
+<div class="paragraph">
+<p>The end result is that you gain the benefits of a networked api, with the added benefits of messaging. apis, but better!</p>
+</div>
+<div class="paragraph">
+<p>This could of course all be implemented on top of the message broker du  jour. that is, for reasons I mentioned earlier, a loss. you also run the risk of becoming language locked and mixing your application concerns into the communication aspects too deeply,  for that reason, I designed the core model of Muon to be somewhat agnostic in how it communicates.  thisbpernits two things, you can switch transport tech for communicating with remote apis. secondly, the api could be running in your process, transparent to your application.</p>
+</div>
+<div class="paragraph">
+<p>You can see this as a set of abstractions, a set of internal apis, creating an overall programming model that lets you say</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>connect to that service and get me some data, with back pressure!</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>how it actually does that, well, your application code doesn&#8217;t know, nor care.  you as a developer and operator can peel back the layers to slot in nice technologies to improve performance here and there, with the abstractions enabling the application to keep on running.</p>
+</div>
+<div class="paragraph">
+<p>## Similar projects</p>
+</div>
+<div class="paragraph">
+<p>some projects around have some similarities to Muon.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>NServiceBus</p>
+</li>
+<li>
+<p>ZeroMQ</p>
+</li>
+<li>
+<p>AsyncApi spec</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>of these, async api is the closest in concept I <em>think</em>. I&#8217;m not a fan of its declarative approach, coupling to broker based messaging concepts nor the seemingly business focused nature of the examples. I don&#8217;t know more than that, feel free to send me corrections,  I built the core approaches of Muon before it was released, so we&#8217;ve got parallel evolution going on, which is nice validation.</p>
+</div>
+<div class="paragraph">
+<p>I have a big soft spot for ZeroMQ. "Sockets, but better" was my inspiration when recently pinning down how to describe Muon. for my uses, it is both too opinionated, and not opinionated enough. it implements,  fairly low level, messaging patterns in its libraries, but couples those to its wire transport approach. I want to route over websockets, amqp, TCP, just to start with, so it doesnt quite work for me.</p>
+</div>
+<div class="paragraph">
+<p>## Where next?</p>
+</div>
+<div class="paragraph">
+<p>Go and check muon out. there&#8217;s a few examples of the benefits of reactive apis as implemented by muon</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>todo, browser to server.</p>
+</li>
+<li>
+<p>todo, Akka to node.</p>
+</li>
+<li>
+<p>todo. Reactive apis on the IoT edge.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I would love for Muon to be the definitive reactive api toolkit. currently we&#8217;re pushing hard on language support. if you like the idea of reactive apis and are willing to put some resources into language support, give me a ping and I can guide/ help you along</p>
+</div>
+<div class="paragraph">
+<p>I don&#8217;t believe the way forward can be to create fragmentation, as we currently see in the language locked microservices frameworks. For Reactive APIs to be a real thing, to gain broad acceptance of the idea, they have to be common.</p>
+</div>
+<div class="paragraph">
+<p>So, if you build a microservices framework, distributed processing engine, data store or app framework, Muon is your friend, not competition.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>
