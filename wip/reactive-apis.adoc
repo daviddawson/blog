@@ -1,4 +1,21 @@
-# Reactive Apis - like apis, but better
+---
+excerpt: APIs are a core concept in Microservices, but why do we only think of HTTP? I want better APIs than HTTP can provide, in this article, I propose a new term to describe them: Reactive APIs, like APIs, but better!
+title: Reactive APIs - Like APIs, but Better
+layout: post
+author: David Dawson
+date: 2017-09-06 12:18
+image: images/muonfulllogo.jpg
+categories:
+ - blog
+tags:
+ - muon
+ - reactive
+ - microservices
+---
+
+
+
+# Reactive Apis - like APIs, but better
 
 I've been working on the Muon project for a while, exploring and implementing patterns I've found useful while using it in projects.  We've never come to a particularly pithy way of describing the concepts we have built. It's not really a microservices framework, it hasn't got enough frameworking for your internal application structure for that.  instead my attention has been strongly drawn to what I've been referring to asbthe "communication space", the gap between out islands of state where data consistency is lost and much hair pulling and gnashing of teeth occurs.
 
