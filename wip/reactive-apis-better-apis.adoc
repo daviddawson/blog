@@ -13,10 +13,6 @@ tags:
  - microservices
 ---
 
-
-
-# Reactive Apis - like APIs, but better
-
 I've been working on the Muon project for a while, exploring and implementing patterns I've found useful while using it in projects.  We've never come to a particularly pithy way of describing the concepts we have built. It's not really a microservices framework, it hasn't got enough frameworking for your internal application structure for that.  instead my attention has been strongly drawn to what I've been referring to asbthe "communication space", the gap between out islands of state where data consistency is lost and much hair pulling and gnashing of teeth occurs.
 
 I recently delivered a few talks on Muon, and I think I've come to a good concept which I'd like to introduce, *_Reactive Apis_*.
