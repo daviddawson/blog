@@ -33,7 +33,7 @@ Bash is unique in being everywhere, yet seemingly the language that no one can r
 
 So, shell scripting in alternate languages is often useful for maintainability, testability and other ilities. Groovy makes a decent candidate for this as it has excellent support for data transformation and integration with various data sources and can contain a shell script shebang for ease of execution.
 
-Gorm lets you map objects onto various data sources, then use a whole bunch of active record style integrations. The relatively new link:http://gorm.grails.org/latest/rx/manual/index.html[RxGorm] gives you FRP style back pressure/ functional processing for streaming data out of the data store and doing stuff with it.
+Gorm lets you map objects onto various data sources, then use a whole bunch of active record style operations. Its a lovely DSL on data. The relatively new link:http://gorm.grails.org/latest/rx/manual/index.html[RxGorm] gives you FRP style back pressure/ functional processing for streaming data out of the data store and doing stuff with it.
 
 ## The bits
 
