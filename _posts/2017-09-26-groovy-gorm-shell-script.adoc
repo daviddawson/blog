@@ -12,7 +12,6 @@ tags:
  - shell
 ---
 
-
 Gorm is the data access layer in Grails. I've been mostly away from Grails since 3.0 landed (for reasons).
 
 I've recently been taking a look at how things have come along, and have continued delivering link:http://daviddawson.me/training/groovy.html[training on Groovy].
