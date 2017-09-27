@@ -5,8 +5,8 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 27 Sep 2017 23:29:11 +0100</pubDate>
-    <lastBuildDate>Wed, 27 Sep 2017 23:29:11 +0100</lastBuildDate>
+    <pubDate>Wed, 27 Sep 2017 23:32:58 +0100</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2017 23:32:58 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -49,7 +49,7 @@
 &lt;p&gt;So, shell scripting in alternate languages is often useful for maintainability, testability and other ilities. Groovy makes a decent candidate for this as it has excellent support for data transformation and integration with various data sources and can contain a shell script shebang for ease of execution.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Gorm lets you map objects onto various data sources, then use a whole bunch of active record style integrations. The relatively new &lt;a href=&quot;http://gorm.grails.org/latest/rx/manual/index.html&quot;&gt;RxGorm&lt;/a&gt; gives you FRP style back pressure/ functional processing for streaming data out of the data store and doing stuff with it.&lt;/p&gt;
+&lt;p&gt;Gorm lets you map objects onto various data sources, then use a whole bunch of active record style operations. Its a lovely DSL on data. The relatively new &lt;a href=&quot;http://gorm.grails.org/latest/rx/manual/index.html&quot;&gt;RxGorm&lt;/a&gt; gives you FRP style back pressure/ functional processing for streaming data out of the data store and doing stuff with it.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
