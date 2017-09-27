@@ -5,9 +5,149 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 20 Sep 2017 18:47:04 +0100</pubDate>
-    <lastBuildDate>Wed, 20 Sep 2017 18:47:04 +0100</lastBuildDate>
+    <pubDate>Wed, 27 Sep 2017 23:29:11 +0100</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2017 23:29:11 +0100</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Groovy Gorm Shell Script</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Gorm is the data access layer in Grails. I&amp;#8217;ve been mostly away from Grails since 3.0 landed (for reasons).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I&amp;#8217;ve recently been taking a look at how things have come along, and have continued delivering &lt;a href=&quot;http://daviddawson.me/training/groovy.html&quot;&gt;training on Groovy&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In the session I&amp;#8217;m delivering there was some interest in Gorm as I walked people through it, and since I&amp;#8217;ve been showing people the benefits of using Groovy for shell scripting and system automation, I thought, why not Gorm too?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is the result of 20 mins pulling things together, it all works with, with a tiny bit of ugliness.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Assembled from :-&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;http://gorm.grails.org/latest/hibernate/manual/index.html#outsideGrails&quot; class=&quot;bare&quot;&gt;http://gorm.grails.org/latest/hibernate/manual/index.html#outsideGrails&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/grails/grails-core/issues/10654#issuecomment-306387891&quot; class=&quot;bare&quot;&gt;https://github.com/grails/grails-core/issues/10654#issuecomment-306387891&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/grails-samples/gorm-outside-grails&quot; class=&quot;bare&quot;&gt;https://github.com/grails-samples/gorm-outside-grails&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-rationale&quot;&gt;The rationale&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Bash is unique in being everywhere, yet seemingly the language that no one can remember to any workable degree, only surpassed in this by regular expressions.  I&amp;#8217;ve lost count of the number of times I&amp;#8217;ve looked up how to do a loop in bash, and I still couldn&amp;#8217;t tell you how to do it!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So, shell scripting in alternate languages is often useful for maintainability, testability and other ilities. Groovy makes a decent candidate for this as it has excellent support for data transformation and integration with various data sources and can contain a shell script shebang for ease of execution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Gorm lets you map objects onto various data sources, then use a whole bunch of active record style integrations. The relatively new &lt;a href=&quot;http://gorm.grails.org/latest/rx/manual/index.html&quot;&gt;RxGorm&lt;/a&gt; gives you FRP style back pressure/ functional processing for streaming data out of the data store and doing stuff with it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-bits&quot;&gt;The bits&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Putting it together wasn&amp;#8217;t too difficult, bar a couple of niggles that came up.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Gorm has come along well and is pretty isolated from the surrounding Grails infrastructure now. All you need to do is to create a &lt;code&gt;HibernateDatastore&lt;/code&gt; (or other) and pass in a config and your domain classes for initialisation. Then, you can start to use them as you do in Grails.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;One rub is that there is no natural place to wrap a transactional Session around. This appears as a hiernate exception related to no session being present.  This is something often not noticed in a grails app, as its all created automatically by Grails, and is also created by a full fat standalone Gorm app when you&amp;#8217;re using services with any form of transactional annotation. Yet, you need a session to use hibernate, which the RDBMS version of Gorm uses.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The solution is to use the &lt;code&gt;.withTransaction&lt;/code&gt; method added onto all grails domain classes. This creates a session and puts it into the thread context.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I did a light bit of syntax sugaring to hide that stuff and make things more readable, and its good to go!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-full-script&quot;&gt;The full script&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;listingblock&quot;&gt;
+&lt;div class=&quot;content&quot;&gt;
+&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code data-lang=&quot;groovy&quot;&gt;&lt;span style=&quot;color: #BC7A00&quot;&gt;#!/usr/bin/env groovy&lt;/span&gt;
+
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Grapes&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;([&lt;/span&gt;
+        &lt;span style=&quot;color: #AA22FF&quot;&gt;@Grab&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;org.grails:grails-datastore-gorm-hibernate5:6.1.4.RELEASE&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;),&lt;/span&gt;
+        &lt;span style=&quot;color: #AA22FF&quot;&gt;@Grab&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;com.h2database:h2:1.4.192&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;),&lt;/span&gt;
+        &lt;span style=&quot;color: #AA22FF&quot;&gt;@Grab&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;org.apache.tomcat:tomcat-jdbc:8.5.0&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;),&lt;/span&gt;
+        &lt;span style=&quot;color: #AA22FF&quot;&gt;@Grab&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;),&lt;/span&gt;
+        &lt;span style=&quot;color: #AA22FF&quot;&gt;@Grab&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;org.slf4j:slf4j-api:1.7.10&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;])&lt;/span&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #0000FF; font-weight: bold&quot;&gt;grails.gorm.annotation.Entity&lt;/span&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #0000FF; font-weight: bold&quot;&gt;org.grails.datastore.gorm.GormEntity&lt;/span&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;import&lt;/span&gt; &lt;span style=&quot;color: #0000FF; font-weight: bold&quot;&gt;org.grails.orm.hibernate.HibernateDatastore&lt;/span&gt;
+
+&lt;span style=&quot;color: #408080; font-style: italic&quot;&gt;// Create the domain classes you want&lt;/span&gt;
+&lt;span style=&quot;color: #AA22FF&quot;&gt;@Entity&lt;/span&gt;
+&lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;class&lt;/span&gt; &lt;span style=&quot;color: #0000FF; font-weight: bold&quot;&gt;Person&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;implements&lt;/span&gt; GormEntity&lt;span style=&quot;color: #666666&quot;&gt;&amp;lt;&lt;/span&gt;Person&lt;span style=&quot;color: #666666&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+
+    String firstName
+    String lastName
+
+    &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;static&lt;/span&gt; mapping &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+        firstName &lt;span style=&quot;color: #A0A000&quot;&gt;blank:&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;false&lt;/span&gt;
+        lastName &lt;span style=&quot;color: #A0A000&quot;&gt;blank:&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;false&lt;/span&gt;
+    &lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;
+
+&lt;span style=&quot;color: #408080; font-style: italic&quot;&gt;//Guts of the script, do your db stuff here with the power of Gorm&lt;/span&gt;
+gormScript &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+    &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;Person&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #A0A000&quot;&gt;firstName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Dave&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt; &lt;span style=&quot;color: #A0A000&quot;&gt;lastName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Ronald&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;save&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+    &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;Person&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #A0A000&quot;&gt;firstName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Jeff&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt; &lt;span style=&quot;color: #A0A000&quot;&gt;lastName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Happy&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;save&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+    &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;Person&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #A0A000&quot;&gt;firstName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Sergio&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt; &lt;span style=&quot;color: #A0A000&quot;&gt;lastName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;del Amo&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;save&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+    &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;new&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;Person&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #A0A000&quot;&gt;firstName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Monica&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt; &lt;span style=&quot;color: #A0A000&quot;&gt;lastName:&lt;/span&gt; &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;Crazy&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;).&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;save&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+
+    println &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;People = ${Person.count()}&amp;quot;&lt;/span&gt;
+
+    &lt;span style=&quot;color: #B00040&quot;&gt;def&lt;/span&gt; sergio &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; Person&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;findByFirstName&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;Sergio&amp;quot;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+
+    println &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;quot;Got ${sergio.firstName} ${sergio.lastName}&amp;quot;&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span style=&quot;color: #B00040&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color: #0000FF&quot;&gt;gormScript&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt;Closure exec&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+    Map configuration &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;[&lt;/span&gt;
+            &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;hibernate.hbm2ddl.auto&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;create-drop&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt;
+            &lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;dataSource.url&amp;#39;&lt;/span&gt;&lt;span style=&quot;color: #666666&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: #BA2121&quot;&gt;&amp;#39;jdbc:h2:mem:myDB&amp;#39;&lt;/span&gt;
+    &lt;span style=&quot;color: #666666&quot;&gt;]&lt;/span&gt;
+    HibernateDatastore datastore &lt;span style=&quot;color: #666666&quot;&gt;=&lt;/span&gt; &lt;span style=&quot;color: #008000; font-weight: bold&quot;&gt;new&lt;/span&gt; HibernateDatastore&lt;span style=&quot;color: #666666&quot;&gt;(&lt;/span&gt; configuration&lt;span style=&quot;color: #666666&quot;&gt;,&lt;/span&gt; Person&lt;span style=&quot;color: #666666&quot;&gt;)&lt;/span&gt;
+
+    Person&lt;span style=&quot;color: #666666&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;color: #7D9029&quot;&gt;withTransaction&lt;/span&gt; &lt;span style=&quot;color: #666666&quot;&gt;{&lt;/span&gt;
+        exec&lt;span style=&quot;color: #666666&quot;&gt;()&lt;/span&gt;
+    &lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;
+&lt;span style=&quot;color: #666666&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Wed, 06 Sep 2017 12:18:00 +0100</pubDate>
+        <link>http://daviddawson.me/blog/2017/09/06/groovy-gorm-shell-script.html</link>
+        <guid isPermaLink="true">http://daviddawson.me/blog/2017/09/06/groovy-gorm-shell-script.html</guid>
+        
+        <category>groovy</category>
+        
+        <category>gorm</category>
+        
+        <category>shell</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Diabetes at 35, 1 year in.</title>
@@ -2244,299 +2384,6 @@ give them consistency and an ease of use.&lt;/p&gt;
         
         
         <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Microservices and Philosophy</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When talking to clients, both current and potential, at conferences, users groups and the like, the question arises often, &quot;what is a Microservice?&quot;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;In many respects, it&amp;#8217;s a question that defies a single answer.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Since we&amp;#8217;re a consultancy specialising in Microservices, we did a review a while ago with our clients and partners (some of you may remember), asking
-this very question!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The answers we got back were informative and ranged from the specific and technical, to the vague and emotional.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Some examples :-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Small web services&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Bounded Contexts&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Low LOC (yep!)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Small REST services&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Pipes and filters&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Not SOA&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Fine grained SOA!&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;OO in the large&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Functional in the large&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;and many, many others.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The problem we ended up with was that, when we layed them out to sort the common definition, we found that there wasn&amp;#8217;t one.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;As in, there wasn&amp;#8217;t a point of agreement. Instead we had broadly disjoint sets. This kind of accounts for the lack of a
-clear definition!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Digging a little deeper, we found two things that did find general agreement.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The first, is &lt;strong&gt;isolation&lt;/strong&gt;. The property of pulling a system apart, generally using a network boundary, although not always (eg OSGI and NetKernel).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The second point of agreement was a deep &lt;strong&gt;aspiration&lt;/strong&gt;. The quality that the world would be better, if we deploy microservices.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Obviously, with my background as a hard technologist, this was fairly appalling. (although as a consultant, my proposal press fluttered!)&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;the-microservice-architecture&quot;&gt;The Microservice Architecture&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;An interesting thing came up though, which was the terminology that people use when talking microservices. For much of the conversations, the phrase
-used is actually &quot;a microservice architecture&quot;, rather than just &quot;microservices&quot;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This intrigued me, as it leads directly to the question, if I can&amp;#8217;t define Microservices, can I define &lt;strong&gt;architecture&lt;/strong&gt;?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Well, to me, software architecture is something of a debased term, being stolen from construction. Is it the same as
- design?  Many would say, yes it is.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;d take the opposite and say that, no, it can&amp;#8217;t be, and this is simply proven through cardinality.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Looking over a system, you see myriad design decisions, each line has some aspect of design associated with it.
-There appears to be an unlimited number of design decisions available to the software developer.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Architecture?  There&amp;#8217;s recognisably fairly few software architectures. Certainly a number with a limit, maybe a few dozen that
-are in active use. Consider things such as &lt;strong&gt;n-tier&lt;/strong&gt;, &lt;strong&gt;SEDA&lt;/strong&gt;, &lt;strong&gt;event based&lt;/strong&gt; etc.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So, just with counting, they aren&amp;#8217;t the same thing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When I think of architecture, certain ideas and phrases go through my mind :-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;A set of constraints put on the system&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;A set of mental tools used to understand problems and create solutions&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The route to the design, rather than the design itself&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;A framework for arranging your skills, knowledge and aims within.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Sound fair?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I know all these ideas from another field, well outside of software. &lt;strong&gt;Philosophy&lt;/strong&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;From this point of view, software architecture is a form of philosophy, and that leads us to an
-interesting place as far as &lt;strong&gt;The Microservice Architecture&lt;/strong&gt; goes.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We can reframe this as the &lt;strong&gt;Microservices Philosophy&lt;/strong&gt; and have it mean fundamentally the same thing. This is something I&amp;#8217;m far more comfortable with,
- it&amp;#8217;s actually much more concrete!&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We&amp;#8217;ve been understanding and grappling with philosophy for thousands of years, and we&amp;#8217;ve got a lot of wisdom to draw upon.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;the-microservice-philosophy&quot;&gt;The Microservice Philosophy&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;From this point of view then, we can begin to frame Microservices very differently. Instead of reaching for a highly prescriptive
-view on the particular methods, technologies or techniques, we can start to frame our microservices journey in more philosophical terms.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;What is your end goal? What properties of the resulting system do you actually want to achieve?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This turns the discussion of 'what makes a microservices' from the prescriptive, to the descriptive. It allows us to evaluate
-the resulting systems not in terms of how they were constructed, or what they used, but what they actually &lt;strong&gt;do&lt;/strong&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For us, the essential properties of a successful Microservice system are all about responding positively to change pressure.
-A system that not only accepts and adapts to change, but learns and improves itself in response to that change happening.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Luckily, a term was invented for this property &lt;strong&gt;antifragile&lt;/strong&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This was coined by Nicolas Taleb, originally referring to economic and financial systems that benefit from stresses, rather than collapsing.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;From a pure tech point of view, this seems of limited use, is it really broadly applicable to have a system that responds to stresses?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When you are considering Microservices as a purely technical endeavour, then frankly no, its not really a properyy we can easily generate.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;When looking at Microservices as a distributed system philosophy, and tech as a means to an end, then we have the opportunity to broaden our horizons
-somewhat in pursuit of Antifragility.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;As soon as we bring people into the definition of 'the system', the development team in particular, then generating antifragile behaviour becomes easy and desirable.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The famous &lt;strong&gt;Chaos Monkey&lt;/strong&gt; from Netflix is an excellent example of architecture given form. It isn&amp;#8217;t merely a failure testing tool, it&amp;#8217;s the architecture of the system
- enforced by a tool.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The antifragile feedback cycle in this case runs like this :-&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ulist&quot;&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The dev team is made responsible for production outages.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Chaos Monkey generates production outages, on the weekend.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The dev team comes in on Monday, and changes the system so that it can tolerate partial failure and still run.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The system then has been stressed, and then visibly improved itself in response to that stress. It can now tolerate failure in VM resources.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;The system has become Antifragile.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is done by creating the appropriate feedback loops, and then generating appropriate stress to push signals down those feedback loops.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;of-devops-and-continuous-delivery&quot;&gt;Of DevOps and Continuous Delivery&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is where Microservices overlaps heavily with the DevOps movement and Continuous Delivery.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Both place value on feedback cycles and improvement.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;DevOps comes from a cultural and operational viewpoint, Continuous Delivery approaches from the process space, Microservices from the runtime technical viewpoint.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;All are speaking similar language, and I don&amp;#8217;t really care which you subscribe to in order to back up your philosophy of benefiting from change.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;where-does-this-lead&quot;&gt;Where does this lead?&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Of course, this leads to building highly distributed systems. All the issues that are discussed, from log management,
-platform comparison, containerisation, data handling and the like are all valid.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Your system will almost certain look like a set of processes coordinating over requests. What I&amp;#8217;d like you to take away is
-that there is an objective measure you can use to evaluate your success, or otherwise, when deploying a Microservice system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;That measure is how well your system expresses the essential properties defined by your architecture. These essential
- properties don&amp;#8217;t tend to change, so they can be used to measure against over the lifetime of a system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For us, the ability to change and benefit from that change is paramout. You may be looking more at team scaling, or simple runtime scaling.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you aren&amp;#8217;t achieving these properties, and yet paying the Microservices tax (which can be &lt;strong&gt;expensive!&lt;/strong&gt;) then Microservices may well not be for you.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-        <pubDate>Wed, 20 Jul 2016 12:18:00 +0100</pubDate>
-        <link>http://daviddawson.me/microservices/2016/07/20/microservices-philosophy.html</link>
-        <guid isPermaLink="true">http://daviddawson.me/microservices/2016/07/20/microservices-philosophy.html</guid>
-        
-        <category>architecture</category>
-        
-        <category>continuousdelivery</category>
-        
-        <category>microservices</category>
-        
-        <category>devops</category>
-        
-        <category>antifragile</category>
-        
-        
-        <category>Microservices</category>
         
       </item>
     
