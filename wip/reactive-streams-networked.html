@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Reactive Streams across the network, amqp, websockets, nodejs, in the browser?.</title>
+  <meta name="description" content="Reactive Streams is the de facto functional reactive programming compatibility interface on the JVM. Want to see how you can make this networked across messa...">
+
+    <link rel="stylesheet" href="/css/foundation.css">
+
+    <link rel="stylesheet" href="/css/style3.css">
+  <link rel="stylesheet" href="/css/fontello.css">
+  <link rel="stylesheet" href="/css/font-awesome.css">
+  <script src="/javascripts/modernizr.foundation.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-2.1.0.js" type="text/javascript"></script>
+    <script src="/javascripts/terrific-1.1.1.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.url.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/javascripts/json2.js" type="text/javascript"></script>
+    <script src="/javascripts/foundation.js" type="text/javascript"></script>
+  <script>
+    // terrificjs bootstrap
+    (function($) {
+        $(document).ready(function() {
+            var $page = $('body');
+            var config = {
+              dependencyPath: {
+                plugin: 'javascripts/'
+              }
+            }
+            var application = new Tc.Application($page, config);
+            application.registerModules();
+            application.start();
+        });
+    })(Tc.$);
+  </script>
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,700,300" media="screen" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/masonry.pkgd.js" type="text/javascript"></script>
+  <script src="/javascripts/imagesloaded.pkgd.min.js" type="text/javascript"></script>
+  <script src="/javascripts/slick.min.js" type="text/javascript"></script>
+
+  <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="canonical" href="http://daviddawson.me/wip/reactive-streams-networked.html">
+    <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/asciidoc.css">
+  <link rel="stylesheet" href="/css/producttable.css">
+  <style>
+  @media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+    body.toc2{padding-left:15em;padding-right:0}
+#toc {margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;right:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc >ul{font-size:.9em;margin-bottom:0}
+#toc ul ul{margin-left:0;padding-left:1em}
+#toc ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+  @media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc {width:20em}
+#toc #toctitle{font-size:1.375em}
+#toc >ul{font-size:.95em}
+#toc ul ul{padding-left:1.25em}
+      body.toc2.toc-right{padding-left:0;padding-right:20em}}
+
+#toc { z-index:20; padding-top:120px;}
+#documentation { padding-left:10px; margin-left:auto; margin-right:auto}
+#documentation .row { margin:auto }
+    code {
+      background:none;
+      border:0;
+    }
+
+    code span { border: 0; width:100% }
+  .listingblock {
+      background: #eee;
+      border-radius:5px;
+      border:1px solid #ccc
+    }
+  }
+
+  div.documentation a.btn {
+    margin-top:20px;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+  }
+
+  div.documentation a.btn:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+  }
+
+  div.documentation h2 {
+    font-size:1.5em
+  }
+
+  div.documentation code, div.documentation .sidebarblock .content {
+    font-size: 1.0625rem;
+  }
+
+  .sect1 .sectionbody .content {
+    padding:0;
+  }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/sidebar2.css">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-6919980001759109",
+      enable_page_level_ads: true
+    });
+  </script>
+</head>
+
+
+  <body>
+    
+      <a id='top'></a>
+
+<div class='contain-to-grid sticky fullwidth'>
+  <nav class='top-bar onepage' data-options='sticky_on: large' data-topbar=''>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1 class="sitetitle">
+          <a href="http://daviddawson.me/">
+            David Dawson <small>from microservices to IoT in all the languages</small>
+          </a>
+        </h1>
+      </li>
+      <li class='toggle-topbar menu-icon'>
+        <a href='#'>Menu</a>
+      </li>
+    </ul>
+    <section class='top-bar-section'>
+      <ul class='right'>
+        
+          
+            <li>
+              <a href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/me.html">About Me | What I Do</a>
+            </li>
+          
+        
+          
+            <li class="has-dropdown">
+              <a href="/training/microservices.html">Training</a>
+              <ul class='dropdown'>
+                
+                  <li>
+                    <a href="/training/microservices-free.html">Free Microservice Healthcheck</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/microservices.html">3 Reactive Microservices Workshop</a>
+                  </li>
+                
+                  <li>
+                    <a href="/training/groovy.html">Groovy</a>
+                  </li>
+                
+              </ul>
+            </li>
+          
+        
+          
+            <li>
+              <a href="/hireme.html">Hire Me</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://github.com/daviddawson">Github</a>
+            </li>
+          
+        
+      </ul>
+    </section>
+  </nav>
+</div>
+
+    
+
+    <div id='main' role='main'>
+      <div class="documentation">
+  <div class='full' style='background: #000'>
+    <div class='row' style="margin-left:auto; margin-right:auto; max-width:100%">
+      <div class='large-12 columns'>
+        <div class='mod modBlogPost big'>
+          <div id='main' role='main' class='content' style="font-size:1.2rem ">
+            <div class='full documentation'>
+  <div class='row'>
+        <div class='images'>
+          
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="http://daviddawson.me/images/muonfulllogo.jpg" /></div>
+          
+        </div>
+        <div class='content'>
+          <p class='info'>
+
+
+            <span>September 06, 2017</span>
+          </p>
+          <h3><a href="/wip/reactive-streams-networked.html">Reactive Streams across the network, amqp, websockets, nodejs, in the browser?.</a></h3>
+          <div class="paragraph">
+<p>Reactive Streams is one of the biggest community driven success stories on the JVM in recent times. It defines a collection of interfaces that permit interoperability between different functional reactive programming frameworks and libraries. Especially important, it defines "back pressure", giving clients control of the flow of data, not data producers. Used properly, this enables you to remove data buffering, which causes all kinds of scaling and resource usage problems.</p>
+</div>
+<div class="paragraph">
+<p>in today&#8217;s distributed world, how cam you use this cross process?</p>
+</div>
+<div class="paragraph">
+<p>There was an effort to start to define a network protocol for it, however that effort seems to have stalled in favour of each FRP lib implementing its own approach, or simply not having remote capability.  This is a major gap in the utility of the approach, how else are you going to avoid vendor, language or library lock in if you can&#8217;t use a differing FRP implementation in another process without losing back pressure?</p>
+</div>
+<div class="paragraph">
+<p>Muon was conceived as a way to approach this precise type of problem. It allows you to create new classes of API, with rich message based interaction models. Reactive Streams was actually the second api type we implemented.  To do that, we mapped all of the interface methods into muon messages and constructed nice apis around them. Muon core then handles all of the encoding, routing, discovery and so on. These muon messages can be transported across many transports, and can even be routed to and from browsers - todo, muonjs link.</p>
+</div>
+<div class="paragraph">
+<p>The end result is that you can provide Muon RS api endpoints that can be remotely discovered, connected to and consumed. You don&#8217;t need to care about the implementation, it&#8217;s probably JVM based for now, but it certainly doesn&#8217;t need to be in the future.</p>
+</div>
+<div class="paragraph">
+<p>todo, a reactive stream api endpoint</p>
+</div>
+<div class="paragraph">
+<p>A client is equally easy, lookup the remote, connect to the endpoint and you&#8217;re away!</p>
+</div>
+<div class="paragraph">
+<p>todo show jvm client.</p>
+</div>
+<div class="paragraph">
+<p>Connecting in another language presents the question of what the api should look like. what is idiomatic for java won&#8217;t be for others!</p>
+</div>
+<div class="paragraph">
+<p>For javascript, we currently map the data, error and completion signals through to app apis. The back pressure is handled internally, but could easily be exposed.</p>
+</div>
+<div class="paragraph">
+<p>todo, show the client.</p>
+</div>
+<div class="paragraph">
+<p>So, this is easy enough. The benefits of a full messaging api approach like Muon starts to show when you want to obtain data in a browser from some collection of back end services. Typically, you use a big http response, maybe streamibg json if you get that far.  The issue of the lack of back oressure appears again though and you will likely start buffering somewhere.  A more advanced approach might use a websocket, connect to the service and construct some messaging protocol to handle things.  what happens when you need data from more than one back end? Multiple websockets?  Well, you could construct a router, dispatch like that, but honestly it&#8217;s all becoming awkward.</p>
+</div>
+<div class="paragraph">
+<p>Using Muon, you would use the same javascript code as above in your browser. Nothing more.</p>
+</div>
+<div class="paragraph">
+<p>Muon messaging contains enough information that it can be routed and multiplexed very easily. So, for this use case, you can run a very thin websocket to back end muon gateway, and use it from there browser to connect through to your back end systems with full reactive streams semantics. Your back end services dont need to change for this to work.</p>
+</div>
+<div class="paragraph">
+<p>todo.  picture.</p>
+</div>
+<div class="paragraph">
+<p>todo show muonjs init.</p>
+</div>
+<div class="paragraph">
+<p>In summary, Muon let&#8217;s you tackle this kind of problem, and to do so in a fairly language portable way.</p>
+</div>
+            <p id="post-meta">
+
+
+                <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#muon">muon</a>,
+                
+
+                <a href="/blog/tags#reactive">reactive</a>,
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+
+                <a href="/blog/tags#reactive streams">reactive streams</a>,
+                
+                <a href="/blog/tags"><em>Browse all tags</em></a>
+            </p>
+        </div>
+
+
+      <div class='four spacing'></div>
+    <div class='large-3 columns' id='toc'>
+      <div class='links'>
+  <h3>Recent Posts</h3>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/09/06/groovy-gorm-shell-script.html">Groovy gorm shell script</a></li>
+    
+    
+    <li><a href="/blog/2017/09/06/diabetes-1-year-in.html">Diabetes at 35, 1 year in.</a></li>
+    
+    
+    <li><a href="/blog/2017/08/13/build-reactive-polyglot-muon.html">Building reactive microservices using muon and scaling them using kafka, cassandra and friends</a></li>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of event architecture</a></li>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic dao in spring with parameterized types</a></li>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on aws- experiments with rancher and kubernetes</a></li>
+    
+    
+    
+  </ul>
+</div>
+<div class='links'>
+  <h3>Archives</h3>
+  
+  
+  
+  
+  <h4 id="y2017">September 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/09/06/groovy-gorm-shell-script.html">Groovy Gorm Shell Script</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/09/06/diabetes-1-year-in.html">Diabetes at 35, 1 year in.</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">August 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/08/13/build-reactive-polyglot-muon.html">Building Reactive Microservices using Muon and scaling them using Kafka, Cassandra and friends</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">July 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/07/10/styles-of-event-architecture.html">Styles of Event Architecture</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">April 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/04/06/spring-generic-dao-generics.html">Generic DAO in Spring with Parameterized Types</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2017">February 2017</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2017/02/28/experiments-with-rancher-and-kubernetes.html">Building a deploy environment on AWS- Experiments with Rancher and Kubernetes</a></li>
+    
+  
+  
+  
+    <li><a href="/muon-devdiary/2017/02/22/muon-developer-diary.html">Muon Developer Diary</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/21/muon-intro.html">Introducing Muon</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2017/02/04/simplicity-itself-shutdown.html">Shutting down Simplicity Itself</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">November 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/11/03/make-developer-api.html">A Microservices Developer API using .... Make</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">July 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices/2016/07/20/microservices-philosophy.html">Microservices and Philosophy</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2016">March 2016</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2016/03/11/the-minilith-tightly-coupled-microservices.html">The Minilith - Tightly Coupled Microservices</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">June 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/06/17/defining-microservice-architecture.html">Defining The Microservice Architecture</a></li>
+    
+  
+  
+  
+    <li><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/06/04/microservices-security-oauth-vs-session.html">Microservices Security&#58; OAuth vs Session</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">March 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/03/02/the-real-silver-bullet.html">Best Practice Developer techniques&#58; The Hunt for The Silver Bullet</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">February 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/microservices%20and%20reactive/2015/02/16/retiring-microservices-using-strangulation.html">Retiring Microservices Using Strangulation</a></li>
+    
+  
+  
+  
+    <li><a href="/microservices%20and%20reactive/2015/02/10/avoid-microservice-platform-lock-in-service-discovery.html">Avoid Microservice Platform Lock In using Service Discovery</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2015">January 2015</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2015/01/23/the-role-of-data-in-microservices.html">The Role of Data in Microservices</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/12/sharing-code-between-microservices.html">Sharing Code Between Microservices?</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/09/development-by-slogan-dry-part3.html">Development by Slogan with DRY&#58; Part 3, DRY vs WET</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/08/development-by-slogan-dry-part2.html">Development by Slogan with DRY&#58; Part 2, The Tower of Coupling</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2015/01/01/development-by-slogan-dry-part1.html">Development by Slogan with DRY&#58; Part 1, Really DRY</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">April 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/04/21/all-hail-command.html">Simplicity in Grails Design – All Hail the Command Object</a></li>
+    
+  
+  
+  
+    <li><a href="/blog/2013/04/18/future-of-grails.html">The Future of Grails</a></li>
+    
+  
+  
+  
+  </ul>
+  <h4 id="y2013">March 2013</h4>
+  <ul>
+    
+    
+    <li><a href="/blog/2013/03/28/stateless-services-are-evil.html">Simplicity in Web Architecture - Beware the Stateless Service</a></li>
+    </ul>
+  
+</div>
+<div class='links'>
+  <a href="/blog/tags"><em>Browse all tags</em></a>
+</div>
+
+<div class='links'>
+
+</div>
+
+    </div>
+  </div>
+</div>
+
+          </div>
+        </div>
+        <div class='four spacing'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <div class='full no-padding' style='background: #111'>
+  <div class='two spacing'></div>
+  <div class='row'>
+    <div class='large-12 columns' style="color:white;">
+      <p>©2017 David Dawson Ltd. All rights reserved.</p>
+    </div>
+  </div>
+  <div class='spacing'></div>
+</div>
+
+
+<script src="/javascripts/jquery.countTo.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.appear.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.validate.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.sequence-min.js" type="text/javascript"></script>
+<script src="/javascripts/jquery.easing.1.3.js" type="text/javascript"></script>
+<script src="/javascripts/app.js" type="text/javascript"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-91527202-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+
+</html>
