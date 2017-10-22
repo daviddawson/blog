@@ -1,0 +1,49 @@
+---
+excerpt: Reactive Streams is the de facto functional reactive programming compatibility interface on the JVM. Want to see how you can make this networked across message brokers, websocket or TCP? Or maybe bridge this into other languages and runtimes, even the browser?
+title: Reactive Streams across the network, amqp, websockets, nodejs, in the browser?.
+layout: post
+author: David Dawson
+date: 2017-09-06 12:18
+image: images/muonfulllogo.jpg
+categories:
+ - blog
+tags:
+ - muon
+ - reactive
+ - microservices
+ - reactive streams
+---
+
+Reactive Streams is one of the biggest community driven success stories on the JVM in recent times. It defines a collection of interfaces that permit interoperability between different functional reactive programming frameworks and libraries. Especially important, it defines "back pressure", giving clients control of the flow of data, not data producers. Used properly, this enables you to remove data buffering, which causes all kinds of scaling and resource usage problems. 
+
+in today's distributed world, how cam you use this cross process?   
+
+There was an effort to start to define a network protocol for it, however that effort seems to have stalled in favour of each FRP lib implementing its own approach, or simply not having remote capability.  This is a major gap in the utility of the approach, how else are you going to avoid vendor, language or library lock in if you can't use a differing FRP implementation in another process without losing back pressure? 
+
+Muon was conceived as a way to approach this precise type of problem. It allows you to create new classes of API, with rich message based interaction models. Reactive Streams was actually the second api type we implemented.  To do that, we mapped all of the interface methods into muon messages and constructed nice apis around them. Muon core then handles all of the encoding, routing, discovery and so on. These muon messages can be transported across many transports, and can even be routed to and from browsers - todo, muonjs link. 
+
+The end result is that you can provide Muon RS api endpoints that can be remotely discovered, connected to and consumed. You don't need to care about the implementation, it's probably JVM based for now, but it certainly doesn't need to be in the future.
+
+todo, a reactive stream api endpoint 
+
+A client is equally easy, lookup the remote, connect to the endpoint and you're away!
+
+todo show jvm client.
+
+Connecting in another language presents the question of what the api should look like. what is idiomatic for java won't be for others! 
+
+For javascript, we currently map the data, error and completion signals through to app apis. The back pressure is handled internally, but could easily be exposed.
+
+todo, show the client.
+
+So, this is easy enough. The benefits of a full messaging api approach like Muon starts to show when you want to obtain data in a browser from some collection of back end services. Typically, you use a big http response, maybe streamibg json if you get that far.  The issue of the lack of back oressure appears again though and you will likely start buffering somewhere.  A more advanced approach might use a websocket, connect to the service and construct some messaging protocol to handle things.  what happens when you need data from more than one back end? Multiple websockets?  Well, you could construct a router, dispatch like that, but honestly it's all becoming awkward.  
+
+Using Muon, you would use the same javascript code as above in your browser. Nothing more.
+
+Muon messaging contains enough information that it can be routed and multiplexed very easily. So, for this use case, you can run a very thin websocket to back end muon gateway, and use it from there browser to connect through to your back end systems with full reactive streams semantics. Your back end services dont need to change for this to work.
+
+todo.  picture.
+
+todo show muonjs init.
+
+In summary, Muon let's you tackle this kind of problem, and to do so in a fairly language portable way.

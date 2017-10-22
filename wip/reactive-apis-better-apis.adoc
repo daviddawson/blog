@@ -142,4 +142,3 @@ I would love for Muon to be the definitive reactive api toolkit. currently we're
 I don't believe the way forward can be to create fragmentation, as we currently see in the language locked microservices frameworks. For Reactive APIs to be a real thing, to gain broad acceptance of the idea, they have to be common.
 
 So, if you build a microservices framework, distributed processing engine, data store or app framework, Muon is your friend, not competition.
-

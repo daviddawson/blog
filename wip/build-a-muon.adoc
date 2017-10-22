@@ -1,0 +1,115 @@
+---
+excerpt: Learn how to build a new implementation of Muon and Muon apis
+title: Build a Muon
+layout: post
+author: David Dawson
+date: 2017-09-06 12:18
+image: images/muonfulllogo.jpg
+categories:
+ - blog
+tags:
+ - muon
+ - reactive
+ - microservices
+ - reactive streams
+---
+
+Muon is a toolkit for building Reactive/ message based apis. Thia article describes how to implement Muon, including discussing the core Muon model and rationale for the major design decisions.
+
+Being an api approach, Muon is defined ultimately by the messages that are exchanged between services and the order they are exchanged in. Message definitions and interaction protocols described in this document are mandatory for implementing Muon correctly.
+
+## Terms and visualisations
+
+The Muon model is a restricted form of Communicating Sequential Processes  (CSP). This places the channel as the primary design primitive in this system. 
+
+Muon is therefore implemented as a set of components, connected by bi directional channels. Some of these channels bridge a network, and are implemented by _transports_.  In order to visualise this and be able to understand and communicate about it more easily, we have adopted a common visualisation metaphor that we use in diagrams, and in code.
+
+Here is an example. 
+
+todo. example.
+
+Here, you can see the various components and channels arranged horizontally and connected on their left/ right sides to others. These are the terms that we use, _left_ and _right_. When you see these in code, or as part of a design document, it is always referring to this visual arrangement.
+
+## Message formats and core protocols
+
+Muon operates in layers. It's messaging formats represent that explicitly. You can see that in this example. todo, diagram.
+
+The central layer is common across all apis and transports, which we refer to as Muon Messages. This an example message, represented as JSON (which is not the only transport representation)
+
+todo. a muon message.
+
+This schema is used by all protocols. the role of the protocol is to create and consume Muon Messages appropriately. The protocol will encode its data into the muon message payload field and indicate where in the protocol state machine it is by using the _step_ field.
+
+How the messages are used by them higher protocols is not restricted.
+
+### Example protocol messages. RPC.
+
+The apis have their own messages that they must encode and decode into Muon Messages. These are not restricted in any way, and once encoded into the muon message payload, is ignored by all other Muon components.
+
+To give a worked example. Simple rpc (this is not the actual rpc protocol)
+
+The app code will make a request, somehow. The client protocol will generate a message to represent that request. It could look like this (as JSON).
+
+todo exanple request.
+
+It will then encode that and generate a Muon message holding that, and indicating the protocol step.
+
+The Muon message would look like this.
+
+Then, the api opens a new channel to the remote service and sends the message. 
+
+On the server side in the remote service, Muon understands the protocol that has been requested and begins a new protocol session, assuming it supports the given protocol!
+
+The server side rpc protocol will receive the Muon message above, and will then decode the payload. Based on the content, it can use whatever api it has available to do some work  (e.g. call a function). Once complete, it will generate a response message, encode and wrap that into a muon message. The messages would look like this.
+
+todo.  response messages
+
+Once done, it can close the channel. The client receives the message, unpacks it and completes its work. 
+
+RPC is a very simple protocol, but I hope you can see how more complex protocols can be designed and built easily using this approach.
+
+### Transport messages
+
+Transports deal with moving muon messages from one service to another. 
+
+## Implementation guide
+
+The client and server portions of Muon are fairly distinct, and can be implemented independently. If you are implementing a new Muon, it is recommended you pick one of these and fully implement it before moving to the other. This guide assumes you will implement the client, along with common components, first.
+
+The following component design is recommended, but is not required to implement Muon correctly. The only requirement for building a conformant muon implementation is to follow the message protocols and message schemas.
+
+## Client Components
+
+The client portion of Muon has the responsibility for
+
+### Channel and message dispatch
+
+### Codecs
+
+### Transport interface
+
+### Discovery
+
+### Transport client
+
+#### Shared channel/ multiplex (optional)
+
+### Implement the API type
+
+## Server Components 
+
+### Server Stacks
+
+### Discovery 
+
+### Server side api
+
+### Shared channel/ multiplex
+
+## Implementing an API type
+
+## Introspection api
+
+Once you have finished all aspects of this guide, you will have a fully working Muon. Unfortunately, it won't actually do that much!  For it to be useful, you have to implement one of the api protocols on top of it. For the server side, you should have a minimal introspection all at the very least 
+
+Each Muon api is very different in the way it operates, but they all share common defining features. They all connect to one or more other Muon service, by opening channels to them, and then exchange messages according to their own internally defined messaging protocol.  In order to implement an existing api, you need to understand its messaging protocol and data schemas. Then, you can implement the protocol, and design a user facing api that is idiomatic in your runtime.
