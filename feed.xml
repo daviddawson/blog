@@ -5,8 +5,8 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 06 Jan 2018 18:49:44 +0000</pubDate>
-    <lastBuildDate>Sat, 06 Jan 2018 18:49:44 +0000</lastBuildDate>
+    <pubDate>Sat, 06 Jan 2018 18:52:25 +0000</pubDate>
+    <lastBuildDate>Sat, 06 Jan 2018 18:52:25 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -25,7 +25,7 @@
 &lt;p&gt;In summary, an entity microservice is one that you design to own the data and operations for a single domain entity in the system. You give it a runtime personality as well as a logical data one.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This comes from a simplistic view of Microservice decomposition, that I have found to be along the lines of &quot;lets split up! how?  erm, how about we take each tabel in the DB and make that a Microservice? Great Idea!&quot;&lt;/p&gt;
+&lt;p&gt;This comes from a simplistic view of Microservice decomposition, that I have found to be along the lines of &quot;lets split up! how?  erm, how about we take each table in the DB and make that a Microservice? Great Idea!&quot;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;This has led (at last!) to a broader discussion on the topic.&lt;/p&gt;
@@ -51,7 +51,7 @@
 &lt;p&gt;Microservices, well, that&amp;#8217;s plainly not a design approach, the radically different designs I see in the wild prove that. Instead, it&amp;#8217;s a set of architectural principles. At its crudest, when you say &quot;we want microservices&quot;, you are probably saying something along the lines of &quot;we want to maintain the ability to change our software for longer, so will we introduce network boundaries to encourage isolation&quot;.  No design, no entities, no data model, no API specs. Simple architecture, simple software philosophy.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This is where I see the issue arising, the fact that Microservices is &lt;em&gt;apparently&lt;/em&gt; underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an &lt;em&gt;Objects-in-the-large&lt;/em&gt; style design, the commonly seen &quot;entity oriented microservices&quot; (as I tend to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.&lt;/p&gt;
+&lt;p&gt;This is where I see the issue arising, the fact that Microservices is &lt;em&gt;apparently&lt;/em&gt; underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an &lt;em&gt;Objects-in-the-large&lt;/em&gt; style design, the commonly seen &quot;entity oriented microservices&quot; (as I have tended to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Now, the fact that a DDD approach &lt;em&gt;can&lt;/em&gt; yield good Microservices designs, that I have certainly found to be true, but that is not the only approach that works. As I mentioned before, a dataflow architecture and then functional design style yields good results too, yet it looks very different from a DDD style system.  Is there one true way, no, of course not.&lt;/p&gt;

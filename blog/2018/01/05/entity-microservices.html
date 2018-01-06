@@ -240,7 +240,7 @@
 <p>In summary, an entity microservice is one that you design to own the data and operations for a single domain entity in the system. You give it a runtime personality as well as a logical data one.</p>
 </div>
 <div class="paragraph">
-<p>This comes from a simplistic view of Microservice decomposition, that I have found to be along the lines of "lets split up! how?  erm, how about we take each tabel in the DB and make that a Microservice? Great Idea!"</p>
+<p>This comes from a simplistic view of Microservice decomposition, that I have found to be along the lines of "lets split up! how?  erm, how about we take each table in the DB and make that a Microservice? Great Idea!"</p>
 </div>
 <div class="paragraph">
 <p>This has led (at last!) to a broader discussion on the topic.</p>
@@ -266,7 +266,7 @@
 <p>Microservices, well, that&#8217;s plainly not a design approach, the radically different designs I see in the wild prove that. Instead, it&#8217;s a set of architectural principles. At its crudest, when you say "we want microservices", you are probably saying something along the lines of "we want to maintain the ability to change our software for longer, so will we introduce network boundaries to encourage isolation".  No design, no entities, no data model, no API specs. Simple architecture, simple software philosophy.</p>
 </div>
 <div class="paragraph">
-<p>This is where I see the issue arising, the fact that Microservices is <em>apparently</em> underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an <em>Objects-in-the-large</em> style design, the commonly seen "entity oriented microservices" (as I tend to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.</p>
+<p>This is where I see the issue arising, the fact that Microservices is <em>apparently</em> underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an <em>Objects-in-the-large</em> style design, the commonly seen "entity oriented microservices" (as I have tended to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.</p>
 </div>
 <div class="paragraph">
 <p>Now, the fact that a DDD approach <em>can</em> yield good Microservices designs, that I have certainly found to be true, but that is not the only approach that works. As I mentioned before, a dataflow architecture and then functional design style yields good results too, yet it looks very different from a DDD style system.  Is there one true way, no, of course not.</p>
