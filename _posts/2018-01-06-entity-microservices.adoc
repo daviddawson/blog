@@ -3,7 +3,7 @@ excerpt: Regular developer diary for the Muon project. This entry focuses on the
 title: Muon Developer Diary
 layout: post
 author: David Dawson
-date: 2018-01-06 10:38
+date: 2018-01-05 10:38
 image: images/vis/knowledge.jpg
 categories:
  - blog
