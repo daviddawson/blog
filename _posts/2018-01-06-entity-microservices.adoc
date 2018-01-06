@@ -19,9 +19,17 @@ http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html[many] a 
 
 In talk form, I give a rundown of the problem and the issues it will create https://youtu.be/OFV-1cpjQRk[here] while introducing the Muon project.
 
+In summary, an entity microservice is one that you design to own the data and operations for a single domain entity in the system. You give it a runtime personality as well as a logical data one.
+
+This comes from a simplistic view of Microservice decomposition, that I have found to be along the lines of "lets split up! how?  erm, how about we take each tabel in the DB and make that a Microservice? Great Idea!"
+
+This has led (at last!) to a broader discussion on the topic.
+
 ## DDD vs Microservices
 
-I see the argument raging, which I don't really have any sympathy with, as it seems to be an argument at cross purposes. Microservices != DDD Bounded Contexts, and no matter how many people say it is so, they're wrong.
+Unfortunately, I see the argument raging, and I don't really have any sympathy with it.  It seems to be an argument at cross purposes. One side argues that Entity Services are bad, another argues that DDD should be applied better. Are you even arguing?
+
+At this point, I'd like to throw in that Microservices != DDD Bounded Contexts, and no matter how many people say it is so, they're wrong.
 
 [quote]
 "Microservices != DDD Bounded Contexts"
