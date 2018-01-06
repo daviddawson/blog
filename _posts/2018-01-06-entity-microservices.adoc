@@ -1,6 +1,6 @@
 ---
-excerpt: Regular developer diary for the Muon project. This entry focuses on the Muon project as a whole, covering the various repositories and how they relate. Updates include Photon and event stores.
-title: Muon Developer Diary
+excerpt: The rise and hopefully fall of system Entities as a modelling approach for Microservices
+title: Entity Oriented Microservices
 layout: post
 author: David Dawson
 date: 2018-01-05 10:38
