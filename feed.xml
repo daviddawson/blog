@@ -5,9 +5,125 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Oct 2017 18:16:14 +0100</pubDate>
-    <lastBuildDate>Sun, 22 Oct 2017 18:16:14 +0100</lastBuildDate>
+    <pubDate>Sat, 06 Jan 2018 18:29:36 +0000</pubDate>
+    <lastBuildDate>Sat, 06 Jan 2018 18:29:36 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Muon Developer Diary</title>
+        <description>&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Recently I read an article on the concept of &lt;a href=&quot;https://www.infoq.com/news/2017/12/entity-services-antipattern?utm_source=infoq&amp;amp;utm_medium=popular_widget&amp;amp;utm_campaign=popular_content_list&amp;amp;utm_content=homepage&quot;&gt;Entity Services&lt;/a&gt; over at InfoQ by Michael Nygard (and written up by Jan Stanberg). I&amp;#8217;m not attempting to comment deeply on the article itself, only on the subject.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is a topic I&amp;#8217;ve spent an inordinate amount of time on over the years, you can see my thoughts in
+&lt;a href=&quot;http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html&quot;&gt;many&lt;/a&gt; a &lt;a href=&quot;http://daviddawson.me/blog/2017/08/13/build-reactive-polyglot-muon.html&quot;&gt;blog&lt;/a&gt; post and &lt;a href=&quot;https://skillsmatter.com/members/davidthecoder#skillscasts&quot;&gt;talk&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;In talk form, I give a rundown of the problem and the issues it will create &lt;a href=&quot;https://youtu.be/OFV-1cpjQRk&quot;&gt;here&lt;/a&gt; while introducing the Muon project.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;ddd-vs-microservices&quot;&gt;DDD vs Microservices&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I see the argument raging, which I don&amp;#8217;t really have any sympathy with, as it seems to be an argument at cross purposes. Microservices != DDD Bounded Contexts, and no matter how many people say it is so, they&amp;#8217;re wrong.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;quoteblock&quot;&gt;
+&lt;blockquote&gt;
+&quot;Microservices != DDD Bounded Contexts&quot;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;At its heart DDD is not an architectural approach. It is a software design discipline, probably the most comprehensive we currently have. Even so, it is not a way of creating architectures. I can approach a new software project and say &quot;we will build this using a data flow approach, persist all events to provide deep analytics and provide HTTP facades for external integration&quot;.   All of that is architectural thought, none of it design, and here DDD has not been used one iota.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Microservices, well, that&amp;#8217;s plainly not a design approach, the radically different designs I see in the wild prove that. Instead, it&amp;#8217;s a set of architectural principles. At its crudest, when you say &quot;we want microservices&quot;, you are probably saying something along the lines of &quot;we want to maintain the ability to change our software for longer, so will we introduce network boundaries to encourage isolation&quot;.  No design, no entities, no data model, no API specs. Simple architecture, simple software philosophy.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is where I see the issue arising, the fact that Microservices is &lt;em&gt;apparently&lt;/em&gt; underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an &lt;em&gt;Objects-in-the-large&lt;/em&gt; style design, the commonly seen &quot;entity oriented microservices&quot; (as I tend to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Now, the fact that a DDD approach &lt;em&gt;can&lt;/em&gt; yield good Microservices designs, that I have certainly found to be true, but that is not the only approach that works. As I mentioned before, a dataflow architecture and then functional design style yields good results too, yet it looks very different from a DDD style system.  Is there one true way, no, of course not.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;entity-oriented-microservices&quot;&gt;Entity Oriented Microservices&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;I very much see Entity services as a bad thing. Objects in the large just play into the fact that OO approaches have, given their originally stated aims, failed. OO abstractions that encapsulate state, identity and operation have led to poor designs in all levels of software. Instead we see the rise of immutability, 1 way data flow (witness Flux on the front end) and functional composition and extension (&lt;a href=&quot;http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html&quot;&gt;event architectures&lt;/a&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;So the simplistic &quot;entity service&quot; is a poor choice of design. This is not the only design that you can use, and as rightly pointed out in many of the comments around the above article, you can apply DDD to come up with something better.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sect1&quot;&gt;
+&lt;h2 id=&quot;the-right-approach-to-microservices-design&quot;&gt;The right approach to Microservices design&lt;/h2&gt;
+&lt;div class=&quot;sectionbody&quot;&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Fundamentally, when starting with a Microservices project &lt;strong&gt;the&lt;/strong&gt; thing you need to realise is that you are in the realm of distributed computing, that means data becomes the thing that actually matters. Specifically distribution, recombination and consistency models. DDD has techniques that &lt;em&gt;can&lt;/em&gt; help you with this, but only if you choose to, if you make the architectural choice to approach things from a different angle, and then apply DDD (or design discipline of your choice) to make that a reality.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;The main approach I advocate is event based data flow. In that, you reason about the system in terms of events coming in, functional processing on the events, generation of data flows, gateways handling integration concerns. Persistence applied where needed, durability generally in the form of event logs.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Many of you will say &quot;ah, event sourcing!&quot;. No, thats not what I mean, thats an implementation, a potential way of applying the architectural thought. I want you to reason about your system in terms of the data, how it is created, how it moves, how it is transformed.   When you do that, the concept of the &quot;entity&quot; simply vanishes. It is, after all, a collection of state, identity and operations. In a data flow approach, operations are functions that can be hosted anywhere (FaaS anyone?) identity is a key, one amongst many, state can mean many things in many different places.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Coming down to a design approach. the following is as good a way to start as any.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Event Storm your way to understanding the things that happen.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Group them up into potential bounded contexts for sanity&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Understand the integration points, your gateways&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;See what queries are required&lt;/p&gt;
+&lt;div class=&quot;ulist&quot;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;defining your data persistence and query engine requirements (especially &lt;strong&gt;data joins&lt;/strong&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;what consistency you require and where&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Identify what functional transformations are needed to make this all work.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;See if there are any integrations that require transactional validation. These become your aggregate roots (&lt;strong&gt;AR&lt;/strong&gt;). You may have none, or many, depending on the type of system you have&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;This is fairly standard for DDD, although I suspect I do it backwards from many people (AR at the end) as I value data most highly, not entities, which I care little about in the final system. For a Microservice project, you then do a final step, identify where things change most and why. Break the system into runtime processes based upon that, and that only. If that means that you host multiple bounded contexts in a single process &lt;em&gt;so be it&lt;/em&gt;. If that means a single bounded context is split over multiple services (eg, the gateway is changing a lot, but the AR processing never changes, break them up)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;paragraph&quot;&gt;
+&lt;p&gt;Data has always been the hardest thing in the vast majority of software development. In microservices it still is, with the addition of a network in the middle.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        <pubDate>Sat, 06 Jan 2018 10:38:00 +0000</pubDate>
+        <link>http://daviddawson.me/blog/2018/01/06/entity-microservices.html</link>
+        <guid isPermaLink="true">http://daviddawson.me/blog/2018/01/06/entity-microservices.html</guid>
+        
+        <category>microservices</category>
+        
+        <category>ddd</category>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Groovy Gorm Shell Script</title>
@@ -2241,146 +2357,6 @@ of the greater good.&lt;/p&gt;
         <category>lmug</category>
         
         <category>microservices</category>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>A Microservices Developer API using .... Make</title>
-        <description>&lt;div class=&quot;admonitionblock note&quot;&gt;
-&lt;table&gt;
-&lt;tr&gt;
-&lt;td class=&quot;icon&quot;&gt;
-&lt;i class=&quot;fa icon-note&quot; title=&quot;Note&quot;&gt;&lt;/i&gt;
-&lt;/td&gt;
-&lt;td class=&quot;content&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This article was originally posted at simplicityitself.com.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Simplicity Itself has now closed, and so I have moved my articles here.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you would like to read up on why it closed - See &lt;a href=&quot;/blog/2017/02/04/simplicity-itself-shutdown.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I run the &lt;a href=&quot;http://muoncore.io/&quot;&gt;Muon microservices platform project&lt;/a&gt; and the &lt;a href=&quot;http://meetup.com/London-Microservices-User-Group/&quot;&gt;London Microservices User Group&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;I&amp;#8217;m &lt;a href=&quot;/hireme.html&quot;&gt;available to hire&lt;/a&gt; for small and large projects&lt;/p&gt;
-&lt;/div&gt;
-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Gradle, NPM, Lein, Maven, Docker, Ansible, Kubernetes, Grunt &amp;#8230;&amp;#8203; The list goes on (and on, and on). Developer tooling, constantly re-invented for the modern age.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Microservices projects put &lt;strong&gt;particular pressures on development teams&lt;/strong&gt;, even without polyglot, you end up adding in a fair amount of automation
-tooling (Docker anyone?) that is patchily integrated into the core developer tooling. Every time you add in docker support to gradle or grunt, the more locked you are to that language, making moving away that much harder.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;If you do go polyglot (and I recommend that you do), then your problems are multiplied, as your &lt;strong&gt;common developer interface&lt;/strong&gt; is just gone.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;We recently reviewed the various tooling we were using on a Microservices project, and came up with a long, long list. All of which a developer needs to be able to develop effectively across the entire system.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Any new joiner would start to write a cheat sheet out. Just like the one in the wiki, of course. The one that no one maintains properly and is actually wrong is various subtle and totally misleading ways.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So when you come to a part of the project you&amp;#8217;ve not worked with on a while, you want to get that initial hook, the starting place to construct the 'Theory', the mental model of the system that you use to understand what you see in the repo.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Where do you start?  First you have to figure out what the entry point is, for tests, runtime. Is there one?  What&amp;#8217;s the build tool?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;&lt;strong&gt;&lt;strong&gt;What if there&amp;#8217;s more than one?&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Sound familiar?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;enter-make-the-once-and-future-dev-tool&quot;&gt;Enter Make, the Once and Future Dev Tool&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For all of our projects, we now use make as the top level developer tooling. Every project is driven from a Makefile.
-Internally, this delegates to the tooling we know and love. So, for a java project, Gradle, for Clojure, Leiningen and so on.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This allows us to encode the coarse things a developer needs to do in a file that is checked in with the project.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Ever had to go digging into a CI server for how it actually does a release using Gradle?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;For our projects that&amp;#8217;s as simple as looking in the Makefile for what the &lt;code&gt;release&lt;/code&gt; target is.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This helps from a vocabulary point of view, you decide your top level tasks, likely &lt;code&gt;test&lt;/code&gt;, &lt;code&gt;build&lt;/code&gt;, &lt;code&gt;release&lt;/code&gt;, &lt;code&gt;clean&lt;/code&gt; and put those in every Makefile.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Looking like so&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;listingblock&quot;&gt;
-&lt;div class=&quot;content&quot;&gt;
-&lt;pre class=&quot;pygments highlight&quot;&gt;&lt;code&gt;build:
-	./gradlew assemble
-
-test: build
-	./gradlew test
-
-release:
-	./gradlew publishSnapshot
-
-clean:
-	./gradlew clean
-	rm -rf outputs&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;This same api could wrap node projects, docker-compose projects, some combination of the all of them, with the exact same developer api.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Then, any developer can go to any project, do quick verifications and use the other make targets to start understanding more of the details.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Adding a new language into the system becomes feasible again, CI can build it with no modifications, it just calls &lt;code&gt;make test&lt;/code&gt; in every instance.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;You can see an example of this in [This Project](&lt;a href=&quot;https://github.com/muoncore/muon-intro-talk&quot; class=&quot;bare&quot;&gt;https://github.com/muoncore/muon-intro-talk&lt;/a&gt;)&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;So, I&amp;#8217;m not proposing to replace your developer tooling. I&amp;#8217;m saying your toolbox is incomplete. You need to use Make around them all,
-give them consistency and an ease of use.&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sect1&quot;&gt;
-&lt;h2 id=&quot;it-tab-completes&quot;&gt;It Tab Completes&lt;/h2&gt;
-&lt;div class=&quot;sectionbody&quot;&gt;
-&lt;div class=&quot;paragraph&quot;&gt;
-&lt;p&gt;Did I mention make ships with bash tab autocomplete on most platforms. &lt;strong&gt;&lt;strong&gt;Can your dev tool do that?&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-        <pubDate>Thu, 03 Nov 2016 11:00:00 +0000</pubDate>
-        <link>http://daviddawson.me/blog/2016/11/03/make-developer-api.html</link>
-        <guid isPermaLink="true">http://daviddawson.me/blog/2016/11/03/make-developer-api.html</guid>
-        
-        <category>cloudnative</category>
-        
-        <category>continuousdelivery</category>
-        
-        <category>microservices</category>
-        
-        <category>make</category>
         
         
         <category>blog</category>

@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Service Discovery Overview</title>
-  <meta name="description" content="Applying service discovery to make microservices not hurt so much">
+  <title>Muon Developer Diary</title>
+  <meta name="description" content="Regular developer diary for the Muon project. This entry focuses on the Muon project as a whole, covering the various repositories and how they relate. Updat...">
 
     <link rel="stylesheet" href="/css/foundation.css">
 
@@ -43,7 +43,7 @@
   <script src="/javascripts/slick.min.js" type="text/javascript"></script>
 
   <link href="/css/style.css" rel="stylesheet"/>
-    <link rel="canonical" href="http://daviddawson.me/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">
+    <link rel="canonical" href="http://daviddawson.me/blog/2018/01/06/entity-microservices.html">
     <link rel="alternate" type="application/rss+xml" title="David Dawson" href="http://daviddawson.me/feed.xml" />
   <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/asciidoc.css">
@@ -216,225 +216,114 @@
   <div class='row'>
         <div class='images'>
           
-            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="http://daviddawson.me/images/vis/clouds1.jpg" /></div>
+            <div class='image' style="height:100px;"><img style="height:inherit" alt="" src="http://daviddawson.me/images/vis/knowledge.jpg" /></div>
           
         </div>
         <div class='content'>
           <p class='info'>
 
 
-            <span>June 10, 2015</span>
+            <span>January 06, 2018</span>
           </p>
-          <h3><a href="/getting/started/with/microservices/2015/06/10/service-discovery-overview.html">Service Discovery Overview</a></h3>
-          <div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This article was originally posted at simplicityitself.com.</p>
+          <h3><a href="/blog/2018/01/06/entity-microservices.html">Muon Developer Diary</a></h3>
+          <div class="paragraph">
+<p>Recently I read an article on the concept of <a href="https://www.infoq.com/news/2017/12/entity-services-antipattern?utm_source=infoq&amp;utm_medium=popular_widget&amp;utm_campaign=popular_content_list&amp;utm_content=homepage">Entity Services</a> over at InfoQ by Michael Nygard (and written up by Jan Stanberg). I&#8217;m not attempting to comment deeply on the article itself, only on the subject.</p>
 </div>
 <div class="paragraph">
-<p>Simplicity Itself has now closed, and so I have moved my articles here.</p>
+<p>This is a topic I&#8217;ve spent an inordinate amount of time on over the years, you can see my thoughts in
+<a href="http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html">many</a> a <a href="http://daviddawson.me/blog/2017/08/13/build-reactive-polyglot-muon.html">blog</a> post and <a href="https://skillsmatter.com/members/davidthecoder#skillscasts">talk</a>.</p>
 </div>
 <div class="paragraph">
-<p>If you would like to read up on why it closed - See <a href="/blog/2017/02/04/simplicity-itself-shutdown.html">here</a></p>
-</div>
-<div class="paragraph">
-<p>I now operate as a freelancer, specialising in Microservices, event systems, cloud foundry, IoT in many languages.</p>
-</div>
-<div class="paragraph">
-<p>I run the <a href="http://muoncore.io/">Muon microservices platform project</a> and the <a href="http://meetup.com/London-Microservices-User-Group/">London Microservices User Group</a></p>
-</div>
-<div class="paragraph">
-<p>I&#8217;m <a href="/hireme.html">available to hire</a> for small and large projects</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>When building microservices, you have to naturally distribute your application around a network. It is almost always the case that you are building in a cloud environment, and often using <em>immutable infrastructure</em>. Ironically, this means that your virtual machines or containers are created and destroyed much more often than normal, as this immutable nature means that you don&#8217;t maintain them.</p>
-</div>
-<div class="paragraph">
-<p>These properties together mean that your services need to be reconfigured with the location of the other services they need to connect to. This reconfiguration needs to be able to happen on the fly, so that when a new service instance is created, the rest of the network can automatically find it and start to communication with it.  This process is called <em>Service Discovery</em>.</p>
-</div>
-<div class="paragraph">
-<p>This concept is one of the key underpinnings of a Microservice architecture. Attempting to create Microservices without a service discovery system will lead to pain and misery as you will, in effect, be working as a manual replacement.</p>
-</div>
-<div class="paragraph">
-<p>As well as the standalone solutions presented here, most platforms, whether full PaaS or the more minimal container managers, have some form of Service Discovery.</p>
-</div>
-<div class="paragraph">
-<p>Which system to choose?</p>
-</div>
-<div class="paragraph">
-<p>There are currently several key contenders to choose from, ZooKeeper, Consul, Etcd, Eureka and RollYourOwn</p>
+<p>In talk form, I give a rundown of the problem and the issues it will create <a href="https://youtu.be/OFV-1cpjQRk">here</a> while introducing the Muon project.</p>
 </div>
 <div class="sect1">
-<h2 id="zookeeper">ZooKeeper</h2>
+<h2 id="ddd-vs-microservices">DDD vs Microservices</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em><a href="http://zookeeper.apache.org/" class="bare">http://zookeeper.apache.org/</a></em></p>
+<p>I see the argument raging, which I don&#8217;t really have any sympathy with, as it seems to be an argument at cross purposes. Microservices != DDD Bounded Contexts, and no matter how many people say it is so, they&#8217;re wrong.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+"Microservices != DDD Bounded Contexts"
+</blockquote>
 </div>
 <div class="paragraph">
-<p>ZooKeeper is an Apache project providing a distributed, eventually consistent hierarchical configuration store.</p>
+<p>At its heart DDD is not an architectural approach. It is a software design discipline, probably the most comprehensive we currently have. Even so, it is not a way of creating architectures. I can approach a new software project and say "we will build this using a data flow approach, persist all events to provide deep analytics and provide HTTP facades for external integration".   All of that is architectural thought, none of it design, and here DDD has not been used one iota.</p>
 </div>
 <div class="paragraph">
-<p>ZooKeeper originated out of the world of Hadoop, where it was built to help in the maintenance of the various components in a hadoop cluster. It is not a service discovery system per se, but is instead a distributed configuration store that provides notifications to registered clients.  With this, it is possible to build a service discovery infrastructure, however every service must explicitly register with ZooKeeper, and the clients must then check in the configuration.</p>
+<p>Microservices, well, that&#8217;s plainly not a design approach, the radically different designs I see in the wild prove that. Instead, it&#8217;s a set of architectural principles. At its crudest, when you say "we want microservices", you are probably saying something along the lines of "we want to maintain the ability to change our software for longer, so will we introduce network boundaries to encourage isolation".  No design, no entities, no data model, no API specs. Simple architecture, simple software philosophy.</p>
 </div>
 <div class="paragraph">
-<p>Netflix have invested a lot of time and resources into ZooKeeper, and so a significant amount of Netflix OSS projects have some ZooKeeper integration.</p>
+<p>This is where I see the issue arising, the fact that Microservices is <em>apparently</em> underspecified in terms of design, and so you must apply some form of design approach to do it properly. Most developers are used to an Object Oriented approach, and so reach for an <em>Objects-in-the-large</em> style design, the commonly seen "entity oriented microservices" (as I tend to call them). This is not a new approach, its simply networked now. Look in the majority of spring applications (for example) and you will see precisely the same thing, a bowdlerised version of Model driven development approaches, the immediate precursor to DDD.</p>
 </div>
 <div class="paragraph">
-<p><strong>I Recommend</strong></p>
-</div>
-<div class="paragraph">
-<p>ZooKeeper is a well understood clustered system. It is a consistent configuration store, and so being well designed and built, a network partition will cause the smaller side of the partition to shut down. For that reason, you must choose whether consistency or availability is more important to you.</p>
-</div>
-<div class="paragraph">
-<p>If you do choose a consistent system for service discovery, such as Zookeeper, then you need to understand the implications on your services. You have tied them to the lifecycle of the discovery system, and also exposed them to any failure conditions it may have. You should not assume that 'consistent' means free from failure. Zookeeper is among the older cluster managers, and consensus (pun intended) is that it&#8217;s implementation of master selection is robust and well behaved.</p>
-</div>
-<div class="paragraph">
-<p>If you do choose to use ZooKeeper, investigate the Netflix OSS projects, staring with &lt;a title="Curator" href="https://github.com/Netflix/curator" target="_blank"&gt;Curator&lt;/a&gt; as a first point of call, and only use bare ZooKeeper if they don&#8217;t fit your needs.</p>
-</div>
-<div class="paragraph">
-<p>Since Zookeeper is mature and established, there is a large ecosystem of good quality (mostly!) clients and libraries to enrich your projects.</p>
+<p>Now, the fact that a DDD approach <em>can</em> yield good Microservices designs, that I have certainly found to be true, but that is not the only approach that works. As I mentioned before, a dataflow architecture and then functional design style yields good results too, yet it looks very different from a DDD style system.  Is there one true way, no, of course not.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="consul">Consul</h2>
+<h2 id="entity-oriented-microservices">Entity Oriented Microservices</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em><a href="http://www.consul.io" class="bare">http://www.consul.io</a></em></p>
+<p>I very much see Entity services as a bad thing. Objects in the large just play into the fact that OO approaches have, given their originally stated aims, failed. OO abstractions that encapsulate state, identity and operation have led to poor designs in all levels of software. Instead we see the rise of immutability, 1 way data flow (witness Flux on the front end) and functional composition and extension (<a href="http://daviddawson.me/blog/2017/07/10/styles-of-event-architecture.html">event architectures</a>)</p>
 </div>
 <div class="paragraph">
-<p>Consul is a peer to peer, strongly consistent data store that uses a gossip protocol to communicate and form dynamic clusters. It is based on the Serf library.</p>
-</div>
-<div class="paragraph">
-<p>It provides a hierarchical key/value store that you can place data in and register watches against to be notified when something changes within a particular key space. In this, it is similar to ZooKeeper.</p>
-</div>
-<div class="paragraph">
-<p>As opposed to ZooKeeper and Etcd, however, Consul implements a full service discovery system in the library, and so you don&#8217;t need to implement your own use use a third party library. This includes health checks on both nodes and services.</p>
-</div>
-<div class="paragraph">
-<p>It implements a DNS server interface, allowing you to perform service lookups using the DNS protocol. It also allows 'clients' to run as independent processes and register/ monitor services on their behalf. This removes the need to add explicit Consul support into your applications.  This is similar in concept to the Netflix OSS <em>Sidecar</em> concept that allows services with no ZooKeeper support to be registered and be discoverable in ZooKeeper.</p>
-</div>
-<div class="paragraph">
-<p>Deployment wise, Consul agents are deployed onto the systems that services are running on, and not in a centralised fashion.</p>
-</div>
-<div class="paragraph">
-<p><strong>I Recommend</strong></p>
-</div>
-<div class="paragraph">
-<p>This is a newer product, and one that we like a lot. Generally recommended if you are able to adopt it.</p>
-</div>
-<div class="paragraph">
-<p>As with the other strongly consistent systems in the list, care must be taken that you understand the implications of adopting it, including understanding it&#8217;s potential failure modes.</p>
-</div>
-<div class="paragraph">
-<p>If you would like something similar that chooses availability rather than consistency, investigate the related Serf project. The Serf library serves as the basis of Consul, but has chosen different data guarantees guarantees. It is nowhere near as full featured, but can handily survive a split brain scenario and reform afterwards without any ill effects.</p>
+<p>So the simplistic "entity service" is a poor choice of design. This is not the only design that you can use, and as rightly pointed out in many of the comments around the above article, you can apply DDD to come up with something better.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="etcd">Etcd</h2>
+<h2 id="the-right-approach-to-microservices-design">The right approach to Microservices design</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em><a href="http://www.etcd.io" class="bare">http://www.etcd.io</a></em></p>
+<p>Fundamentally, when starting with a Microservices project <strong>the</strong> thing you need to realise is that you are in the realm of distributed computing, that means data becomes the thing that actually matters. Specifically distribution, recombination and consistency models. DDD has techniques that <em>can</em> help you with this, but only if you choose to, if you make the architectural choice to approach things from a different angle, and then apply DDD (or design discipline of your choice) to make that a reality.</p>
 </div>
 <div class="paragraph">
-<p>Etcd is an HTTP accessible key/ value store. In that, it is similar in concept to ZooKeeper and the K/V portion of Consul.  It functions as a distributed, hierarchical configuration system, and can be used to build a Service Discovery system.</p>
+<p>The main approach I advocate is event based data flow. In that, you reason about the system in terms of events coming in, functional processing on the events, generation of data flows, gateways handling integration concerns. Persistence applied where needed, durability generally in the form of event logs.</p>
 </div>
 <div class="paragraph">
-<p>It originally grew out of the CoreOS project, is maintained by them and recently achieved a stable major release</p>
+<p>Many of you will say "ah, event sourcing!". No, thats not what I mean, thats an implementation, a potential way of applying the architectural thought. I want you to reason about your system in terms of the data, how it is created, how it moves, how it is transformed.   When you do that, the concept of the "entity" simply vanishes. It is, after all, a collection of state, identity and operations. In a data flow approach, operations are functions that can be hosted anywhere (FaaS anyone?) identity is a key, one amongst many, state can mean many things in many different places.</p>
 </div>
 <div class="paragraph">
-<p><strong><em>Simplicity Itself Recommends:</em></strong></p>
-</div>
-<div class="paragraph">
-<p>If you are primarily using HTTP as your communication mechanism, then Etcd can&#8217;t be easily beaten. It provides a well distributed, fast HTTP based system, and has query and push notifications on change, via long polling.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="eureka">Eureka</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><em><a href="https://github.com/Netflix/eureka" class="bare">https://github.com/Netflix/eureka</a></em></p>
-</div>
-<div class="paragraph">
-<p>Eureka is a 'mid tier load balancer' built by Netflix and released as open source. It is designed to allow services to be able to register with a Eureka server and then locate each other via that server.</p>
-</div>
-<div class="paragraph">
-<p>Eureka has several capabilities beyond other solutions presented here. It contains a built in load balancer which, although fairly simple, certainly does it&#8217;s job.  Netflix state that they have a secondary load balancer implementation internally that uses Eureka as a data source and is much more full featured. This hasn&#8217;t been released.</p>
-</div>
-<div class="paragraph">
-<p>If you use Spring for your projects, then &lt;a href="http://projects.spring.io/spring-cloud/"&gt;Spring Cloud&lt;/a&gt; is an interesting project to look into, in order to be able to automatically register and resolve services in Eureka.</p>
-</div>
-<div class="paragraph">
-<p>&nbsp;</p>
-</div>
-<div class="paragraph">
-<p><strong>I Recommend</strong></p>
-</div>
-<div class="paragraph">
-<p>Like all Netflix OSS projects, it was written to run on the AWS infrastructure first and foremost. While other Netflix OSS projects have been extended to run in other environments, Eureka does not appear to be moving in that direction.
-We very much like the relation between client and server in the Eureka design, as it leaves the clients with the ability to continue working if the service discovery infrastructure fails.</p>
-</div>
-<div class="paragraph">
-<p>Server wise, Eureka has also chosen availability rather than consistency. You must also be aware of the implications of this choice as it directly affects your application. Primarily, this manifests as a potentially stale or partial view of the full data set. This is discussed in the Eureka documentation.</p>
-</div>
-<div class="paragraph">
-<p>For Spring projects, Eureka is now the quickest to get started with due to the investment the Spring team has made in adopting the Netflix OSS components via the Spring Cloud sub-projects.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="rollyourown">RollYourOwn</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If you can&#8217;t adapt to that, then you will have to create your own discovery solution within your existing infrastructure.</p>
-</div>
-<div class="paragraph">
-<p>The basis of this will be :-</p>
+<p>Coming down to a design approach. the following is as good a way to start as any.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Services must be able to notify each other of their availability and supply connection information&lt;/li&gt;</p>
+<p>Event Storm your way to understanding the things that happen.</p>
 </li>
 <li>
-<p>Periodic updates to the records to strip out stale information&lt;/li&gt;</p>
+<p>Group them up into potential bounded contexts for sanity</p>
 </li>
 <li>
-<p>Easy integration into your application infrastructure, often using a standard protocol such as HTTP or DNS&lt;/li&gt;</p>
+<p>Understand the integration points, your gateways</p>
 </li>
 <li>
-<p>Notifications on services starting and stopping.&lt;/li&gt;</p>
+<p>See what queries are required</p>
+<div class="ulist">
+<ul>
+<li>
+<p>defining your data persistence and query engine requirements (especially <strong>data joins</strong>)</p>
+</li>
+<li>
+<p>what consistency you require and where</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Identify what functional transformations are needed to make this all work.</p>
+</li>
+<li>
+<p>See if there are any integrations that require transactional validation. These become your aggregate roots (<strong>AR</strong>). You may have none, or many, depending on the type of system you have</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>&nbsp;</p>
+<p>This is fairly standard for DDD, although I suspect I do it backwards from many people (AR at the end) as I value data most highly, not entities, which I care little about in the final system. For a Microservice project, you then do a final step, identify where things change most and why. Break the system into runtime processes based upon that, and that only. If that means that you host multiple bounded contexts in a single process <em>so be it</em>. If that means a single bounded context is split over multiple services (eg, the gateway is changing a lot, but the AR processing never changes, break them up)</p>
 </div>
 <div class="paragraph">
-<p><strong>I Recommend</strong></p>
-</div>
-<div class="paragraph">
-<p>Building your own discovery service should not be taken lightly. If you do need to then we recommend building a system that values availability rather the consistency. These are significantly easier to build, and more likely that you will build something that is functional.</p>
-</div>
-<div class="paragraph">
-<p>The approach we would recommend would be to use some existing message infrastructure and broadcast notifications on service status. Each service caches the latest information from the broadcasts and uses that as a local set of service discovery data. This has the potential for being stale, but we&#8217;ve found this approach to scale reasonably well and is easy to implement.</p>
-</div>
-<div class="paragraph">
-<p>If you do require consistency, then using some consistent data store could serve as the basis for a distributed configuration system that can be used to build service discovery. You will also want to emit notifications on status changes. You should realise, though, that building a consistent, distributed system is exceptionally hard to get right, and very easy to get subtly wrong.</p>
-</div>
-<div class="paragraph">
-<p>Overall, really not recommended, but certainly possible.</p>
+<p>Data has always been the hardest thing in the vast majority of software development. In microservices it still is, with the addition of a network in the middle.</p>
 </div>
 </div>
 </div>
@@ -442,6 +331,12 @@ We very much like the relation between client and server in the Eureka design, a
 
 
                 <i class="fa fa-tag"></i>
+                
+
+                <a href="/blog/tags#microservices">microservices</a>,
+                
+
+                <a href="/blog/tags#ddd">ddd</a>,
                 
                 <a href="/blog/tags"><em>Browse all tags</em></a>
             </p>
