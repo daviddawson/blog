@@ -5,12 +5,12 @@
     <description></description>
     <link>http://daviddawson.me/</link>
     <atom:link href="http://daviddawson.me/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 06 Jan 2018 18:38:16 +0000</pubDate>
-    <lastBuildDate>Sat, 06 Jan 2018 18:38:16 +0000</lastBuildDate>
+    <pubDate>Sat, 06 Jan 2018 18:42:26 +0000</pubDate>
+    <lastBuildDate>Sat, 06 Jan 2018 18:42:26 +0000</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
-        <title>Muon Developer Diary</title>
+        <title>Entity Oriented Microservices</title>
         <description>&lt;div class=&quot;paragraph&quot;&gt;
 &lt;p&gt;Recently I read an article on the concept of &lt;a href=&quot;https://www.infoq.com/news/2017/12/entity-services-antipattern?utm_source=infoq&amp;amp;utm_medium=popular_widget&amp;amp;utm_campaign=popular_content_list&amp;amp;utm_content=homepage&quot;&gt;Entity Services&lt;/a&gt; over at InfoQ by Michael Nygard (and written up by Jan Stanberg). I&amp;#8217;m not attempting to comment deeply on the article itself, only on the subject.&lt;/p&gt;
 &lt;/div&gt;
